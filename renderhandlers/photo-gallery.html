@@ -1,0 +1,152 @@
+<script type="text/JavaScript" src="scripts/curvycorners.src.js"></script>
+<script type="text/javascript" src="scripts/jquery-compressed.js"></script>
+<script type="text/javascript" src="scripts/thickbox-compressed.js"></script>
+<script type="text/javascript" src="scripts/dropshadow.js"></script>
+<style>
+/* Profile Listing Type A
+* {margin:0px; padding:0px;}
+
+a {color:#4f81bd; text-decoration:none;}
+a:hover {color:#d2d2d2; text-decoration:underline;}
+
+#content-wrapper {width:900px; margin:auto;}
+.header {background:url(images/header-light.gif) left center no-repeat; height:92px; width:900px;}
+
+.listing {width:900px; background:url(images/listing-background.gif) bottom left repeat-x;}
+	.listing a {color:#ff6c0a; text-decoration:none;}
+	.listing a:hover {color:#d2d2d2; text-decoration:underline;}
+	.listing ul li {font:bold 15px Arial, Helvetica, sans-serif; display:inline; padding:12px 6px 0;}
+.listing a.active {color:#d2d2d2; text-decoration:none; background:url(images/active.gif) center -5px no-repeat;}
+	.listing ul {padding:12px 0; margin-top:-24px;}
+.alpha {text-align:center;}
+
+.profile-column {width:900px;}
+	dl {float:left; display:inline; width:409px; background:url(images/grid.gif) right bottom no-repeat; padding:20px; border-left:1px solid #d2d2d2;}
+	dl+dl {background:url(images/listing-background.gif) bottom left repeat-x; border-left:none; border-right:1px solid #d2d2d2}
+	dt {font:bold 15px arial, helvetica, sans serif; font-weight:bold; margin-left:150px; color:#17365d; letter-spacing:2px;}
+	dd {font:12px arial, helvetica, sans serif; color:#3a3a3a;}
+	dd img {width:140px; height:140px; margin-top:-30px;}
+		.title {margin-left:150px; color:#17365d; font-weight:bold; letter-spacing:2px;}
+		.image {width:158px; height:156px; float:left; padding-right:10px; background:url(images/photo-background.gif) no-repeat;}
+		.description {margin-left:10px;}
+		.call-to-action {font-size:10px; font-weight:bold; clear:both; float:left; background:url(images/call-to-action.gif) center left no-repeat; padding-left:20px;}
+*/		
+
+/*Profile Listing Type C*/
+* {margin:0px; padding:0px;}
+
+a {color:#4f81bd; text-decoration:none;}
+a:hover {color:#8cb4e4; text-decoration:underline;}
+
+#content-wrapper {width:900px; margin:auto;}
+.header {background:url(images/header-dark.gif) left top no-repeat; height:92px; width:900px;}
+
+.listing {width:900px; border-bottom:5px solid #17365d;}
+	.listing a {color:#ff6c0a; text-decoration:none;}
+	.listing a:hover {color:#d2d2d2; text-decoration:underline;}
+	.listing ul li {font:bold 15px Arial, Helvetica, sans-serif; display:inline; padding:12px 6px 0;}
+.listing a.active {color:#d2d2d2; text-decoration:none; background:url(images/active.gif) center -5px no-repeat;}
+	.listing ul {padding:12px 0; margin-top:-24px;}
+.alpha {text-align:center;}
+
+.profile-column {width:900px; overflow:auto;}
+	dl {float:left; display:inline; width:258px; padding:20px; border:2px solid #FFF; border-top:none; border-left:none; }
+	dl+dl+dl {border-right:none; width:259px;}
+	dt {font:bold 12px arial, helvetica, sans serif; font-weight:bold; text-align:center; color:#17365d; letter-spacing:2px; margin-bottom:5px;}
+	dd {font:10px arial, helvetica, sans serif; color:#3a3a3a;}
+	dd img {width:214px; height:143px; border:none; text-align:center;}
+		.title {text-align:center; color:#17365d; font-weight:bold; letter-spacing:2px;}
+		.image {border:5px solid #FFF; -webkit-border-radius:5px; -moz-border-radius:5px; width:214px; height:143px;}
+		.description {margin-left:10px; margin-top:10px; font-style:italic;}
+		.call-to-action {font-size:10px; font-weight:bold; clear:both; float:left; background:url(images/call-to-action.gif) center left no-repeat; padding-left:20px; margin-top:-20px; margin-left:30px; display:none;}
+
+		.even {background-color:#efefef;}
+		.odd {background-color:#d8d8d8;}
+/**/
+</style>
+<link rel="stylesheet" href="styles/thickbox.css" type="text/css" media="screen" />
+
+<div id="content-wrapper">
+<div class="header">&nbsp;</div>
+	<div class="listing alpha">
+        <ul>
+        	<li><a href="#">&laquo; Previous</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#" class="active">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">Next &raquo;</a></li>
+        </ul>
+    </div>
+    <div class="profile-column odd">
+      <dl>
+        <dt><a href="images/gallery_photos/flamingo.jpg">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/flamingo.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/flamingo.jpg" alt="Flamingo" /></a></dd>
+        <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+      
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/elephant.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/elephant.jpg" alt="Elephant" /></a> </dd>
+            <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+      
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/gator.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/gator.jpg" alt="Gator" /></a> </dd>
+            <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+    </div>
+
+
+    <div class="profile-column even">
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/warthog.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/warthog.jpg" alt="Warthog" /></a></dd>
+        <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+      
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/butterfly.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/butterfly.jpg" alt="Butterfly" /></a></dd>
+            <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+      
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/zebra.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/zebra.jpg" alt="Zebra" /></a></dd>
+        <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+    </div>
+
+    <div class="profile-column odd">
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="../images/gallery_photos/flamingo.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/flamingo.jpg" alt="Flamingo" /></a></dd>
+        <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+      
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/elephant.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/elephant.jpg" alt="Elephant" /></a> </dd>
+            <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+      
+      <dl>
+          <dt><a href="#">Photo Title Placement</a></dt>
+            <dd class="image"><a href="images/gallery_photos/gator.jpg" title="Photo Title Placement" class="thickbox" rel="gallery-animals"><img src="images/gallery_photos/gator.jpg" alt="Gator" /></a></dd>
+            <dd class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sollicitudin massa vel erat lobortis elementum et vel lacus.</dd>
+            <dd class="call-to-action"><a href="#">View Profile</a></dd>
+      </dl>
+    </div>
+
+</div>
