@@ -34,7 +34,6 @@ History:
 <cfoutput>	
 	<cfscript>
 		application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
-		//application.ptPhotoGallery.scripts.loadThickbox("3.1");
 		application.ptPhotoGallery.scripts.loadJQueryUI("1.7.2");
 		application.ptPhotoGallery.scripts.loadADFLightbox();
 	</cfscript>
@@ -182,7 +181,7 @@ History:
 			[<a href="javascript:;" id="#fqFieldName#_photoRemove" onclick="#fqFieldName#_clearField();">Remove</a>]
 		</div>
 		<div id="#fqFieldName#_addPhoto">
-			[<a href='javascript:;' rel='#appConfig.UPLOAD_CROP_URL#?action=form&callback=#fqFieldName#setPhotoField&category=#xparams.photoCategoryID#&width=700&height=700' title='Add Photo' class='ADFLightbox' style="text-decoration:none;">Add Photo</a>]
+			[<a href='javascript:;' rel='#appConfig.UPLOAD_CROP_URL#?action=form&callback=#fqFieldName#setPhotoField&category=#xparams.photoCategoryID#&width=500&height=300&title=Add Photo' title='Add Photo' class='ADFLightbox' style="text-decoration:none;">Add Photo</a>]
 		<br />
 		<input type="hidden" id="#xparams.photoFieldID#" name="#fqFieldName#" value="#currentValue#">
 		<!--- // include hidden field for simple form processing --->

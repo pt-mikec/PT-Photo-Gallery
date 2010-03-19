@@ -14,13 +14,13 @@
 	if ( (StructKeyExists(appConfig, "UPLOAD_PATH")) AND (LEN(appConfig.UPLOAD_PATH)) )
 		docPath = appConfig.UPLOAD_PATH;
 	else
-		docPath = "#request.subsiteCache[1].dir#cs_apps/ptPhotoGallery/uploads/";
+		docPath = "#request.site.dir#cs_apps/ptPhotoGallery/uploads/";
 	
 	// Config - UPLOADURL
 	if ( (StructKeyExists(appConfig, "UPLOAD_URL")) AND (LEN(appConfig.UPLOAD_URL)) )
 		docURL = appConfig.UPLOAD_URL;
 	else
-		docURL = "#request.subsiteCache[1].url#_cs_apps/ptPhotoGallery/uploads/";
+		docURL = "#request.site.CSAPPSURL#ptPhotoGallery/uploads/";
 		
 	// Check if a callback is NOT defined
 	if ( NOT StructKeyExists(request.params, "callback") )
@@ -75,7 +75,7 @@
 	
 	<div align="center">
 		<!--- // form for uploading the document --->
-		<form action="#appConfig.UPLOAD_CROP_URL#" id="docForm" class="cs_default_form" method="post" enctype="multipart/form-data">
+		<form action="#appConfig.UPLOAD_CROP_URL#?width=650&height=700&title=Add Photo" id="docForm" class="cs_default_form" method="post" enctype="multipart/form-data">
 			<!--- // hidden form field for the subsite where the document should be uploaded --->
 			<input type="hidden" name="callback" value="#request.params.callback#">
 			<input type="hidden" name="category" value="#request.params.category#">
@@ -107,155 +107,206 @@
 
 <cfelseif request.params.action EQ "crop">
 	
-	<cfscript>
-		application.ADF.scripts.loadJcrop();
-		// Load the category data structure
-		catData = application.ptPhotoGallery.photoService.loadCategoryData(request.params.category);
+	<cftry>
 		
-		// Check that we have category data
-		if ( ArrayLen(catData.INITIALSIZEARRAY) ){
-			// Check the initial size array
-			maxWidth = catData.INITIALSIZEARRAY[1].values.width;
-			maxHeight = catData.INITIALSIZEARRAY[1].values.height;
-			// Set the aspect ratio
-			aspectRatio = NumberFormat(catData.INITIALSIZEARRAY[1].values.width/catData.INITIALSIZEARRAY[1].values.height, "_.__");
-		}
-		else {
-			maxWidth = 0;
-			maxHeight = 0;
-			aspectRatio = 1;
-		}
-		
-	</cfscript>
-	
-	<!--- <cfdump var="#catData#" label="catdata" expand="false">
-	<cfoutput>
-		<p>maxWidth = #maxWidth#</p>
-		<p>maxHeight = #maxHeight#</p>
-		<p>aspectRatio = #aspectRatio#</p>
-	</cfoutput> --->
-	
-	<!--- TEMP Folder --->	
-	<cfif not directoryExists(docPath & "temp/")>
-		<cfdirectory action="create" directory="#docPath#temp">
-	</cfif>
-
-	<!--- <cffile action="upload" 
-			filefield="uploadDoc"
-			destination="#docPath#temp/"
-			nameconflict="makeunique">
-	<cfset photoTempDirPath = "#docPath#temp/#cffile.serverFile#">
-	<cfset photoTempURLPath = "#docURL#temp/#cffile.serverFile#">
-	 --->
-	<cfset fileOp = application.ptPhotoGallery.csdata.CSFile(
-						action= "upload",
-						filefield="uploadDoc",
-						destination= "#docPath#temp/",
-						nameconflict="makeunique"
-					) >
-
-	<!---<cfdump var="#fileOp#" label="fileOp" expand="false">--->
-	
-	<cfset photoTempDirPath = "#docPath#temp/#fileOp.cffile.serverFile#">
-	<cfset photoTempURLPath = "#docURL#temp/#fileOp.cffile.serverFile#">
-	
-	<!--- Reprocess the temp image to contain the width and height --->
-	<cfscript>
-		// Default image width
-		defaultPhotoDim = 600;
-		// Read the original image
-		imageData = ImageRead(photoTempDirPath);
-		//application.ADF.utils.dodump(imageData, "imageData", false);	
-		
-		// Check if the width and height are over 800 px
-		if ( (imageData.width GT defaultPhotoDim) OR (imageData.height GT defaultPhotoDim) ) {
-			// Determine the current ratio
-			currAspectRatio = NumberFormat(imageData.width/imageData.height, "_.__");
+		<cfscript>
+			application.ADF.scripts.loadJcrop();
+			// Load the category data structure
+			catData = application.ptPhotoGallery.photoService.loadCategoryData(request.params.category);
 			
-			// If the width is too large, then rescale based on the width
-			if ( imageData.width GT defaultPhotoDim ){
-				newWidth = defaultPhotoDim;
-				newHeight = Round(newWidth/currAspectRatio);
+			// Check that we have category data
+			if ( ArrayLen(catData.INITIALSIZEARRAY) ){
+				// Check the initial size array
+				maxWidth = catData.INITIALSIZEARRAY[1].values.width;
+				maxHeight = catData.INITIALSIZEARRAY[1].values.height;
+				// Set the aspect ratio
+				aspectRatio = NumberFormat(catData.INITIALSIZEARRAY[1].values.width/catData.INITIALSIZEARRAY[1].values.height, "_.__");
 			}
-			else if ( imageData.height GT defaultPhotoDim ){
-				// Else the height is too large
-				newHeight = defaultPhotoDim;
-				newWidth = Round(newHeight * currAspectRatio);
+			else {
+				maxWidth = 0;
+				maxHeight = 0;
+				aspectRatio = 1;
 			}
+		</cfscript>
+		
+		<!--- <cfdump var="#catData#" label="catdata" expand="false">
+		<cfoutput>
+			<p>maxWidth = #maxWidth#</p>
+			<p>maxHeight = #maxHeight#</p>
+			<p>aspectRatio = #aspectRatio#</p>
+		</cfoutput> --->
+		
+		<!--- TEMP Folder --->	
+		<cfif not directoryExists(docPath & "temp/")>
+			<cfdirectory action="create" directory="#docPath#temp">
+		</cfif>
+	
+		<!--- <cffile action="upload" 
+				filefield="uploadDoc"
+				destination="#docPath#temp/"
+				nameconflict="makeunique">
+		<cfset photoTempDirPath = "#docPath#temp/#cffile.serverFile#">
+		<cfset photoTempURLPath = "#docURL#temp/#cffile.serverFile#">
+		<cfdump var="#photoTempDirPath#" label="photoTempDirPath" expand="false">
+		<cfdump var="#photoTempURLPath#" label="photoTempURLPath" expand="false"> --->
+		
+		<cfset fileOp = application.ptPhotoGallery.csdata.CSFile(
+							action= "upload",
+							filefield="uploadDoc",
+							destination= "#docPath#temp/",
+							nameconflict="makeunique"
+						) >
+		<!--- <cfdump var="#fileOp#" label="fileOp" expand="false"> --->
+		<cfset photoTempDirPath = "#docPath#temp/#fileOp.cffile.serverFile#">
+		<cfset photoTempURLPath = "#docURL#temp/#fileOp.cffile.serverFile#">
+		<cfset fileExtension = fileOp.cffile.CLIENTFILEEXT>	
 			
-			// Resize the image
-			ImageResize(imageData, newWidth, newHeight);
-			// Update the original to the new croppped image
-			ImageWrite(imageData, photoTempDirPath);
-			
+		<!--- Reprocess the temp image to contain the width and height --->
+		<cfscript>
+			// Default image width
+			defaultPhotoDim = 600;
 			// Read the original image
-			imageData2 = ImageRead(photoTempDirPath);
-			//application.ADF.utils.dodump(imageData2, "imageData2", false);	
-		}
-	</cfscript>
+			imageData = ImageRead(photoTempDirPath);
+			//application.ADF.utils.dodump(imageData, "imageData", false);	
+			
+			// Check if the file extension is not PNG
+			if ( fileExtension NEQ "png" ){
+				
+				// Create the new image paths
+				newPhotoTempDirPath = ReplaceNocase(photoTempDirPath,".#fileExtension#", ".png" );
+				newPhotoTempURLPath = ReplaceNocase(photoTempURLPath,".#fileExtension#", ".png" );
+				
+				// Convert the image to PNG
+				ImageWrite(imageData, newPhotoTempDirPath);
+				
+				// Delete the old image format
+				fileDeleteOp = application.ptPhotoGallery.csdata.CSFile(action="delete", file="#photoTempDirPath#");
+				
+				// Store the new image paths back into the paths
+				photoTempDirPath = newPhotoTempDirPath;
+				photoTempURLPath = newPhotoTempURLPath;
+			
+				// Reload the image data for processing
+				imageData = ImageRead(photoTempDirPath);
+			}
+			
+			// Check if the width and height meet the minimum reqs
+			if ( (imageData.width LT catData.INITIALSIZEARRAY[1].values.width) OR (imageData.height LT catData.INITIALSIZEARRAY[1].values.height) ) {
+				
+				// Resize the image to be the minimum size to crop
+				newWidth = catData.INITIALSIZEARRAY[1].values.width;
+				newHeight = catData.INITIALSIZEARRAY[1].values.height;
+				
+				// Resize the image
+				ImageResize(imageData, newWidth, newHeight);
+				// Update the original to the new croppped image
+				ImageWrite(imageData, photoTempDirPath);
+			}
+			
+			// Check if the width and height are over defaultPhotoDim px
+			if ( (imageData.width GT defaultPhotoDim) OR (imageData.height GT defaultPhotoDim) ) {
+				// Determine the current ratio
+				currAspectRatio = NumberFormat(imageData.width/imageData.height, "_.__");
+				//application.ADF.utils.dodump(currAspectRatio, "currAspectRatio", false);
+			
+				// If the width is too large, then rescale based on the width
+				if ( imageData.width GT defaultPhotoDim ){
+					newWidth = defaultPhotoDim;
+					newHeight = Round(newWidth/currAspectRatio);
+				}
+				else if ( imageData.height GT defaultPhotoDim ){
+					// Else the height is too large
+					newHeight = defaultPhotoDim;
+					newWidth = Round(newHeight * currAspectRatio);
+				}
 	
-	<cfoutput>
-	<script language="Javascript">
-
-		// Remember to invoke within jQuery(window).load(...)
-		// If you don't, Jcrop may not initialize properly
-		jQuery(document).ready(function(){
-
-			jQuery('##cropbox').Jcrop({
-				onChange: showCoords,
-				onSelect: showCoords,
-				minSize: [#maxWidth#, #maxHeight#],
-				setSelect: [0,0, #maxWidth#, #maxHeight#],
-				aspectRatio: #aspectRatio#
-			});
-
-		});
-
-		// Our simple event handler, called from onChange and onSelect
-		// event handlers, as per the Jcrop invocation above
-		function showCoords(c)
-		{
-			jQuery('input##crop_x').val(c.x);
-			jQuery('input##crop_y').val(c.y);
-			jQuery('input##crop_x2').val(c.x2);
-			jQuery('input##crop_y2').val(c.y2);
-			jQuery('input##crop_w').val(c.w);
-			jQuery('input##crop_h').val(c.h);
-		};
-
-	</script>
+				//application.ADF.utils.dodump(newWidth, "newWidth", false);	
+				//application.ADF.utils.dodump(newHeight, "newHeight", false);
 		
-	<form action="#appConfig.UPLOAD_CROP_URL#" id="docForm" method="post">
-		<input type="hidden" name="photoTempURL" id="docURL" value="#photoTempURLPath#">
-		<input type="hidden" name="photoTempDir" id="docDir" value="#photoTempDirPath#">
-		<input type="hidden" name="callback" value="#request.params.callback#">
-		<input type="hidden" name="category" value="#request.params.category#">
-		<input type="hidden" name="categoryTitle" value="#catData.Title#">
-		<input type="hidden" name="action" value="process">
-		<input type="hidden" name="crop_x" id="crop_x" value="">
-		<input type="hidden" name="crop_y" id="crop_y" value="">
-		<input type="hidden" name="crop_x2" id="crop_x2" value="">
-		<input type="hidden" name="crop_y2" id="crop_y2" value="">
-		<input type="hidden" name="crop_w" id="crop_w" value="">
-		<input type="hidden" name="crop_h" id="crop_h" value="">
-		<input type="hidden" name="final_width" id="final_width" value="#maxWidth#">
-		<input type="hidden" name="final_height" id="final_height" value="#maxHeight#">
-		<p>
-			Title: <input type="text" size="50" id="photoTitle" name="photoTitle" value="">
-		</p>
-		<p>
-			Caption: <input type="text" size="50" id="photoCaption" name="photoCaption" value="">
-		</p>
-		<p>
-			<!--- This is the image we're attaching Jcrop to --->
-			<img src="#photoTempURLPath#" id="cropbox" />
-		</p>
-		<p>
-			<input type="button" value="Save Image" onclick="this.disabled='disabled'; this.value='Processing...'; this.form.submit();">
-		</p>
-	</form>
-	</cfoutput>
+				// Resize the image
+				ImageResize(imageData, newWidth, newHeight);
+				// Update the original to the new croppped image
+				ImageWrite(imageData, photoTempDirPath);
+			}
+		</cfscript>
+		
+		<cfoutput>
+		<script language="Javascript">
+	
+			// Remember to invoke within jQuery(window).load(...)
+			// If you don't, Jcrop may not initialize properly
+			jQuery(document).ready(function(){
+	
+				jQuery('##cropbox').Jcrop({
+					onChange: showCoords,
+					onSelect: showCoords,
+					minSize: [#maxWidth#, #maxHeight#],
+					setSelect: [0,0, #maxWidth#, #maxHeight#],
+					aspectRatio: #aspectRatio#
+				});
+	
+			});
+	
+			// Our simple event handler, called from onChange and onSelect
+			// event handlers, as per the Jcrop invocation above
+			function showCoords(c)
+			{
+				jQuery('input##crop_x').val(c.x);
+				jQuery('input##crop_y').val(c.y);
+				jQuery('input##crop_x2').val(c.x2);
+				jQuery('input##crop_y2').val(c.y2);
+				jQuery('input##crop_w').val(c.w);
+				jQuery('input##crop_h').val(c.h);
+			};
+	
+		</script>
+			
+		<form action="#appConfig.UPLOAD_CROP_URL#" id="docForm" method="post">
+			<input type="hidden" name="photoTempURL" id="docURL" value="#photoTempURLPath#">
+			<input type="hidden" name="photoTempDir" id="docDir" value="#photoTempDirPath#">
+			<input type="hidden" name="callback" value="#request.params.callback#">
+			<input type="hidden" name="category" value="#request.params.category#">
+			<input type="hidden" name="categoryTitle" value="#catData.Title#">
+			<input type="hidden" name="action" value="process">
+			<input type="hidden" name="crop_x" id="crop_x" value="">
+			<input type="hidden" name="crop_y" id="crop_y" value="">
+			<input type="hidden" name="crop_x2" id="crop_x2" value="">
+			<input type="hidden" name="crop_y2" id="crop_y2" value="">
+			<input type="hidden" name="crop_w" id="crop_w" value="">
+			<input type="hidden" name="crop_h" id="crop_h" value="">
+			<input type="hidden" name="final_width" id="final_width" value="#maxWidth#">
+			<input type="hidden" name="final_height" id="final_height" value="#maxHeight#">
+			<p>
+				Title: <input type="text" size="50" id="photoTitle" name="photoTitle" value="">
+			</p>
+			<p>
+				Caption: <input type="text" size="50" id="photoCaption" name="photoCaption" value="">
+			</p>
+			<p>
+				<!--- This is the image we're attaching Jcrop to --->
+				<img src="#photoTempURLPath#" id="cropbox" />
+			</p>
+			<p>
+				<input type="button" value="Save Image" onclick="this.disabled='disabled'; this.value='Processing...'; this.form.submit();">
+			</p>
+		</form>
+		</cfoutput>
 
+		<cfcatch>
+			<cfoutput>
+				<p align="center">
+					<strong>Error with the photo processing.</strong>
+				</p>
+				<p align="center">
+					<strong>Please try uploading a different photo.</strong>
+				</p>
+				<p align="center">
+					<a href="javascript:;" onclick="closeLB();">Close this window</a>
+				</p>
+			</cfoutput>
+		</cfcatch>
+	</cftry>
+	
 <cfelseif request.params.action EQ "process">
 	
 	<cfoutput>
@@ -271,7 +322,7 @@
 		origImg = ImageRead(request.params.photoTempDir);
 		// Crop out the new image
 		croppedImg = imageCopy(origImg, request.params.crop_x, request.params.crop_y, request.params.crop_w, request.params.crop_h);
-		application.ADF.utils.dodump(croppedImg, "croppedImg - 1", false);
+		//application.ADF.utils.dodump(croppedImg, "croppedImg - 1", false);
   		
   		// Check that we have category data
 		// Resize the cropped image to the category dimensions
@@ -299,6 +350,8 @@
 		dataStruct.photoID = photoUID;
 		dataStruct.category = request.params.category;
 		dataStruct.photo = request.params.photoTempURL;
+		//application.ADF.utils.dodump(dataStruct);
+
 		// Check if a title was defined
 		if ( LEN(request.params.photoTitle) )
 			dataStruct.title = request.params.photoTitle;
@@ -309,13 +362,15 @@
 		
 		createStatus = application.ptPhotoGallery.photoDAO.photoCCAPI(dataStruct);
 	</cfscript>
-	<cfdump var="#createStatus#" label="createStatus" expand="false">
+	<!--- <cfdump var="#createStatus#" label="createStatus" expand="false"> --->
 	
 	<cfif createStatus.contentUpdated>
 		<!--- // get the data for the new record --->
 		<cfset photoData = application.ptPhotoGallery.cedata.getCEData("Photo", "photoID", photoUID)>
 		<!--- // Process the photo --->
 		<cfset pageIDResult = application.ptPhotoGallery.photoService.processPhoto(photoData[1].pageid, photoData[1].formid)>
+		<!--- <cfdump var="#pageIDResult#" label="pageIDResult" expand="false">		 --->
+		
 		<!--- <cfdump var="#pageIDResult#" label="pageIDResult" expand="false"> --->
 		<!--- // If processing completed, then get the new photo data --->
 		<cfif ( pageIDResult.contentUpdated )>

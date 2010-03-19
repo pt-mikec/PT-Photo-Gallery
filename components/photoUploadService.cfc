@@ -35,6 +35,7 @@ Arguments:
 	String - fieldName
 History:
 	2009-06-09 - MFC - Created
+	2010-03-17 - MFC - Added check to verify the category ID passed in is a valid category.
 --->
 <cffunction name="loadPhotoUploadDialog" access="public" returntype="string" hint="Loads the photo upload dialog in the photo service.">
 	<cfargument name="docPath" type="string" required="true">
@@ -46,8 +47,11 @@ History:
 	<cfargument name="photoTempURLPath" type="string" required="false" default="">
 		
 	<cfset var retHTML = "">
-	<!--- verify the category has been selected --->
-	<cfif LEN(arguments.category) LTE 0>
+	<!--- Verify the category is valid --->
+	<cfset catData = application.ptPhotoGallery.photoService.loadCategoryData(arguments.category, arguments.docPath, arguments.docURL)>
+	<!--- Verify the category is valid --->
+	<cfif (NOT ArrayLen(catData.initialSizeArray)) AND (NOT LEN(catData.title))>
+	
 		<cfsavecontent variable="retHTML">
 			<!--- // set up the common cs dialog data --->
 			<cfscript>

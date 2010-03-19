@@ -20,8 +20,6 @@ History:
 
 <cfscript>
 	application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
-	//application.ptPhotoGallery.scripts.loadThickbox("3.1");
-	//application.ptPhotoGallery.scripts.loadJQueryTools();
 	application.ptPhotoGallery.scripts.loadADFLightbox();
 	
 	// set the form action variable
