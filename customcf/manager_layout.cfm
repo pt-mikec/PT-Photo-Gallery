@@ -98,7 +98,7 @@ Links to Add to the datasheet to get the button styles
 			<cfset configStruct = application.ptPhotoGallery.getAppConfig()>
 			<cfif (StructKeyExists(configStruct, "ADD_URL")) AND (LEN(configStruct.ADD_URL))>
 				<!--- <a href="#configStruct.ADD_URL#?lbaction=refreshparent&keepThis=true&TB_iframe=true&width=650&height=400" class="thickbox add_link ui-state-default ui-corner-all">Add New Photo</a><br /><br /> --->
-				<div rel="#configStruct.ADD_URL#?lbaction=refreshparent&width=500&height=400&title=Add New Photo" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
+				<div rel="#configStruct.ADD_URL#?lbaction=refreshparent&width=500&height=500&title=Add New Photo" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
 			<cfelse>
 				<cfthrow type="Application" detail="PTPhotoGallery config file missing ADD_URL tag." message="Error with the PTPhotoGallery config file.">
 			</cfif>

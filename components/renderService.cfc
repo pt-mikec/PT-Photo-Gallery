@@ -174,5 +174,151 @@ History:
 	<cfreturn xmlVars>
 </cffunction>
 
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$processRHMetadata
+Summary:
+	Returns the directory names for the Photo Render Size metadata form.
+Returns:
+	Struct
+		rhData.detailSize
+		rhData.photoSizeSelect
+Arguments:
+	Struct - metadataForm - Metadata form data
+History:
+	2010-04-01 - MFC - Created
+--->
+<cffunction name="processRHMetadata" access="public" returntype="struct" output="false" hint="Returns the directory names for the Photo Render Size metadata form.">
+	<cfargument name="metadataForm" type="struct" required="true" hint="Metadata form data">
+	
+	<cfscript>
+		var rhData = StructNew();
+		var sizeData = ArrayNew(1);
+		
+		rhData.detailSize = StructNew();
+		rhData.photoSizeSelect = StructNew();
+		
+		if ( StructKeyExists(arguments.metadataForm, "PhotoRenderSize") ){
+			// Get the detail size path
+			if ( StructKeyExists(arguments.metadataForm.PhotoRenderSize, "detailSize") AND LEN(arguments.metadataForm.PhotoRenderSize.detailSize) ){
+				sizeData = application.ptPhotoGallery.ceData.getCEData("Photo Size", "sizeid", arguments.metadataForm.PhotoRenderSize.detailSize);
+				if ( ArrayLen(sizeData) )
+					rhData.detailSize = sizeData[1].values;
+			}
+			
+			// Get the photo size path
+			if ( StructKeyExists(arguments.metadataForm.PhotoRenderSize, "photoSizeSelect") AND LEN(arguments.metadataForm.PhotoRenderSize.photoSizeSelect) ){
+				sizeData = ArrayNew(1);
+				sizeData = application.ptPhotoGallery.ceData.getCEData("Photo Size", "sizeid", arguments.metadataForm.PhotoRenderSize.photoSizeSelect);
+				if ( ArrayLen(sizeData) )
+					rhData.photoSizeSelect = sizeData[1].values;
+			}
+		}
+	</cfscript>
+	<cfreturn rhData>
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$loadCycleScript
+Summary:
+	Loads the Photo Gallery Cycle RH scripts
+Returns:
+	ARGS
+Arguments:
+	ARGS
+History:
+	2010-04-01 - MFC - Created
+--->
+<cffunction name="loadCycleScript" access="public" returntype="void" hint="Loads the Photo Gallery Cycle RH scripts">
+	
+	<cfscript>
+		application.ptPhotoGallery.scripts.loadJQuery();
+		application.ptPhotoGallery.scripts.loadJCycle();
+		application.ptPhotoGallery.scripts.loadDropCurves();
+	</cfscript>
+	<cfoutput>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('##cycle').cycle({
+				fx:         'fade',
+				timeout:     3000,
+				pager:      '##cycle_nav',
+				//pagerEvent: 'mouseover',
+				fastOnEvent: true,
+				before:      onBefore  // transition callback (scope set to element that was shown):  function(currSlideElement, nextSlideElement, options, forwardFlag) 
+			});
+		});
+		
+		// Render the titles for the images
+		//	2009-12-05 MFC
+		function onBefore(curr, next, opts){
+			// Get the ID for the current photo
+			// Get the ID number after the ":", and build the jquery statement
+			var idFld = jQuery(next).attr("id");
+			var currNum = idFld.slice(idFld.indexOf(":") + 1, idFld.length);
+			var pIDTag = "div.cycle_title div##" + currNum;
+			
+			// Hide all the titles
+			jQuery(".carouselOverlay").hide();
+			//console.log(currNum);
+			
+			// Show this p tag id
+			jQuery(pIDTag).show();
+		}
+	</script>
+	</cfoutput>
+
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$loadCycleThumbNavScript
+Summary:
+	Loads the Photo Gallery Cycle RH scripts
+Returns:
+	ARGS
+Arguments:
+	ARGS
+History:
+	2010-04-01 - MFC - Created
+--->
+<cffunction name="loadCycleThumbNavScript" access="public" returntype="void" hint="Loads the Photo Gallery Cycle RH scripts">
+	
+	<cfscript>
+		application.ptPhotoGallery.scripts.loadJQuery();
+		application.ptPhotoGallery.scripts.loadJCycle();
+		application.ptPhotoGallery.scripts.loadDropCurves();
+	</cfscript>
+	<cfoutput>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('##cycle').cycle({ 
+				fx:     'fade', 
+				//speed:  'fast', 
+				timeout: 0, 
+				pager:  '##cycle_nav', 
+				pagerAnchorBuilder: function(idx, slide) { 
+					// return selector string for existing anchor 
+					return '##cycle_nav li:eq(' + idx + ') a'; 
+				} 
+			});
+		});
+	</script>
+	</cfoutput>
+
+</cffunction>
 
 </cfcomponent>

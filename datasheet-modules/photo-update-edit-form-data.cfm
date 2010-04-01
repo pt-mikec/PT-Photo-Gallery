@@ -1,6 +1,5 @@
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	PaperThin Inc.
 			M. Carroll
 Name:
@@ -12,11 +11,10 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.1
+	1.0.0
 History:
 	2009-08-04 - MFC - Created
 --->
-
 <!--- Verify that the server ADF environment config is setup --->
 <cfif StructKeyExists(server.ADF.environment[request.site.id],"ptPhotoGallery")
 	AND StructKeyExists(server.ADF.environment[request.site.id]["ptPhotoGallery"],"CE_FORM_ID")>
@@ -28,7 +26,7 @@ History:
 				<table width="100%"> 
 					<tr width="100%">
 						<td width="50%">
-							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoEditForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=600&height=600&title=Edit Photo" title="Edit Photo" class="ADFLightbox">
+							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoEditForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=500&height=500&title=Edit Photo" title="Edit Photo" class="ADFLightbox">
 								<div class='ds-icons ui-state-default ui-corner-all' title='edit' >
 									<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-pencil'></div>
 								</div>

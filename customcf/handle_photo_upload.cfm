@@ -47,6 +47,36 @@ History:
 	
 	<cfset photoTempDirPath = "#request.params.docPath#temp/#cffile.serverFile#">
 	<cfset photoTempURLPath = "#request.params.docURL#temp/#cffile.serverFile#">
+	<cfset fileExtension = cffile.CLIENTFILEEXT>	
+	
+	<!--- Reprocess the temp image to contain the width and height --->
+	<cfscript>
+		// Read the original image
+		imageData = ImageRead(photoTempDirPath);
+		//application.ADF.utils.dodump(imageData, "imageData", false);	
+		
+		// Check if the file extension is not PNG
+		if ( fileExtension NEQ "png" ){
+			
+			// Create the new image paths
+			newPhotoTempDirPath = ReplaceNocase(photoTempDirPath,".#fileExtension#", ".png" );
+			newPhotoTempURLPath = ReplaceNocase(photoTempURLPath,".#fileExtension#", ".png" );
+			
+			// Convert the image to PNG
+			ImageWrite(imageData, newPhotoTempDirPath);
+			
+			// Delete the old image format
+			fileDeleteOp = application.ptPhotoGallery.csdata.CSFile(action="delete", file="#photoTempDirPath#");
+			
+			// Store the new image paths back into the paths
+			photoTempDirPath = newPhotoTempDirPath;
+			photoTempURLPath = newPhotoTempURLPath;
+		
+			// Reload the image data for processing
+			imageData = ImageRead(photoTempDirPath);
+		}
+	</cfscript>
+	
 </cfif>
 <cfoutput>
 <script type="text/javascript">

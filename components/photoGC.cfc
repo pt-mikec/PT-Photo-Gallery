@@ -177,6 +177,7 @@ Arguments:
 	Struct - inArgs - structure of arguments passed to AjaxService
 History:
 	2009-10-16 - MFC - Created
+	2010-04-01 - MFC - Updated photo resize to return "_system_resize".
 --->
 <cffunction name="getSelections" access="public" returntype="string" hint="Returns the html code for the selections of the profile select custom element.">
 	<cfargument name="item" type="string" required="false" default="">
@@ -210,8 +211,8 @@ History:
 				// determine if the user has a photo with the profile
 				retHTMLImg = "";
 				if ( ceDataArray[i].Values.photo neq "" ) {
-					photoImgURL = application.ptPhotoGallery.renderService.getPhotoURL(ceDataArray[i].Values.photo, "small");
-					retHTMLImg = "<img src='#photoImgURL#' width='50' height='50'>";
+					photoImgURL = application.ptPhotoGallery.renderService.getPhotoURL(ceDataArray[i].Values.photo, "_system_resize");
+					retHTMLImg = "<img src='#photoImgURL#'>";
 				}
 				// Assemble the render HTML
 				retHTML = retHTML & "<li id='#ceDataArray[i].Values.photoID#' class='#variables.SELECT_ITEM_CLASS#'><div class='itemCell'><div class='itemCellLeft'>#retHTMLImg#</div><div class='itemCellRight'>#LEFT(ceDataArray[i].Values.title,50)#</div></li>";

@@ -17,62 +17,50 @@ History:
 --->
 <cfscript>
 	request.element.isStatic = 0;
-	items = attributes.elementInfo.elementData.propertyValues;
 	
-	application.ptPhotoGallery.scripts.loadJQuery("1.3.2");
-	//application.ptPhotoGallery.scripts.loadCycle();
+	// Load the cycle scripts
+	application.ptPhotoGallery.renderService.loadCycleScript();
+
+	items = attributes.elementInfo.elementData.propertyValues;
+	// Pass in the RH metadata struct
+	rhData = application.ptPhotoGallery.renderService.processRHMetadata(attributes.elementInfo.RenderHandlerMetaData);
 </cfscript>
 
 <cfif arrayLen(items)>
-	<!--- Get the Photo data from CEData --->
-	<cfset photoDataArray = application.ptPhotoGallery.cedata.getCEData("Photo", "photoid", items[1].values.photoSelect, "selected")>
-	
-	<cfoutput>
-    	<script type="text/javascript" src="/ADF/apps/pt_photo_gallery/scripts/jquery.cycle.all.js"></script>
-		<script type="text/javascript">
-			jQuery(document).ready(function(){
-				$('##cycle').cycle({
-					fx:         'fade',
-					timeout:     3000,
-					pager:      '##cycle_nav',
-					pagerEvent: 'mouseover',
-					fastOnEvent: true
-				});
-			});
-		</script>
-        
-        <style>
-			.cycle_container {height:482px; margin:-25px 5px 30px;}
-			##cycle_nav {margin:5px; position:relative; top:50px; z-index:10; left:25px; font:11px arial, helvetica sans-serif;}
-			##cycle_nav a {margin:5px; padding:3px 7px; border:1px solid ##ccc; background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_nav.png); color:##666; text-decoration:none;}
-			##cycle_nav a.activeSlide {background:##d67b00; border: 1px solid ##fff; color:##fff;}
-			##cycle_nav a:focus { outline: none; }
-			.pics {height: 482px; width: 692px; padding:0; margin:0; overflow: hidden }
-			.pics img {height: 450px; width: 660px; padding: 15px; border: 1px solid ##ccc; background-color: ##eee; top:0; left:0 }
-			.pics img {-moz-border-radius: 10px; -webkit-border-radius: 10px;}
-			.cycle_title {background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_overlay.png); width:660px; height:25px; font:12px Arial, Helvetica, sans-serif; color:##000; z-index:10; position:relative; top:-100px; left:16px; height:72px;}
-			.cycle_title p {font:12px Arial, Helvetica, sans-serif; letter-spacing:1.25px; padding:5px; color:##FFF;}
-		</style>
-        
-        <div class="cycle_container">
-        
-        <div id="cycle_nav">
-        </div>
-        
-        
-        <div style="overflow:hidden; position:relative; z-index:9;" id="cycle" class="pics">
-            <cfloop index="i" from="1" to="#ArrayLen(photoDataArray)#">
-            	<img src="#photoDataArray[i].values.photo#" width="660" height="450" alt="#photoDataArray[i].values.title#" title="#photoDataArray[i].values.title#" />
-            </cfloop> 
-        </div>
-        
-        <div class="cycle_title">
-        	<cfloop index="t" from="1" to="#ArrayLen(photoDataArray)#">
-        		<p>#photoDataArray[t].values.title#</p>
-            </cfloop>
-        </div>
-        
-        </div>
-        
-	</cfoutput>
+	<!--- Check if the metadata form has data --->
+	<cfif (StructKeyExists(rhData.photoSizeSelect, "directory"))>
+		
+		<!--- Get the Photo data from CEData --->
+		<cfset photoDataArray = application.ptPhotoGallery.cedata.getCEData("Photo", "photoid", items[1].values.photoSelect, "selected")>
+		
+		<cfoutput>
+	   		<style>
+		    	div##photo_cycle_container {height:#rhData.photoSizeSelect.height+32#px; margin:-25px 5px 30px;}
+		    	div##photo_cycle_container .pics img {height: #rhData.photoSizeSelect.height#px; width: #rhData.photoSizeSelect.width#px; padding: 15px; border: 1px solid ##ccc; background-color: ##eee; top:0; left:0 }
+		    	div##photo_cycle_container .pics {height: #rhData.photoSizeSelect.height+32#px; width: #rhData.photoSizeSelect.width+32#px; padding:0; margin:0; overflow: hidden }
+		    	div##photo_cycle_container .cycle_title {background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_overlay.png); width:#rhData.photoSizeSelect.width#px; font:12px Arial, Helvetica, sans-serif; color:##000; z-index:10; position:relative; top:-78px; left:16px; height:50px;}
+		   	</style>
+	        
+	        <div id="photo_cycle_container">
+		        
+		        <div id="cycle_nav">
+		        </div>
+		        
+		        <div style="overflow:hidden; position:relative; z-index:9;" id="cycle" class="pics">
+		            <cfloop index="photo_i" from="1" to="#ArrayLen(photoDataArray)#">
+		            	<img id="demo:#photo_i#" src="#photoDataArray[photo_i].values.photo#" width="#rhData.photoSizeSelect.width#" height="#rhData.photoSizeSelect.height#" alt="#photoDataArray[photo_i].values.title#" title="#photoDataArray[photo_i].values.title#" />
+		            </cfloop> 
+		        </div>
+		        
+		        <div class="cycle_title">
+		        	<cfloop index="photo_j" from="1" to="#ArrayLen(photoDataArray)#">
+						<div id="#photo_j#" class="carouselOverlay"><p>#photoDataArray[photo_j].Values.title#</p></div>
+					</cfloop>
+		        </div>
+	        
+	        </div>
+	   </cfoutput>
+	<cfelse>
+		<cfoutput>Select the Photo Sizes to render in the metadata form.</cfoutput>
+	</cfif>
 </cfif>

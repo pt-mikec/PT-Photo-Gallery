@@ -1,0 +1,58 @@
+/*
+ *		GRID DISPLAY RH
+ */
+div#photo_grid_view {margin:0px; padding:0px; width:900px;}
+div#photo_grid_view .header {background:url(/ADF/apps/pt_photo_gallery/images/header-dark.gif) left top no-repeat; height:92px; width:900px;}			
+div#photo_grid_view .listing {width:900px; border-bottom:5px solid #17365d;}
+	div#photo_grid_view .listing a {color:#ff6c0a; text-decoration:none;}
+	div#photo_grid_view .listing a:hover {color:##d2d2d2; text-decoration:underline;}
+	div#photo_grid_view .listing ul li {font:bold 15px Arial, Helvetica, sans-serif; display:inline; padding:12px 6px 0;}
+div#photo_grid_view .listing a.active {color:#d2d2d2; text-decoration:none; background:url(/ADF/apps/pt_photo_gallery/images/active.gif) center -5px no-repeat;}
+	div#photo_grid_view .listing ul { margin:0px; padding:0px; padding:12px 0; margin-top:-24px; text-align:center;}
+	div#photo_grid_view .alpha {text-align:center;}
+					
+div#photo_grid_view .profile-column {width:900px; overflow:auto;}
+	div#photo_grid_view dl {margin:0px; padding:0px;float:left; display:inline; width:258px; padding:20px; border:2px solid #FFF; border-top:none; border-left:none; height:180px;}
+	div#photo_grid_view dl+dl+dl {border-right:none; width:259px;}
+	div#photo_grid_view dt {font:bold 12px arial, helvetica, sans serif; font-weight:bold; text-align:center; color:#17365d; letter-spacing:2px; margin-bottom:5px;}
+	div#photo_grid_view dd {font:10px arial, helvetica, sans serif; color:#3a3a3a; width:100%;}
+	div#photo_grid_view dd img {border:5px solid #FFF; text-align:center; -webkit-border-radius:5px; -moz-border-radius:5px; display: block; margin-left: auto; margin-right: auto; vertical-align:middle;}
+		div#photo_grid_view .title {text-align:center; color:#17365d; font-weight:bold; letter-spacing:2px;}
+		div#photo_grid_view .description {margin-left:10px; margin-top:10px; font-style:italic;}
+		div#photo_grid_view .call-to-action {font-size:10px; font-weight:bold; clear:both; float:left; background:url(/ADF/apps/pt_photo_gallery/images/call-to-action.gif) center left no-repeat; padding-left:20px; margin-top:-20px; margin-left:30px; display:none;}
+		div#photo_grid_view .image {}
+		div#photo_grid_view .even {background-color:#efefef;}
+		div#photo_grid_view .odd {background-color:#d8d8d8;}
+		
+
+/*
+ *		CYCLE DISPLAY RH
+ */	
+div#photo_cycle_container #cycle_nav {margin:5px; position:relative; top:50px; z-index:10; left:25px; font:11px arial, helvetica sans-serif;}
+div#photo_cycle_container #cycle_nav a {margin:5px; padding:3px 7px; border:1px solid #ccc; background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_nav.png); color:#666; text-decoration:none;}
+div#photo_cycle_container #cycle_nav a.activeSlide {background:#d67b00; border: 1px solid #fff; color:#fff;}
+div#photo_cycle_container #cycle_nav a:focus { outline: none; }
+/* div#photo_cycle_container .pics {height: 482px; width: 692px; padding:0; margin:0; overflow: hidden } */
+/* div#photo_cycle_container .pics img {height: 450px; width: 660px; padding: 15px; border: 1px solid #ccc; background-color: #eee; top:0; left:0 } */
+div#photo_cycle_container .pics img {-moz-border-radius: 10px; -webkit-border-radius: 10px;}
+/* div#photo_cycle_container .cycle_title {background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_overlay.png); width:660px; height:25px; font:12px Arial, Helvetica, sans-serif; color:#000; z-index:10; position:relative; top:-100px; left:16px; height:72px;} */
+div#photo_cycle_container .cycle_title p {font:12px Arial, Helvetica, sans-serif; letter-spacing:1.25px; padding:5px; color:#FFF;}
+
+
+/*
+ *		CYCLE THUMB NAV DISPLAY RH
+ */	
+div#photo_cycle_thumb_container #cycle_nav { width: 300px; margin: 15px; z-index:11; }
+/* div#photo_cycle_thumb_container #cycle_nav li { width: 60px; float: left; margin: 8px; list-style: none; padding-right:10px;} */
+/* div#photo_cycle_thumb_container #cycle_nav a { width: 60px; padding: 3px; display: block; border: 1px solid #ccc; } */
+div#photo_cycle_thumb_container #cycle_nav a.activeSlide { background: #8cb4e4; }
+div#photo_cycle_thumb_container #cycle_nav a:focus { outline: none; }
+div#photo_cycle_thumb_container #cycle_nav img { border: none; display: block }
+div#photo_cycle_thumb_container #cycle {padding:10px 0 0 20px;}
+/* div##hoto_cycle_thumb_container .pics {height: 322px; width: 472px; padding:0; margin:0 0 0 10px; overflow: hidden } */
+/* div#photo_cycle_thumb_container .pics img {height: 290px; width: 440px; padding: 15px; border: 1px solid #ccc; background-color: #eee; top:0; left:0 } */
+div#photo_cycle_thumb_container .pics img {-moz-border-radius: 10px; -webkit-border-radius: 10px;}
+/* div#photo_cycle_thumb_container #cycle_title {background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_overlay.png); width:440px; height:25px; font:12px Arial, Helvetica, sans-serif; color:#000; z-index:12; position:relative; top:-98px; left:26px; height:72px; overflow:hidden;} */
+div#photo_cycle_thumb_container #cycle_title p {font:12px Arial, Helvetica, sans-serif; letter-spacing:1.25px; padding:5px; color:#FFF;}
+/* div#photo_cycle_thumb_container #cycle_wrapper {overflow:hidden; width:490px; height:324px;} */
+		

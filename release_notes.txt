@@ -1,0 +1,8 @@
+v1.0
+ - Updated the Photo Gallery Configuration custom element.  
+ 	Changed the "CE Name" field type to hidden,
+ 	and changed the "CE FORM ID" field type to Custom Element Select.
+ - Added Photo Size Select Metadata Form Field custom field type.
+ - Added a system resize for photo process of "_system_resize".
+ 	This creates a 50x50 photo to use for the datasheet and photo gallery selection.
+ - Updated Grid, Cycle, and Cycle Thumb Nav render handlers.
