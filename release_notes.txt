@@ -12,4 +12,5 @@ v1.1
  - Removed the "_resizework" directory for generating the resizes.
  - Updated PhotoService.processPhotoResize to generate the "_system_resize" size 
  	when no resizes selected.
- - 
+ - Updated the Photo Gallery Custom Element with the Photo Chooser custom field type.
+ - Updated PhotoGC to get the config data from getAppConfig function.

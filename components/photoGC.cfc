@@ -62,6 +62,7 @@ Arguments:
 	None
 History:
 	2009-05-29 - MFC - Created
+	2010-04-09 - MFC - Updated to use the getAppConfig function.
 --->
 <cffunction name="loadAddNewLink" access="private" returntype="string" hint="General Chooser - Add New Link HTML content.">
 	
@@ -69,31 +70,27 @@ History:
 	
 	<!--- Check if we want to display show all link --->
 	<cfif variables.ADD_NEW_FLAG EQ true>
+		<cfset appConfig = application.ptPhotoGallery.getAppConfig()>
+		
 		<!--- Check that the server.ADF.envir vars are set and use them here --->
 		<cfif (application.ptPhotoGallery.photoService.verifyAppEnvirConfig()) 
-				AND (StructKeyExists(server.ADF.environment[request.site.id].ptPhotoGallery, "ADD_URL")) 
-				AND (LEN(server.ADF.environment[request.site.id].ptPhotoGallery.ADD_URL))
-				AND (StructKeyExists(server.ADF.environment[request.site.id].ptPhotoGallery, "CE_FORM_ID")) 
-				AND (LEN(server.ADF.environment[request.site.id].ptPhotoGallery.CE_FORM_ID))>
+				AND (StructKeyExists(appConfig, "ADD_URL")) 
+				AND (LEN(appConfig.ADD_URL))
+				AND (StructKeyExists(appConfig, "CE_FORM_ID")) 
+				AND (LEN(appConfig.CE_FORM_ID))>
 			<!--- Set the form ID for the custom element --->
-			<cfset ceFormID = server.ADF.environment[request.site.id].ptPhotoGallery.CE_FORM_ID>
+			<cfset ceFormID = appConfig.CE_FORM_ID>
 			<!--- Render out the show all link to the field type --->
 			<cfsavecontent variable="retAddLinkHTML">
 				<cfoutput>
 					<cfscript>
 						// Load the ADF lightbox
 						application.ptPhotoGallery.scripts.loadJQuery();
-						//application.ptPhotoGallery.scripts.loadJQueryTools();
 						application.ptPhotoGallery.scripts.loadADFLightbox();
 					</cfscript>
 					<div id="add-new-items">
-						<a rel="#request.subsitecache[1].url##server.ADF.environment[request.site.id].ptPhotoGallery.ADD_URL#?formid=#ceFormID#&keepThis=true&TB_iframe=true&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh" title="Add New Photo" class="ADFLightbox">Add New Photo</a>
-						<!--- <a href="#request.subsitecache[1].url##server.ADF.environment[request.site.id].ptPhotoGallery.ADD_URL#?formid=#ceFormID#&keepThis=true&TB_iframe=true&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh" title="Add New Photo" class="thickbox">Add New Photo</a> --->
+						<a href="javascript:;" rel="#appConfig.ADD_URL#?formid=#ceFormID#&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh" title="Add New Photo" class="ADFLightbox">Add New Photo</a>
 					</div>
-					<!--- <script type="text/javascript">
-						//pass where to apply thickbox
-						tb_init('a.thickbox, area.thickbox, input.thickbox');
-					</script> --->
 				</cfoutput>
 			</cfsavecontent>
 		<cfelse>
