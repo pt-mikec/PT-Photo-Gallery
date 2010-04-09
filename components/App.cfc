@@ -20,7 +20,7 @@ History:
 
 <cffunction name="getAppConfig" access="public" returntype="struct">
 	<cfset var configStruct = server.ADF.environment[request.site.id][getAppBeanName()]>
-
+	<cfset configStruct.CE_FORM_ID = getPhotoFormID()>
 	<cfreturn configStruct>
 </cffunction>
 
