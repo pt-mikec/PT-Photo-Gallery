@@ -7,3 +7,9 @@ v1.1
  - Updated the Photo Gallery Configuration custom element.  
  	Removed the "CE Name" and "CE FORM ID" field type.
  - Updated the App.cfc to put the "CE FORM ID" field into the config element.
+ - Resolved bug with the "_system_resize" is not generated if no resize sizes 
+ 	are selected.  
+ - Removed the "_resizework" directory for generating the resizes.
+ - Updated PhotoService.processPhotoResize to generate the "_system_resize" size 
+ 	when no resizes selected.
+ - 

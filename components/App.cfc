@@ -1,6 +1,5 @@
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	PaperThin Inc.
 			M. Carroll
 Name:
@@ -11,6 +10,7 @@ Version:
 	0.9.0
 History:
 	2009-08-04 - MFC - Created
+	2010-04-09 - MFC - Updated the getAppConfig function.
 --->
 <cfcomponent name="AppBase" extends="ADF.core.AppBase">
 

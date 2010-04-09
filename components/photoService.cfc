@@ -1,6 +1,5 @@
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	PaperThin Inc.
 			M. Carroll
 Name:
@@ -10,9 +9,10 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.1
+	1.1.0
 History:
 	2009-08-04 - MFC - Created
+	2010-04-09 - MFC - processPhotoResize
 --->
 <cfcomponent displayname="PhotoService" extends="ADF.apps.pt_photo_gallery.components.App" hint="Photo Gallery Services component for the Photo Gallery Application.">
 
@@ -108,6 +108,8 @@ History:
 	2009-06-09 - MFC - Created
 	2009-09-30 - GAC - Added CSData CSFile function
 	2010-04-01 - MFC - Added in resize processing for "_system_resize" size.
+	2010-04-09 - MFC - Removed the "_resizework" directory for generating the resizes.
+					 - Updated the variables to generate the "_system_resize" size when no resizes selected.
 --->
 <cffunction name="processPhotoResize" access="public" returntype="struct" hint="Process the photo requirement and resizing process.">
 	<cfargument name="categoryData" type="struct" required="true" hint="Structure containing the category data for required and resize dimensions.">
@@ -147,14 +149,6 @@ History:
 							directory: arguments.categoryData.photoDirPath & "original"
 						) />
 		</cfif>
-		<!--- // RESIZE Working Direcory  --->
-		<cfset resizeDirPath = arguments.categoryData.photoDirPath & "original/_resizework/">
-		<cfif not directoryExists(resizeDirPath)>
-			<cfset dirOp = application.ptPhotoGallery.csdata.CSFile(
-							action: "MkDir",
-							directory: arguments.categoryData.photoDirPath & "original/_resizework"
-						) />
-		</cfif>
 		<!--- loop over all the directories uploading photos --->
 		<cfloop index="photos_i" from="1" to="#ListLen(arguments.categoryData.photoDirList)#">
 			<cfif not directoryExists("#arguments.categoryData.photoDirPath##ListGetAt(arguments.categoryData.photoDirList,photos_i)#/")>
@@ -173,10 +167,7 @@ History:
 		<cfset origDirPath = "#arguments.categoryData.photoDirPath#original/#fileName#">
 		<cfset origURLPath = "#arguments.categoryData.photoURLPath#original/#fileName#">
 	
-		<!---
-			Read in the image file. This will read in the binary
-			image into an object of coldfusion.image.Image.
-		--->
+		<!--- Read in the image file. This will read in the binary --->
 		<cfimage action="info" source="#origDirPath#" structName="objImageInfo">
 		
 		<!--- flag to know if the uploaded photo has a matching initial size --->
@@ -193,7 +184,8 @@ History:
 							source: origDirPath,
 							destination: "#arguments.categoryData.photoDirPath##arguments.categoryData.initialSizeArray[initSize_j].Values.directory#/#fileName#"
 						) />
-						
+				
+				<cfset resizeTempFileName = arguments.categoryData.initialSizeArray[initSize_j].Values.directory & "-#fileName#" />
 				<cfset photoInitSizeMatch = true>
 				<cfset photoType = arguments.categoryData.initialSizeArray[initSize_j].Values.type>
 				<cfbreak> <!--- found the photo match, exit the loop --->
@@ -201,31 +193,24 @@ History:
 		</cfloop>
 		<!--- found a matching size, and do photo operations --->
 		<cfif photoInitSizeMatch>
-
+			
 			<!--- Loop over the resize dimensions array --->
 			<cfloop index="reSize_j" from="1" to="#arraylen(arguments.categoryData.resizeDimensionArray)#">
 				<!--- check if this is the correct type that we are working with, or if empty --->
 				<cfif (photoType eq "") OR (photoType eq arguments.categoryData.resizeDimensionArray[reSize_j].Values.type)>
 					
-					<cfset resizeTempFileName = arguments.categoryData.resizeDimensionArray[reSize_j].Values.directory /> 
-					<cfset resizeTempFileName = resizeTempFileName & "-#fileName#" /> 
+					<cfset resizeDirName = arguments.categoryData.resizeDimensionArray[reSize_j].Values.directory>
 					
-					<!--- // Resize Image In Place adding with temp file name --->						
+					<!--- // Resize Image and store in the size directory --->						
 					<cfimage action = "resize"
 						width = "#arguments.categoryData.resizeDimensionArray[reSize_j].Values.width#"
 						height = "#arguments.categoryData.resizeDimensionArray[reSize_j].Values.height#"
 						source = "#origDirPath#"
-						destination = "#resizeDirPath##resizeTempFileName#"
+						destination = "#arguments.categoryData.photoDirPath##resizeDirName#/#fileName#"
 						overwrite="yes" />
-					
-					<!--- // Move the New Resized Image File to the correct Folder with the Original Name --->
-					<cfset fileOp = application.ptPhotoGallery.csdata.CSFile(
-								action: "move",
-								source: resizeDirPath & resizeTempFileName,
-								destination: "#arguments.categoryData.photoDirPath##arguments.categoryData.resizeDimensionArray[reSize_j].Values.directory#/#fileName#"
-							) /> 
 				</cfif>
 			</cfloop>
+			
 			
 			<!--- Create the "_system_resize" size for datasheets and choosers --->
 			<cfif not directoryExists("#arguments.categoryData.photoDirPath#_system_resize/")>
@@ -233,19 +218,13 @@ History:
 							action: "MkDir",
 							directory: arguments.categoryData.photoDirPath & "_system_resize") />
 			</cfif>
-			<!--- // Resize Image In Place adding with temp file name --->						
+			<!--- // Resize Image and store in the size directory --->						
 			<cfimage action = "resize"
 				width = "50"
 				height = "50"
 				source = "#origDirPath#"
-				destination = "#resizeDirPath##resizeTempFileName#"
-				overwrite="yes" />
-			<!--- // Move the New Resized Image File to the correct Folder with the Original Name --->
-			<cfset fileOp = application.ptPhotoGallery.csdata.CSFile(
-						action: "move",
-						source: resizeDirPath & resizeTempFileName,
-						destination: "#arguments.categoryData.photoDirPath#_system_resize/#fileName#"
-					) /> 
+				destination = "#arguments.categoryData.photoDirPath#_system_resize/#fileName#"
+				overwrite="yes" />	
 			
 			
 			<!--- Photo operations success, pass the values back --->
