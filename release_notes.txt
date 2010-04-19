@@ -14,3 +14,8 @@ v1.1
  	when no resizes selected.
  - Updated the Photo Gallery Custom Element with the Photo Chooser custom field type.
  - Updated PhotoGC to get the config data from getAppConfig function.
+
+ v1.2
+  - Updated "/datasheet-modules/photo-image-preview-display-render.cfm" to open 
+  		the thumbnail in a lightbox with the full image.
+  
