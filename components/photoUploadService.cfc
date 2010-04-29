@@ -147,7 +147,7 @@ History:
 						</p>
 					</div>
 					<cfscript>
-						application.ptPhotoGallery.scripts.loadADFLightbox();
+						//application.ptPhotoGallery.scripts.loadADFLightbox();
 					</cfscript>
 					<!--- // take the URL for the new docuemnt and send it back to the calling page --->
 					<script type="text/javascript">

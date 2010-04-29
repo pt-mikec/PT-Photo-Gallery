@@ -62,7 +62,8 @@ History:
 		    #xParams.fieldID#_loadSection2();
 		    #xParams.fieldID#_loadSection3();
 		   	checkResizeWindow();
-			
+		   	
+		   
 			// JQuery use the LIVE event b/c we are adding links/content dynamically		    
 		    // click for show all not-selected items
 		    jQuery('###fqFieldName#-showAllItems').live("click", function(event){
@@ -128,6 +129,8 @@ History:
 			function(msg){
 				jQuery("###xParams.fieldID#-gc-section2").html(msg);
 				checkResizeWindow();
+				// Init the ADF after loaded
+		   		initADFLB();
 			});
 		}
 		

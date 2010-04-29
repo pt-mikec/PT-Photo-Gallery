@@ -17,6 +17,7 @@ Arguments:
 	String - customizedFinalHtml - User defined customized final html
 History:
 	2009-07-01 - MFC - Created
+	2010-04-29 - MFC - Updated to force the load ADF Lightbox
 --->
 <cffunction name="photoEditForm" access="public" returntype="string" returnformat="plain" hint="Returns the edit CE data form for the element that makes Ajax post to syncCEDataToPageMetadata on completion.">
 	<cfargument name="formID" type="numeric" required="true" hint="Custom element form ID">
@@ -35,8 +36,7 @@ History:
 		<cfsavecontent variable="formResultHTML">
 			<cfoutput>
 			<cfscript>
-				application.ptPhotoGallery.scripts.loadJQuery('1.3.2');
-				application.ptPhotoGallery.scripts.loadADFLightbox();
+				application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
 			</cfscript>
 			<script type='text/javascript'>
 				jQuery.get('#application.ADF.ajaxProxy#',
@@ -44,7 +44,8 @@ History:
 						bean: 'photoService',
 						method: 'handlePhotoEdit',
 						datapageid: '#arguments.dataPageId#',
-						formid: '#arguments.formID#'
+						formid: '#arguments.formID#',
+						lbAction: '#arguments.lbAction#'
 					},
 					function(data){
 						// write the return html to the div
@@ -61,7 +62,7 @@ History:
 	<cfsavecontent variable="rtnHTML">
 		<cfoutput>
 			<!--- Call the UDF function --->
-			#application.ptPhotoGallery.scripts.loadADFLightbox()#
+			#application.ptPhotoGallery.scripts.loadADFLightbox(force=true)#
 			#Server.CommonSpot.UDF.UI.RenderSimpleForm(arguments.dataPageID, arguments.formID, APIPostToNewWindow, formResultHTML)#
 		</cfoutput>
 	</cfsavecontent>
@@ -84,6 +85,7 @@ Arguments:
 	Boolean - processDeleteFlag
 History:
 	2009-11-04 - MFC - Created
+	2010-04-29 - MFC - Updated to force the load ADF Lightbox
 --->
 <cffunction name="photoDeleteForm" access="public" returntype="string" returnformat="plain" hint="Returns the delete CE data form for the element that makes Ajax post to syncCEDataToPageMetadata on completion.">
 	<cfargument name="formID" type="numeric" required="true" hint="Custom element form ID">
@@ -112,13 +114,13 @@ History:
 				result = application.ptPhotoGallery.cedata.deleteCE(arguments.dataPageId);
 		</cfscript>
 		<cfsavecontent variable="rtnHTML">
-			<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>
+			<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=1)>
 			<cfoutput>
 				<div align="center">
 					<cfif result>
 						<p>Photo has been deleted.</p>
 						<p>
-							<a href="##" onclick="window.parent.location.href = window.parent.location.href;">Click to close and refresh the page</a>
+							<a href="javascript:;" onclick="closeLBReloadParent();">Click to close and refresh the page</a>
 						</p>
 					<cfelse>
 						<p>Error occurred with photo delete.</p>
@@ -129,7 +131,7 @@ History:
 	<cfelse>
 		<!--- Render for the delete form --->
 		<cfsavecontent variable="rtnHTML">
-			<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>
+			<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=1)>
 			<cfoutput>
 				<form action="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#arguments.formid#&datapageid=#arguments.datapageid#&processDeleteFlag=1" method="post">
 					<div align="center">
@@ -145,49 +147,6 @@ History:
 	</cfif>
 	
 	<cfreturn rtnHTML>
-	
-	
-	<!--- 
-	<cfscript>
-		var APIPostToNewWindow = true;
-		var rtnHTML = "";
-		var formResultHTML = arguments.customizedFinalHtml;
-	</cfscript>
-	<!--- Check if we have a form result HTML passed in --->
-	<cfif LEN(formResultHTML) LTE 0>
-		<!--- Set the form result HTML --->
-		<cfsavecontent variable="formResultHTML">
-			<cfoutput>
-			<cfscript>
-				application.ptPhotoGallery.scripts.loadJQuery('1.3.2');
-			</cfscript>
-			<script type='text/javascript'>
-				jQuery.get('#application.ADF.ajaxProxy#',
-					{ 	
-						bean: 'photoService',
-						method: 'handlePhotoEdit',
-						datapageid: '#arguments.dataPageId#',
-						formid: '#arguments.formID#'
-					},
-					function(data){
-						// write the return html to the div
-						jQuery('div##retBlock').html(data);
-					}
-				);
-			</script>
-			<div id='retBlock' style='text-align:center;'>
-				Saving... <img src='/ADF/apps/pt_photo_gallery/images/ajax-loader-arrows.gif'>
-			</div>
-		</cfoutput>
-		</cfsavecontent>
-	</cfif>
-	<cfsavecontent variable="rtnHTML">
-		<cfoutput>
-			<!--- Call the UDF function --->
-			#Server.CommonSpot.UDF.UI.RenderSimpleForm(arguments.dataPageID, arguments.formID, APIPostToNewWindow, formResultHTML)#
-		</cfoutput>
-	</cfsavecontent>
-	<cfreturn rtnHTML> --->
 </cffunction>
 
 </cfcomponent>

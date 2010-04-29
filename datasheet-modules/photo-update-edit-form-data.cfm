@@ -26,14 +26,14 @@ History:
 				<table width="100%"> 
 					<tr width="100%">
 						<td width="50%">
-							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoEditForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=500&height=500&title=Edit Photo" title="Edit Photo" class="ADFLightbox">
+							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoEditForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=500&height=500&title=Edit Photo&lbAction=refreshParent" title="Edit Photo" class="ADFLightbox">
 								<div class='ds-icons ui-state-default ui-corner-all' title='edit' >
 									<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-pencil'></div>
 								</div>
 							</div>
 						</td>
 						<td width="50%">	
-							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=300&height=200&title=Delete Photo" title="Delete Photo" class="ADFLightbox">
+							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=300&height=200&title=Delete Photo&lbAction=refreshParent" title="Delete Photo" class="ADFLightbox">
 								<div class='ds-icons ui-state-default ui-corner-all' title='delete' >
 									<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-trash'></div>
 								</div>

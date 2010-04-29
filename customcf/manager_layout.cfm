@@ -27,7 +27,8 @@ History:
 	sizeFormID = application.ptPhotoGallery.getPhotoSizeFormID();
 	
 	// Set the photo UID
-	request.params.photoID = createUUID();	
+	request.params.photoID = createUUID();
+	request.params.appConfig = application.ptPhotoGallery.getAppConfig();
 </cfscript>
 
 <cfoutput>

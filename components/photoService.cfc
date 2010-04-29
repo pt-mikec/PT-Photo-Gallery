@@ -659,6 +659,7 @@ History:
 <cffunction name="handlePhotoEdit" access="remote" returntype="string" returnformat="plain" hint="Handle the photo edit from the photoEditForm function">
 	<cfargument name="datapageid" type="numeric" required="true" hint="CE data page id">
 	<cfargument name="formid" type="numeric" required="true" hint="CE form id">
+	<cfargument name="lbAction" type="string" required="false" default="norefresh" hint="Lightbox action on close">
 	
 	<cfset var retHTML = "">
 	<cfset var photoUpdateStatus = processPhoto(arguments.datapageid, arguments.formid)>
@@ -668,17 +669,25 @@ History:
 		<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>
 		<cfif photoUpdateStatus.contentUpdated>
 			<cfoutput>
-				<p align="center" style="font-family:Verdana,Arial; font-size:10pt;">
+				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<strong>Photo Update Completed!<br /><br /></strong>
-					<a href="##" onclick="window.parent.location.href = window.parent.location.href;">Click here to close and refresh.</a>
-				</p>
+					<cfif arguments.lbaction EQ "refreshParent">
+						<a href="javascript:;" onclick="closeLBReloadParent();">Click here to close and refresh.</a>
+					<cfelse>
+						<a href="javascript:;" onclick="closeLB();">Click here to close.</a>
+					</cfif>
+				</div>
 			</cfoutput>
 		<cfelse>
 			<cfoutput>
-				<p align="center" style="font-family:Verdana,Arial; font-size:10pt;">
+				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<strong>Photo Upload Error!</strong><br />
-					<a href="##" onclick="window.parent.location.href = window.parent.location.href;">Click here to close and refresh.</a>
-				</p>
+					<cfif arguments.lbaction EQ "refreshParent">
+						<a href="javascript:;" onclick="closeLBReloadParent();">Click here to close and refresh.</a>
+					<cfelse>
+						<a href="javascript:;" onclick="closeLB();">Click here to close.</a>
+					</cfif>
+				</div>
 			</cfoutput>
 		</cfif>
 	</cfsavecontent>

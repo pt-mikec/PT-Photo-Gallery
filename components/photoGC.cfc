@@ -67,10 +67,10 @@ History:
 <cffunction name="loadAddNewLink" access="private" returntype="string" hint="General Chooser - Add New Link HTML content.">
 	
 	<cfset var retAddLinkHTML = "">
+	<cfset var appConfig = application.ptPhotoGallery.getAppConfig()>
 	
 	<!--- Check if we want to display show all link --->
 	<cfif variables.ADD_NEW_FLAG EQ true>
-		<cfset appConfig = application.ptPhotoGallery.getAppConfig()>
 		
 		<!--- Check that the server.ADF.envir vars are set and use them here --->
 		<cfif (application.ptPhotoGallery.photoService.verifyAppEnvirConfig()) 
@@ -83,13 +83,8 @@ History:
 			<!--- Render out the show all link to the field type --->
 			<cfsavecontent variable="retAddLinkHTML">
 				<cfoutput>
-					<cfscript>
-						// Load the ADF lightbox
-						application.ptPhotoGallery.scripts.loadJQuery();
-						application.ptPhotoGallery.scripts.loadADFLightbox();
-					</cfscript>
 					<div id="add-new-items">
-						<a href="javascript:;" rel="#appConfig.ADD_URL#?formid=#ceFormID#&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh" title="Add New Photo" class="ADFLightbox">Add New Photo</a>
+						<a href="javascript:;" rel="#appConfig.ADD_URL#?formid=#ceFormID#&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh&title=Add New Photo" title="Add New Photo" class="ADFLightbox">Add New Photo</a>
 					</div>
 				</cfoutput>
 			</cfsavecontent>

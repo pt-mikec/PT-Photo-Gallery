@@ -17,5 +17,12 @@ v1.1
 
  v1.2
   - Updated "/datasheet-modules/photo-image-preview-display-render.cfm" to open 
-  		the thumbnail in a lightbox with the full image.
+  		the thumbnail in a lightbox with the full image.  Added check that the image exists.
+  - Updated "/customcf/photo_display.cfm" to handle when request.params value does
+  		not exist.
+  - Updated "/components/photoGC.cfc" to remove the ADF lightbox from the chooser file.
+  - Updated "/customfields/photo_chooser_render.cfm" to call initADFLB() after the section2 
+  		content is loaded to the page.
+  - Updated "/components/photoService.cfc" and "/customcf/handle_photo_add.cfm" for 
+  		rendering the text after a photo has been updated.
   

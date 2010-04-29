@@ -97,14 +97,13 @@ request.params.photoID = createUUID();
 				<script type="text/javascript">
 					closeSavingImage();
 				</script>
-				<p align="center" style="font-family:Verdana,Arial; font-size:10pt;">
+				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<cfif session.ptPhotoGallery.addFormStruct.lbaction EQ "refreshParent">
-						<a href="##" onclick="window.parent.location.href = window.parent.location.href;">Click here to close and refresh.</a>
+						<a href="javascript:;" onclick="closeLBReloadParent();">Click here to close and refresh.</a>
 					<cfelse>
-						<a href="##" onclick="window.parent.closeLB();">Click here to close and refresh.</a>
-					</cfif> 
-					<!--- <a href="##" onclick="window.parent.tb_remove();">Click here to close.</a> --->
-				</p>
+						<a href="javascript:;" onclick="closeLB();">Click here to close.</a>
+					</cfif>
+				</div>
 			</cfoutput>
 			<!--- do we have a callback function --->
 			<cfif LEN(session.ptPhotoGallery.addFormStruct.callback)>
