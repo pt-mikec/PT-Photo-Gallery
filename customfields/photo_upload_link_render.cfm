@@ -16,6 +16,7 @@ Version:
 	0.9.1
 History:
 	2009-08-04 - MFC - Created
+	2010-04-30 - MFC - Update the CFT for the ADF Lightbox
 --->
 <cfscript>
 	// the fields current value
@@ -26,20 +27,19 @@ History:
 	// Set the photo field ID
 	if ( NOT StructKeyExists(xparams, "photoFieldID") OR (LEN(xparams.photoFieldID) LTE 0) )
 		xparams.photoFieldID = fqFieldName;
+		
+	appConfig = application.ptPhotoGallery.getAppConfig();
 </cfscript>
-<!--- <cfdump var="#xparams.category#"> --->
+<!--- <cfdump var="#xparams#" label="photo_upload_link"> --->
 
 <cfoutput>	
 	<cfscript>
-		application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
-		//application.ptPhotoGallery.scripts.loadThickbox("3.1");
-		application.ptPhotoGallery.scripts.loadJQueryUI("1.7.2");
-		application.ptPhotoGallery.scripts.loadADFLightbox();
+		//application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
+		//application.ptPhotoGallery.scripts.loadJQueryUI("1.7.2");
+		application.ptPhotoGallery.scripts.loadADFLightbox(force=1);
 	</cfscript>
 	
 	<script type="text/javascript">
-		// set up the accordion action
-		//var profileAcc = new Spry.Widget.Accordion("ProfileAccordion", { defaultPanel: 0 });
 		// javascript validation to make sure they have text to be converted
 		#fqFieldName#=new Object();
 		#fqFieldName#.id='#fqFieldName#';
@@ -58,14 +58,9 @@ History:
 			
 			// if currentValue has data, then photo has been uploaded already
 			if (#fqFieldName#currentValue != "")
-				#fqFieldName#_loadImage();
+				#fqFieldName#_loadImage(#fqFieldName#currentValue);
 			else
 				#fqFieldName#_loadAddButton();
-			// Event click for the remove button
-			jQuery('###fqFieldName#_photoRemove').live("click", function()
-			{ 
-				#fqFieldName#_clearField();
-		    });
 		});
 		
 		function #fqFieldName#_loadAddButton()
@@ -74,17 +69,15 @@ History:
 			jQuery("###fqFieldName#_addPhoto").show();
 		}
 		
-		function #fqFieldName#_loadImage()
+		function #fqFieldName#_loadImage(photoUID)
 		{
-			// get the image
-			var photoID = jQuery("input###xparams.photoFieldID#").val();
 			// get the photo URL
 			jQuery.get( '#application.ADF.ajaxProxy#',
 			{ 	
 				bean: 'photoService',
 				method: 'getPhotoURLbyPhotoID',
-				photoID: photoID,
-				size: "small"
+				photoID: photoUID,
+				size: "_system_resize"
 			},
 			function(photoURL){
 				// load new img url into the img field
@@ -111,17 +104,24 @@ History:
 			//alert(inArgsArray);
 			
 			// load new img url into the img field
-			#fqFieldName#renderPhoto(inArgsArray[0]);
+			#fqFieldName#_loadImage(inArgsArray[1]);
 			
 			// Store the photo ID value into the fqFieldName
 			jQuery("input###xparams.photoFieldID#").val(inArgsArray[1]);
+			
+			// Resize the window for CS 5
+			if ( #ListFirst(ListLast(request.cp.productversion," "),".")# < 6 )
+				ResizeWindow();
+			else {
+				commonspot.lightbox.recalcLightboxSizeByPos(0);
+			}
 		}
 		
 		function #fqFieldName#renderPhoto(url){
 			// load new img url into the img field
 			jQuery("img###fqFieldName#_photoTag").attr('src',url);
-			jQuery("img###fqFieldName#_photoTag").attr('width','50');
-			jQuery("img###fqFieldName#_photoTag").attr('height','50');
+			//jQuery("img###fqFieldName#_photoTag").attr('width','50');
+			//jQuery("img###fqFieldName#_photoTag").attr('height','50');
 			jQuery("###fqFieldName#_photoDisplay").show();
 			jQuery("###fqFieldName#_addPhoto").hide();
 		}
@@ -129,33 +129,44 @@ History:
 		// Function to clear the selected photo field
 		function #fqFieldName#_clearField()
 		{
-			// Get the value for the field value
-			var currentPhotoURL = jQuery("input###xParams.photoFieldID#").val();
 			
-			// check that we have a value to delete
-			if (currentPhotoURL != '')
-			{
+			// Get the value for the field value
+			var currentPhotoUID = jQuery("input###xParams.photoFieldID#").val();
+			if (currentPhotoUID != "") {
 				// confirmation to clear the image
-				var clear = confirm("Are you sure you want to clear this photo?");
-				if (clear)
-				{
-					// Delete the photo element instance
-					/* jQuery.get( "#request.subsitecache[1].url#_cs_apps/pt_photo_gallery/customfields/photo_upload_cleanup.cfm",
-						{ 	imageURL: currentPhotoURL
-						},
-						function(msg){
+				var clear = confirm("Attention: This photo will be deleted without saving the form.\n\nAre you sure you want to delete this document?");
+				if (clear){
+					
+					// Delete the file record
+					jQuery.get( '#application.ADF.ajaxProxy#',
+					{ 	
+						bean: 'photoService',
+						method: 'deletePhotoUID',
+						photoUID: currentPhotoUID
+					},
+					function(msg){
+						if (msg == "true"){
 							// Clear the field value
 							jQuery("input###fqFieldName#").val("");
-							
 							// clear the photo id field
-							if ("#xparams.photoFieldID#" != "")
-								jQuery("input###xparams.photoFieldID#").val("");
-						}); */
-						
-					#fqFieldName#_loadAddButton();
+							jQuery("input###xparams.photoFieldID#").val("");
+							#fqFieldName#_loadAddButton();
+						}
+					});
 				}
 			}
 		}
+		
+		function #fqFieldName#_addPhotoForm(){
+			
+			// Resize the window for CS 5
+			if ( #ListFirst(ListLast(request.cp.productversion," "),".")# < 6 )
+				window.resizeTo(700,700);
+			
+			// Open the lightbox for the add form
+			openLB("#appConfig.ADD_URL#?callback=#fqFieldName#setPhotoField&width=500&height=500&title=Add Photo&lbaction=noconfirm");
+		}
+		
 	</script>
 </cfoutput>
 
@@ -178,11 +189,13 @@ History:
 	<td class="cs_dlgLabelSmall" >
 		<div id="#fqFieldName#_photoDisplay">
 			<img id="#fqFieldName#_photoTag" src="">
-			[<a id="#fqFieldName#_photoRemove"><span style="color:##3399CC;text-decoration:none;font-weight:500;cursor:pointer;cursor:hand;">Remove</span></a>]
+			[<a href="javascript:;" id="#fqFieldName#_photoRemove" onclick="#fqFieldName#_clearField();">Remove</a>]
 		</div>
 		<div id="#fqFieldName#_addPhoto">
 			<!--- [<a href='#server.ADF.environment[request.site.id].ptPhotoGallery.ADD_URL#?callBack=#fqFieldName#setPhotoField&keepThis=true&TB_iframe=true&width=500&height=400' title='Add Photo' class='thickbox' style="text-decoration:none;"><span style="color:##3399CC;text-decoration:none;font-weight:500;cursor:pointer;cursor:hand;">Add Photo</span></a>] --->
-			[<a href='' rel='#server.ADF.environment[request.site.id].ptPhotoGallery.ADD_URL#?callback=#fqFieldName#setPhotoField&width=500&height=400&title=Add Photo' title='Add Photo' class='ADFLightbox' style="text-decoration:none;"><span style="color:##3399CC;text-decoration:none;font-weight:500;cursor:pointer;cursor:hand;">Add Photo</span></a>]
+			<!--- [<a href='javascript:;' rel='#appConfig.ADD_URL#?callback=#fqFieldName#setPhotoField&width=500&height=400&title=Add Photo' title='Add Photo' class='ADFLightbox' style="text-decoration:none;"><span style="color:##3399CC;text-decoration:none;font-weight:500;cursor:pointer;cursor:hand;">Add Photo</span></a>] --->
+			[<a href='javascript:;' onclick='#fqFieldName#_addPhotoForm();'>Add Photo</a>]
+		
 		<br />
 		<input type="hidden" id="#xparams.photoFieldID#" name="#fqFieldName#" value="#currentValue#">
 		<!--- // include hidden field for simple form processing --->

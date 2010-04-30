@@ -40,8 +40,8 @@ if (processForm EQ 0)
 	session.ptPhotoGallery.addFormStruct = StructNew();
 	
 	// Lightbox action for rendered link 
-	if ( (structKeyExists(request.params, "lbaction")) AND (request.params.lbaction EQ "refreshParent") )
-		tmp = StructInsert(session.ptPhotoGallery.addFormStruct, "lbaction", "refreshParent");
+	if ( structKeyExists(request.params, "lbaction") )
+		tmp = StructInsert(session.ptPhotoGallery.addFormStruct, "lbaction", request.params.lbaction);
 	else
 		tmp = StructInsert(session.ptPhotoGallery.addFormStruct, "lbaction", "norefresh");
 		
@@ -58,7 +58,6 @@ request.params.photoID = createUUID();
 </cfscript>
 
 <cftry>
-	
 	<!--- // render the form --->
 	<cfmodule template="/commonspot/utilities/ct-render-named-element.cfm"
 		elementName="photo_add_form"
@@ -122,14 +121,18 @@ request.params.photoID = createUUID();
 				    	outArgsArray[1] = '#dataArray[1].values.photoid#';
 						
 						// Make the ADFLightbox callback
-						getCallback('#request.params.callback#', outArgsArray);
-						
-						//alert("calling...");
-						//window.parent.#session.ptPhotoGallery.addFormStruct.callback#('#dataArray[1].values.photo#', '#dataArray[1].values.photoid#');
-						
+						getCallback('#session.ptPhotoGallery.addFormStruct.callback#', outArgsArray);
 					</script>
 					</cfoutput>
 				</cfif>
+			</cfif>
+			<!--- Check if we want to just close the LB and no confirmation message --->
+			<cfif session.ptPhotoGallery.addFormStruct.lbaction EQ "noconfirm">
+				<cfoutput>
+				<script type="text/javascript">
+					closeLB();
+				</script>
+				</cfoutput>
 			</cfif>
 		<cfelse>
 			<cfoutput>
@@ -138,7 +141,7 @@ request.params.photoID = createUUID();
 				</script>
 				<p align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<strong>Photo Upload Error!</strong><br />
-					<a href="##" onclick="window.parent.location.href = window.parent.location.href;">Click here to close and refresh.</a>
+					<a href="javascript:;" onclick="closeLB();">Click here to close</a>
 				</p>
 			</cfoutput>
 		</cfif>
