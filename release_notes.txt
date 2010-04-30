@@ -16,6 +16,7 @@ v1.1
  - Updated PhotoGC to get the config data from getAppConfig function.
 
  v1.2
+  - Updated all files with the license agreement for PaperThin ADF Applications.
   - Updated "/datasheet-modules/photo-image-preview-display-render.cfm" to open 
   		the thumbnail in a lightbox with the full image.  Added check that the image exists.
   - Updated "/customcf/photo_display.cfm" to handle when request.params value does
@@ -25,4 +26,6 @@ v1.1
   		content is loaded to the page.
   - Updated "/components/photoService.cfc" and "/customcf/handle_photo_add.cfm" for 
   		rendering the text after a photo has been updated.
-  
+  - Updated the photo upload link and photo upload crop custom field types for 
+  		the ADF lightbox framework.
+
