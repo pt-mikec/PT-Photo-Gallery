@@ -28,4 +28,6 @@ v1.1
   		rendering the text after a photo has been updated.
   - Updated the photo upload link and photo upload crop custom field types for 
   		the ADF lightbox framework.
-
+  - Updated the photoUploadService.cfc to remove old CD dialog code.
+  - Updated the "/datasheet-modules/photo-update-edit-form-data.cfm". Removed IF block 
+  		and added FORM ID variable from the App cfc.

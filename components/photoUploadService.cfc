@@ -56,6 +56,7 @@ Arguments:
 History:
 	2009-06-09 - MFC - Created
 	2010-03-17 - MFC - Added check to verify the category ID passed in is a valid category.
+	2010-06-14 - MFC - Removed old CD dialog code.
 --->
 <cffunction name="loadPhotoUploadDialog" access="public" returntype="string" hint="Loads the photo upload dialog in the photo service.">
 	<cfargument name="docPath" type="string" required="true">
@@ -75,11 +76,6 @@ History:
 		<cfsavecontent variable="retHTML">
 			<!--- // set up the common cs dialog data --->
 			<cfscript>
-				//vControlID=controlid;
-				//gvPageID=pageid;
-				CD_Title="Upload New Photo";
-				CD_dialogName="photo_upload_file.cfm";
-				CD_CheckLock = 0;
 				application.ptPhotoGallery.scripts.loadADFLightbox();
 			</cfscript>
 			<!--- <cfinclude template="/commonspot/dlgcontrols/dlgcommon-head.cfm"> --->
@@ -119,6 +115,7 @@ Arguments:
 History:
 	2009-06-09 - MFC - Created
 	2009-11-04 - MFC - Updated script for ADF Lightbox
+	2010-06-14 - MFC - Removed old CD dialog code.
 --->
 <cffunction name="renderPhotoUploadDialog" access="public" returntype="String" hint="Renders the HTML dialog box to upload a photo.">
 	<cfargument name="inArgs" type="struct" required="true" hint="Argument structure passed from the Ajax Service.">
@@ -129,11 +126,6 @@ History:
 	<cfsavecontent variable="retHTML">
 		<!--- // set up the common cs dialog data --->
 		<cfscript>
-			//vControlID=controlid;
-			//gvPageID=pageid;
-			CD_Title="Upload New Photo";
-			//CD_dialogName="photo_upload_file.cfm";
-			CD_CheckLock = 0;
 			application.ptPhotoGallery.scripts.loadADFLightbox();
 		</cfscript>
 		<!--- <cfinclude template="/commonspot/dlgcontrols/dlgcommon-head.cfm"> --->

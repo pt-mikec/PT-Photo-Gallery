@@ -34,35 +34,35 @@ Version:
 	1.0.0
 History:
 	2009-08-04 - MFC - Created
+	2010-06-14 - MFC - Removed IF block and added FORM ID variable from the App cfc.
 --->
+<cfscript>
+	formID = application.ptPhotoGallery.getPhotoFormID();
+</cfscript>
 <!--- Verify that the server ADF environment config is setup --->
-<cfif StructKeyExists(server.ADF.environment[request.site.id],"ptPhotoGallery")
-	AND StructKeyExists(server.ADF.environment[request.site.id]["ptPhotoGallery"],"CE_FORM_ID")>
-	<cfset formId = server.ADF.environment[request.site.id]["ptPhotoGallery"]["CE_FORM_ID"]>
-	<cfsavecontent variable="tdHTML">
-		<!---<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>--->
-		<cfoutput>
-			<td align="center" valign="top">
-				<table width="100%"> 
-					<tr width="100%">
-						<td width="50%">
-							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoEditForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=500&height=500&title=Edit Photo&lbAction=refreshParent" title="Edit Photo" class="ADFLightbox">
-								<div class='ds-icons ui-state-default ui-corner-all' title='edit' >
-									<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-pencil'></div>
-								</div>
+<cfsavecontent variable="tdHTML">
+	<!---<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>--->
+	<cfoutput>
+		<td align="center" valign="top">
+			<table width="100%"> 
+				<tr width="100%">
+					<td width="50%">
+						<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoEditForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=500&height=500&title=Edit Photo&lbAction=refreshParent" title="Edit Photo" class="ADFLightbox">
+							<div class='ds-icons ui-state-default ui-corner-all' title='edit' >
+								<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-pencil'></div>
 							</div>
-						</td>
-						<td width="50%">	
-							<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=300&height=200&title=Delete Photo&lbAction=refreshParent" title="Delete Photo" class="ADFLightbox">
-								<div class='ds-icons ui-state-default ui-corner-all' title='delete' >
-									<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-trash'></div>
-								</div>
+						</div>
+					</td>
+					<td width="50%">	
+						<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#formid#&dataPageId=#Request.DatasheetRow.pageid#&width=300&height=200&title=Delete Photo&lbAction=refreshParent" title="Delete Photo" class="ADFLightbox">
+							<div class='ds-icons ui-state-default ui-corner-all' title='delete' >
+								<div style='margin-left:auto;margin-right:auto;' class='ui-icon ui-icon-trash'></div>
 							</div>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</cfoutput>
-	</cfsavecontent>
-</cfif>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</cfoutput>
+</cfsavecontent>
 <cfset request.datasheet.currentFormattedValue = tdHTML>
