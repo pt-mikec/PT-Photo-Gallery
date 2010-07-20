@@ -25,9 +25,18 @@ end user license agreement.
 
 <cfif StructKeyExists(request.params, "imgSrc")>
 <cfoutput>
+	<CFSCRIPT>
+		CD_requiredParams = "pageid";
+		CD_Title="Template Hierarchy";
+		CD_DialogName = "template-hierarchy";
+		CD_CheckLock=0;
+		CD_MainTableWidth = 414;
+	</CFSCRIPT>
+	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
 	<div style="width:100%;text-align:center">
 		<img src="#request.params.imgSrc#">
 	</div>
+	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
 </cfoutput>
 <cfelse>
 <cfoutput>
