@@ -32,3 +32,7 @@ v1.1
   - Updated the "/datasheet-modules/photo-update-edit-form-data.cfm". Removed IF block 
   		and added FORM ID variable from the App cfc.
   - Updated the photo_display.cfm to remove old CD dialog code.
+  
+ v1.3
+  - Added new custom script, /customcf/admin/update_photo_file_paths.cfm. This is an admin
+  		script to globally update the stored photo url path in the CE record.
