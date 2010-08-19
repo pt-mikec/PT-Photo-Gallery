@@ -32,10 +32,11 @@ Summary:
 ADF Requirements:
 	Scripts_1_0
 Version:
-	1.2.0
+	1.3
 History:
 	2009-12-15 - MFC - Created
 	2010-04-30 - MFC - Update the CFT for the ADF Lightbox
+	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 <cfscript>
 	// the fields current value
@@ -61,8 +62,8 @@ History:
 <cfif xparams.cropFieldSetup>
 	<cfoutput>	
 		<cfscript>
-			application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
-			application.ptPhotoGallery.scripts.loadJQueryUI("1.7.2");
+			application.ptPhotoGallery.scripts.loadJQuery(force=1);
+			application.ptPhotoGallery.scripts.loadJQueryUI();
 			application.ptPhotoGallery.scripts.loadADFLightbox();
 		</cfscript>
 		

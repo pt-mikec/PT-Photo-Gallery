@@ -41,7 +41,6 @@ History:
 	
 	application.ptPhotoGallery.scripts.loadJQuery("1.3.2");
 	application.ptPhotoGallery.scripts.loadJCarousel();
-	//application.ptPhotoGallery.scripts.loadThickbox("3.1");
 	application.ptPhotoGallery.scripts.loadADFLightbox();
 </cfscript>
 

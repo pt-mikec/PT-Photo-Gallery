@@ -36,3 +36,8 @@ v1.1
  v1.3
   - Added new custom script, /customcf/admin/update_photo_file_paths.cfm. This is an admin
   		script to globally update the stored photo url path in the CE record.
+  - Added new render hander, Gallery Single Image Rotating.  This RH will randomly render a 
+  		single photo from the selections.
+  - Added Datasheet action columns specifically for CS6 lightboxes to handle the edit and 
+  		delete form data.
+  - Updated the load JQuery and JQuery versions to use the global versioning.

@@ -19,8 +19,7 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	
 	PaperThin, Inc.
 	M Carroll
@@ -33,13 +32,14 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.0
+	1.3
 History:
 	2009-08-04 - MFC - Created
+	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 
 <cfscript>
-	application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
+	application.ptPhotoGallery.scripts.loadJQuery(force=1);
 	application.ptPhotoGallery.scripts.loadADFLightbox();
 	
 	// set the form action variable

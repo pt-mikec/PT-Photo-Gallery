@@ -19,8 +19,7 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	
 	PaperThin, Inc.
 	M Carroll
@@ -36,14 +35,14 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.0
+	1.3
 History:
 	2009-08-04 - MFC - Created
+	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 <cfscript>
-application.ptPhotoGallery.scripts.loadJQuery("1.3.2");
-//application.ptPhotoGallery.scripts.loadThickbox("3.1");
-application.ptPhotoGallery.scripts.loadJQueryUI("1.7.2");
+application.ptPhotoGallery.scripts.loadJQuery();
+application.ptPhotoGallery.scripts.loadJQueryUI();
 application.ptPhotoGallery.scripts.loadADFlightbox();
 
 // Set the process flag
@@ -78,10 +77,113 @@ request.params.photoID = createUUID();
 </cfscript>
 
 <cftry>
+	
+	
+	
+	
+	<!--- <CFSCRIPT>
+		formid = application.ptPhotoGallery.getPhotoFormID();
+		dataPageID = 0;
+		controlid = 0;
+		
+		// true value indicates we're coming from select data form action
+		controltypeid = formid;
+		datacontrolid = controlid;
+		
+		
+		CD_CheckLock=0;
+		CD_Title = "Add New Photo";
+		CD_IncludeTableTop = 1;
+		
+		proc_type = "datasheetAction";
+		
+		functionEvent = 'update';
+	</CFSCRIPT> --->
+	
+	<!--- <form action="/live/webadmin/photogallery/loader.cfm" name="actionColumnForm1637" method="post" target="actiontarget">
+		<input name="category" type="hidden" value="" />
+		<input name="controlid" type="hidden" value="" />
+		<input name="pageid" type="hidden" value="" />
+		<input name="photo" type="hidden" value="" />
+		<input name="photoid" type="hidden" value="" />
+		<input name="title" type="hidden" value="" />
+		<input name="formid" type="hidden" value="1534" />
+		<input name="csModule" type="hidden" value="" />
+		<input name="proc_type" type="hidden" value="datasheetAction" />
+		<input name="targetmodule" type="hidden" value="" />
+		<input name="cd_title" type="hidden" value="" />
+	</form> --->
+	
+	
+	<!--- <CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+	<CFINCLUDE TEMPLATE="/commonspot/controls/default-mode.cfm">
+
+	<CFSET noTimeStamp = 1>
+	<CFINCLUDE template="/commonspot/controls/customform/form-render-js.cfm"> --->
+	<!--- <cfoutput>
+		#Server.CommonSpot.UDF.UI.RenderSimpleForm(dataPageID, formid, false, "test")#
+	</cfoutput> --->
+	
+	<!--- <CFINCLUDE template="/commonspot/controls/customform/form-render.cfm"> --->
+	
 	<!--- // render the form --->
-	<cfmodule template="/commonspot/utilities/ct-render-named-element.cfm"
+	<!--- <cfmodule template="/commonspot/utilities/ct-render-named-element.cfm"
 		elementName="photo_add_form"
-		elementType="form">
+		elementType="form"> --->
+	
+	
+	
+	
+	<!--- <CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm"> --->
+	
+	
+	
+	<!--- <CFSCRIPT>
+		request.params.formid = application.ptPhotoGallery.getPhotoFormID();
+		request.params.dataPageID = 0;
+		request.params.proc_type = "datasheetAction";
+	</CFSCRIPT>
+	
+	<!--- <cfset eParamOverride = StructNew()>
+	<cfinclude template="/commonspot/controls/datasheet/cs-edit-form-data.cfm">	 --->
+	
+	<cfinclude template="/live/webadmin/photogallery/loader.cfm">
+	 --->
+	 
+	<!--- Dialog Header --->
+	<CFSCRIPT>
+		request.params.formid = application.ptPhotoGallery.getPhotoFormID();
+		request.params.dataPageID = 0;
+		
+		// Dialog Info
+		CD_DialogName = request.params.title;
+		CD_Title=CD_DialogName;
+		CD_IncludeTableTop=1;
+		CD_CheckLock=0;
+		CD_CheckLogin=1;
+		CD_CheckPageAlive=0;
+		//CD_OnLoad="";
+	</CFSCRIPT>
+	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+	<cfoutput><tr><td></cfoutput>
+		
+		<cfmodule template="/commonspot/utilities/ct-render-named-element.cfm"
+			elementName="photo_add_form"
+			elementType="form">
+			
+	<!--- </td></tr>
+	</cfoutput>
+	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm"> --->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<cfif processForm>	
 		
@@ -168,6 +270,11 @@ request.params.photoID = createUUID();
 		<!--- Clear this session variable after the form is processed --->
 		<cfset session.ptPhotoGallery.addFormStruct = StructNew()>
 	</cfif>
+	
+	<!--- Dialog Footer --->
+	<cfoutput></td></tr></cfoutput>
+	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
+		
 <cfcatch>
 	<cfoutput>Error Occcured.</cfoutput>
 	<cfdump var="#cfcatch#" label="cfcatch" expand="false">

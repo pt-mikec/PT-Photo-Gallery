@@ -19,11 +19,10 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	
 	PaperThin, Inc.
-	Michael Carroll 
+	M. Carroll 
 Custom Field Type:
 	general_chooser_props.cfm
 Name:
@@ -36,6 +35,7 @@ ADF Requirements:
 	lib/scripts/SCRIPTS_1_0
 History:
 	2009-10-16 - MFC - Created
+	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 <cfscript>
 	// the fields current value
@@ -62,8 +62,8 @@ History:
 	
 	<cfscript>
 		// Load the scripts
-		application.ptPhotoGallery.scripts.loadJQuery(version="1.3.2", force=1);
-		application.ptPhotoGallery.scripts.loadJQueryUI(version="1.7.2", force=1);
+		application.ptPhotoGallery.scripts.loadJQuery(force=1);
+		application.ptPhotoGallery.scripts.loadJQueryUI(force=1);
 		application.ptPhotoGallery.scripts.loadADFLightbox();
 	</cfscript>
 	

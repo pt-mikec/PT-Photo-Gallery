@@ -34,8 +34,11 @@ Summary:
 ADF Requirements:
 	csData_1_0
 	scripts_1_0
+Version:
+	1.3
 History:
 	2010-04-01 - MFC - Created
+	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 <cfscript>
 	// the fields current value
@@ -46,7 +49,7 @@ History:
 	xparams.desc = attributes.fields.DESCRIPTION;
 
 	// Load JQuery to the script
-	application.ptPhotoGallery.scripts.loadJQuery("1.3.2");
+	application.ptPhotoGallery.scripts.loadJQuery();
 	
 	// Get the data records
 	ceDataArray = application.ptPhotoGallery.cedata.getCEData("Photo Size");	

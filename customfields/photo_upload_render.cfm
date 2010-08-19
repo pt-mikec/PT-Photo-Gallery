@@ -33,9 +33,10 @@ ADF Requirements:
 	CEDATA_1_0
 	Scripts_1_0
 Version:
-	1.0.0
+	1.3
 History:
 	2009-11-04 - MFC - Created
+	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 <cfscript>
 	// The fields current value
@@ -78,7 +79,7 @@ History:
 		callBackFunct = "";	
 		
 	// Load jQuery
-	application.ptPhotoGallery.scripts.loadJQuery("1.3.2", 1);
+	application.ptPhotoGallery.scripts.loadJQuery(force=1);
 	application.ptPhotoGallery.scripts.loadADFLightbox();
 </cfscript>
 <cfoutput>
