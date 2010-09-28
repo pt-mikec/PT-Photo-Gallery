@@ -53,6 +53,18 @@ History:
 	photoTempURLPath = "";
 </cfscript>
 
+<cfscript>
+	CD_DialogName = request.params.title;
+	CD_Title=CD_DialogName;
+	CD_IncludeTableTop=0;
+	CD_CheckLock=0;
+	CD_CheckLogin=1;
+	CD_CheckPageAlive=0;
+	APIPostToNewWindow = false;
+</cfscript>
+<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+<!--- <cfoutput><tr><td></cfoutput> --->
+
 <!--- Upload the file to the TEMP directory --->
 <cfif request.params.formAction NEQ "upload">
 	<!--- TEMP Folder --->	
@@ -118,6 +130,7 @@ History:
 		function(msg){
 			// Load response into the div
 			jQuery("div##photoDialog").html(msg);
+			ResizeWindow();
 		});
 	});
 </script>
@@ -125,3 +138,6 @@ History:
 <!--- DIV text for the photo dialog --->
 <div id="photoDialog"></div>
 </cfoutput>
+
+<!--- <cfoutput></tr></td></cfoutput> --->
+<CFINCLUDE template="/commonspot/dlgcontrols/dlgcommon-foot.cfm">

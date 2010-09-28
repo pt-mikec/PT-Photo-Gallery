@@ -241,7 +241,7 @@ History:
 					</tr>
 					<tr>
 						<td class="cs_dlgLabelSmall"></td>
-						<td class="cs_dlgLabelSmall"><input type="button" value="Do Upload" onclick="this.disabled='disabled';this.value='processing...';checkDocType(this.form);" id="uploadbutton"/><input type="button" value="Cancel" onclick="window.parent.closeLB();"></td>
+						<td class="cs_dlgLabelSmall"><input type="button" value="Do Upload" onclick="this.disabled='disabled';this.value='processing...';checkDocType(this.form);" id="uploadbutton"/><input type="button" value="Cancel" onclick="closeLB();"></td>
 					</tr>
 				</table>
 			</form>

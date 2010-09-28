@@ -21,6 +21,118 @@ end user license agreement.
 <cfcomponent displayname="photoForms" extends="ADF.apps.pt_photo_gallery.components.App">
 
 <!---
+/* *************************************************************** */
+Author: 	M. Carroll
+Name:
+	$profileAddEdit
+Summary:	
+	Returns the HTML for an Add/Edit Custom element record
+Returns:
+	String formHTML
+Arguments:
+	Numeric - formID - the Custom Element Form ID
+	Numeric - dataPageID - the dataPageID for the record that you would like to edit
+History:
+	2009-10-26 - MFC - Created
+	2010-08-26 - MFC - Updated the function to utilize the form for ADD and EDIT
+--->
+<cffunction name="photoAddEdit" access="public" returntype="string">
+	<cfargument name="dataPageId" type="numeric" required="false" default="0">
+	<cfargument name="lbAction" type="string" required="false" default="norefresh">
+	<cfargument name="renderResult" type="boolean" required="false" default="0">
+	
+	<cfscript>
+		var photoFormID = application.ptPhotoGallery.getPhotoFormID();
+		var APIPostToNewWindow = false;
+		var rtnHTML = "";
+		var formResultHTML = "";
+		// Find out if the CE contains an RTE field
+		var formContainRTE = application.ptPhotoGallery.cedata.containsFieldType(photoFormID, "formatted_text_block");
+		var profileData = "";
+		
+	</cfscript>
+	
+	<!--- Result from the Form Submit --->
+	<cfsavecontent variable="formResultHTML">
+		<cfoutput>
+			<cfscript>
+				application.ptProfile.scripts.loadJquery();
+				application.ptProfile.scripts.loadADFLightbox(force=true);
+			</cfscript>
+			<cfset request.params.ga_contentActions = "photo-create">
+			<cfoutput>
+				<!--- Dialog Header --->
+				<CFSCRIPT>
+					// Dialog Info
+					CD_DialogName = request.params.title;
+					CD_Title=CD_DialogName;
+					CD_IncludeTableTop=1;
+					CD_CheckLock=0;
+					CD_CheckLogin=1;
+					CD_CheckPageAlive=0;
+					//CD_OnLoad="";
+				</CFSCRIPT>
+				<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+				<cfoutput><tr><td></cfoutput>
+				<!--- Render the text --->
+				<div id="photoMsgSaving" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
+					<strong>Saving Photo...<img src="/ADF/apps/pt_photo_gallery/images/ajax-loader-arrows.gif"></strong><br /><br />
+				</div>
+				<cfoutput></td></tr></cfoutput>
+				<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
+			</cfoutput>
+		</cfoutput>
+	</cfsavecontent>
+	
+	<cfif NOT renderResult>
+		<cfif formContainRTE>
+			<!--- Set the form result HTML --->
+			<cfsavecontent variable="formResultHTML">
+				<cfoutput>
+				<!--- Close the lightbox on click --->
+				<script type='text/javascript'>
+					window.opener.location.href = window.opener.location.href + "&renderResult=true";
+					// Close the window
+					if (jQuery.browser.msie){
+						window.open('','_self','');
+	           			window.close();
+				    }else{
+				    	window.close();
+				    } 
+				</script>
+				</cfoutput>
+			</cfsavecontent>
+		</cfif>
+		<!--- HTML for the form --->
+		<cfsavecontent variable="rtnHTML">    
+		  <cfscript>
+				CD_DialogName = request.params.title;
+				CD_Title=CD_DialogName;
+				CD_IncludeTableTop=1;
+				CD_CheckLock=0;
+				CD_CheckLogin=1;
+				CD_CheckPageAlive=0;
+				APIPostToNewWindow = false;
+			</cfscript>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+			<cfoutput>
+			<cfscript>
+				application.ptPhotoGallery.scripts.loadADFLightbox(force=1);
+			</cfscript>
+			<!--- Call the UDF function --->
+			<tr><td>#Server.CommonSpot.UDF.UI.RenderSimpleForm(arguments.dataPageID, photoFormID, APIPostToNewWindow, formResultHTML)#</td></tr>
+			</cfoutput>
+			<CFINCLUDE template="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
+		</cfsavecontent>
+		
+	<cfelse>
+		<cfset rtnHTML = formResultHTML>
+	</cfif>
+	<cfreturn rtnHTML>
+
+</cffunction>
+
+<!---
 /* ***************************************************************
 /*
 Author: 	M. Carroll
@@ -54,7 +166,7 @@ History:
 	<cfif LEN(formResultHTML) LTE 0>
 		<!--- Set the form result HTML --->
 		<cfsavecontent variable="formResultHTML">
-			<cfoutput>
+			<!--- <cfoutput>
 			<cfscript>
 				application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
 			</cfscript>
@@ -76,15 +188,29 @@ History:
 			<div id='retBlock' style='text-align:center;'>
 				Saving... <img src='/ADF/apps/pt_photo_gallery/images/ajax-loader-arrows.gif'>
 			</div>
-		</cfoutput>
+			</cfoutput> --->
+			<cfoutput><p>test</p></cfoutput>
 		</cfsavecontent>
 	</cfif>
 	<cfsavecontent variable="rtnHTML">
+		<cfscript>
+			CD_DialogName = request.params.title;
+			CD_Title=CD_DialogName;
+			CD_IncludeTableTop=1;
+			CD_CheckLock=0;
+			CD_CheckLogin=1;
+			CD_CheckPageAlive=0;
+			APIPostToNewWindow = false;
+		</cfscript>
+		<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
 		<cfoutput>
+			<cfscript>
+				application.ptPhotoGallery.scripts.loadADFLightbox(force=1);
+			</cfscript>
 			<!--- Call the UDF function --->
-			#application.ptPhotoGallery.scripts.loadADFLightbox(force=true)#
 			#Server.CommonSpot.UDF.UI.RenderSimpleForm(arguments.dataPageID, arguments.formID, APIPostToNewWindow, formResultHTML)#
 		</cfoutput>
+		<CFINCLUDE template="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
 	</cfsavecontent>
 	<cfreturn rtnHTML>
 </cffunction>

@@ -126,10 +126,19 @@ History:
 	          width: 100,
 	          height: 100
 	        });
-	        jQuery('img###fqFieldName#_photo_disp').show(1000);
+	        //jQuery('img###fqFieldName#_photo_disp').show(1000);
+			
+			
+			jQuery('img###fqFieldName#_photo_disp').show(1000, function() {
+				// Refresh the window size
+				ResizeWindow();
+			});
+			
 			
 			// Disable the Category and Image Gallery Checkbox fields
 			#fqFieldName#_disableFormFields();
+			
+			
 		}
 		
 		function doOnClick() {
@@ -199,6 +208,9 @@ History:
 						
 						// Clear the display upload for the selection
 						jQuery('img###fqFieldName#_photo_disp').hide();
+						
+						// Refresh the window size
+						ResizeWindow();
 					}
 					else {
 						// We Have a valid photo

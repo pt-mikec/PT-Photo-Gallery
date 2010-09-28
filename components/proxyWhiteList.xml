@@ -5,5 +5,5 @@
 <renderService>buildFlashVars</renderService>
 <photoSizeGC>controller</photoSizeGC>
 <photoGC>controller</photoGC>
-<photoForms>photoDeleteForm,photoEditForm</photoForms>
+<photoForms>photoDeleteForm,photoEditForm,photoAddEdit</photoForms>
 </settings>
