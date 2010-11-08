@@ -67,7 +67,6 @@ History:
 	variables.ADD_NEW_LB_HEIGHT = 400; 
 </cfscript>
 
-
 <!---
 /* ***************************************************************
 /*
@@ -83,34 +82,23 @@ Arguments:
 History:
 	2009-05-29 - MFC - Created
 	2010-04-09 - MFC - Updated to use the getAppConfig function.
+	2010-09-30 - MFC - Updated the add new link to use the Forms.
 --->
 <cffunction name="loadAddNewLink" access="private" returntype="string" hint="General Chooser - Add New Link HTML content.">
 	
 	<cfset var retAddLinkHTML = "">
-	<cfset var appConfig = application.ptPhotoGallery.getAppConfig()>
-	
+		
 	<!--- Check if we want to display show all link --->
 	<cfif variables.ADD_NEW_FLAG EQ true>
 		
-		<!--- Check that the server.ADF.envir vars are set and use them here --->
-		<cfif (application.ptPhotoGallery.photoService.verifyAppEnvirConfig()) 
-				AND (StructKeyExists(appConfig, "ADD_URL")) 
-				AND (LEN(appConfig.ADD_URL))
-				AND (StructKeyExists(appConfig, "CE_FORM_ID")) 
-				AND (LEN(appConfig.CE_FORM_ID))>
-			<!--- Set the form ID for the custom element --->
-			<cfset ceFormID = appConfig.CE_FORM_ID>
-			<!--- Render out the show all link to the field type --->
-			<cfsavecontent variable="retAddLinkHTML">
-				<cfoutput>
-					<div id="add-new-items">
-						<a href="javascript:;" rel="#appConfig.ADD_URL#?formid=#ceFormID#&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh&title=Add New Photo" title="Add New Photo" class="ADFLightbox">Add New Photo</a>
-					</div>
-				</cfoutput>
-			</cfsavecontent>
-		<cfelse>
-			<cfthrow type="Application" detail="PT Photo Gallery config file missing ADDURL and/or CE_FORM_ID tag." message="Error with the PT_Photo_Gallery config file.">
-		</cfif>
+		<!--- Render out the show all link to the field type --->
+		<cfsavecontent variable="retAddLinkHTML">
+			<cfoutput>
+				<div id="add-new-items">
+					<a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&title=Add New Photo&addMainTable=false" class="ADFLightbox">Add New Photo</a><br /><br />
+				</div>
+			</cfoutput>
+		</cfsavecontent>
 	</cfif>
 	<cfreturn retAddLinkHTML>
 </cffunction>
@@ -203,6 +191,7 @@ History:
 		var i = 1;
 		var ceDataArray = getChooserData(arguments.item, arguments.queryType, arguments.searchValues, arguments.csPageID);
 		var renderRow = false;
+	
 		// Loop over the data 	
 		for ( i=1; i LTE ArrayLen(ceDataArray); i=i+1) {
 			renderRow = false;
