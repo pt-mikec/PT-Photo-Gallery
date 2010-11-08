@@ -27,10 +27,11 @@ Name:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.0
+	2.0
 History:
 	2009-08-04 - MFC - Created
 	2010-04-09 - MFC - Updated the getAppConfig function.
+	2010-09-29 - MFC - Updated the getAppConfig function to build the UPLOAD_PATH variable.
 --->
 <cfcomponent name="AppBase" extends="ADF.core.AppBase">
 
@@ -41,6 +42,8 @@ History:
 <cffunction name="getAppConfig" access="public" returntype="struct">
 	<cfset var configStruct = server.ADF.environment[request.site.id][getAppBeanName()]>
 	<cfset configStruct.CE_FORM_ID = getPhotoFormID()>
+	<!--- Get the Upload URL and create the Upload Path --->
+	<cfset configStruct.UPLOAD_PATH = REPLACE(ExpandPath(configStruct.UPLOAD_URL),"\","/","all")>
 	<cfreturn configStruct>
 </cffunction>
 
