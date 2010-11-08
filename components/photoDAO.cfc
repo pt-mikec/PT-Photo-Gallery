@@ -158,4 +158,30 @@ History:
 	
 </cffunction>
 
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$getPhotoData
+Summary:
+	Returns the photo data from CE Data.
+Returns:
+	ARGS
+Arguments:
+	ARGS
+History:
+	2010-09-28 - MFC - Created
+--->
+<cffunction name="getPhotoData" access="public" returntype="array" output="false" hint="Returns the data set for the Project CE based on the arguments">
+	<cfargument name="photoID" type="string" required="false" default="" hint="">
+	
+	<cfif LEN(arguments.photoID)>
+		<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo", "photoID", arguments.photoID)>
+	<cfelse>
+		<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo")>
+	</cfif>
+</cffunction>
+
 </cfcomponent>
