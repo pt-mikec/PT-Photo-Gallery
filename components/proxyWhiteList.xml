@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
-<photoService>handlePhotoEdit,getPhotoURLbyPhotoID,verifyUploadsFile,photoEditForm,deletePhotoUID</photoService>
+<photoService>handlePhotoEdit,getPhotoURLbyPhotoID,verifyUploadsFile,photoEditForm,deletePhotoUID,processForm</photoService>
 <photoUploadService>loadPhotoUploadDialog</photoUploadService>
 <renderService>buildFlashVars</renderService>
 <photoSizeGC>controller</photoSizeGC>
