@@ -791,4 +791,35 @@ History:
 	</cfscript>
 </cffunction>
 
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$processForm
+Summary:
+	Handles the photo creating processing to upload the photo
+Returns:
+	string
+Arguments:
+	string
+History:
+	2010-09-30 - MFC - Created
+--->
+<cffunction name="processForm" access="public" returntype="string" output="true" hint="">
+	<cfargument name="photoID" type="string" required="true" hint="">
+	<cfargument name="lbAction" type="string" required="true" hint="">
+	
+	<cfscript>
+		var retMsg = "";
+		// Get the profile data by the UID
+		var photoData = variables.photoDAO.getPhotoData(photoID=arguments.photoID);
+		// Pass the userID to the handleEdit function to create the pages
+		if ( ArrayLen(photoData) ){
+			retMsg = handlePhotoEdit(datapageid=photoData[1].pageid,formid=photoData[1].formid,lbAction=arguments.lbAction);
+		}
+	</cfscript>
+	<cfreturn retMsg>
+</cffunction>
 </cfcomponent>
