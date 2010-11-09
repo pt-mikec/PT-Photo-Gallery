@@ -36,6 +36,7 @@ ADF Requirements:
 History:
 	2009-10-16 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2010-11-09 - MFC - Changed the force params into the load scripts function calls.
 --->
 <cfscript>
 	// the fields current value
@@ -62,8 +63,8 @@ History:
 	
 	<cfscript>
 		// Load the scripts
-		application.ptPhotoGallery.scripts.loadJQuery(force=1);
-		application.ptPhotoGallery.scripts.loadJQueryUI(force=1);
+		application.ptPhotoGallery.scripts.loadJQuery(force=xParams.forceScripts);
+		application.ptPhotoGallery.scripts.loadJQueryUI(force=xParams.forceScripts);
 		application.ptPhotoGallery.scripts.loadADFLightbox();
 	</cfscript>
 	
