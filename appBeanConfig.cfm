@@ -11,6 +11,7 @@ ADF App:
 	pt_photo_gallery
 History:
 	2009-06-09 - MFC - Created
+	2010-12-13 - MFC - Updated AppBeanConfig to load scripts_1_5 
 --->
 <cfscript>
 	// App specific variables
@@ -45,7 +46,7 @@ History:
 	// Dependecies from ADF Lib
 	addConstructorDependency(appBeanName, "cedata_1_0", "cedata");
 	addConstructorDependency(appBeanName, "csdata_1_0", "csdata");
-	addConstructorDependency(appBeanName, "scripts_1_0", "scripts");
+	addConstructorDependency(appBeanName, "scripts_1_5", "scripts");
 	addConstructorDependency(appBeanName, "utils_1_0", "utils");
 	addConstructorDependency(appBeanName, "forms_1_0", "forms");
 </cfscript>
