@@ -34,7 +34,7 @@ Version:
 History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
-	2010-09-29 - MFC - Updated to load Forms_2_0 for Add link.
+	2010-09-29 - MFC - Updated to load Forms_1_1 for Add link.
 --->
 <cfscript>
 	application.ADF.scripts.loadJQuery();
@@ -81,7 +81,7 @@ History:
 </style>
 <div id="addNew" style="padding:20px;">
 	<cfif LEN(request.user.userid)>
-		<div rel="#application.ADF.ajaxProxy#?bean=Forms_2_0&method=renderAddEditForm&formid=#request.params.formid#&datapageid=0&width=#request.params.editLBWidth#&height=#request.params.editLBHeight#&title=#request.params.addButtonTitle#" id="addNew" title="#request.params.addButtonTitle#" class="ADFLightbox add-button ui-state-default ui-corner-all">#request.params.addButtonTitle#</div><br />
+		<div rel="#application.ADF.ajaxProxy#?bean=Forms_1_1&method=renderAddEditForm&formid=#request.params.formid#&datapageid=0&width=#request.params.editLBWidth#&height=#request.params.editLBHeight#&title=#request.params.addButtonTitle#" id="addNew" title="#request.params.addButtonTitle#" class="ADFLightbox add-button ui-state-default ui-corner-all">#request.params.addButtonTitle#</div><br />
 	<cfelse>
 		Please <a href="#request.subsitecache[1].url#login.cfm">LOGIN</a> to manage your profile.<br />
 	</cfif>
