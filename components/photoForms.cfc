@@ -49,19 +49,7 @@ History:
 		var rtnHTML = "";
 		var formResultHTML = "";
 		// Find out if the CE contains an RTE field
-		var formContainRTE = application.ptPhotoGallery.cedata.containsFieldType(photoFormID, "formatted_text_block");
 		var photoData = "";
-		
-		// Check if the datapageid is 0, then create the photoUID
-		if ( arguments.dataPageID EQ 0 ) {
-			request.params.photoUID = createUUID();
-		}
-		else {
-			// Get the data for the record
-			photoData = application.ptPhotoGallery.ceData.getElementInfoByPageID(pageid=arguments.dataPageId,formid=photoFormID);
-			// Set the photoUID variable
-			request.params.photoUID = photoData.values.photoID;
-		}
 	</cfscript>
 	
 	<!--- Result from the Form Submit --->
@@ -77,57 +65,55 @@ History:
 					application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
 				</cfscript>
 				<script type='text/javascript'>
-					jQuery.ajax({
-						url: '#application.ADF.ajaxProxy#',
-						data: {
-							bean: 'photoService',
-							method: 'processForm',
-							photoID: '#request.params.photoUID#',
-							lbAction: '#arguments.lbAction#'
-						},
-						success: function(data) {
-							//alert(data);
-							// Check that we returned data
-							if ( data != '' ) {
-								jQuery("div##photoMsgSaving").html(data);
-								ResizeWindow();
-							}
-							else {
+					function processPhoto(formData){
+						alert("CALLBACK!");
+						console.log(formData);
+						
+						jQuery.ajax({
+							url: '#application.ADF.ajaxProxy#',
+							data: {
+								bean: 'photoService',
+								method: 'processForm',
+								photoID: formData.photoID,
+								lbAction: '#arguments.lbAction#'
+							},
+							success: function(data) {
+								//alert(data);
+								// Check that we returned data
+								if ( data != '' ) {
+									jQuery("div##photoMsgSaving").html(data);
+									ResizeWindow();
+								}
+								else {
+									// write the return html to the div
+									jQuery("div##photoMsgSaving").html("Error processing the photo.");
+								}
+							},
+							error: function(data){
 								// write the return html to the div
 								jQuery("div##photoMsgSaving").html("Error processing the photo.");
 							}
-						},
-						error: function(data){
-							// write the return html to the div
-							jQuery("div##photoMsgSaving").html("Error processing the photo.");
-						}
-					});
+						});
+					}
 				</script>
 				
-				<!--- Dialog Header --->
-				<CFSCRIPT>
-					// Dialog Info
-					CD_DialogName = request.params.title;
-					CD_Title=CD_DialogName;
-					CD_IncludeTableTop=1;
-					CD_CheckLock=0;
-					CD_CheckLogin=1;
-					CD_CheckPageAlive=0;
-					//CD_OnLoad="";
-				</CFSCRIPT>
-				<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
-				<cfoutput><tr><td></cfoutput>
 				<!--- Render the text --->
 				<div id="photoMsgSaving" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<strong>Saving Photo...<img src="/ADF/apps/pt_photo_gallery/images/ajax-loader-arrows.gif"></strong><br /><br />
 				</div>
-				<cfoutput></td></tr></cfoutput>
-				<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
 			</cfoutput>
 		</cfoutput>
 	</cfsavecontent>
 	
-	<cfif NOT renderResult>
+	<!--- Render the UI form --->
+	<cfreturn application.ptPhotoGallery.forms.renderAddEditForm(
+				formID=photoFormID, 
+				dataPageId=arguments.dataPageId,
+				customizedFinalHtml=formResultHTML,
+				lbAction=arguments.lbAction,
+				callback="processPhoto")>
+	
+	<!--- <cfif NOT renderResult>
 		<!--- <cfif formContainRTE>
 			<!--- Set the form result HTML --->
 			<cfsavecontent variable="formResultHTML">
@@ -171,7 +157,7 @@ History:
 	<cfelse>
 		<cfset rtnHTML = formResultHTML>
 	</cfif>
-	<cfreturn rtnHTML>
+	<cfreturn rtnHTML> --->
 
 </cffunction>
 

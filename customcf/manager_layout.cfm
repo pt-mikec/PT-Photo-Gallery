@@ -119,7 +119,7 @@ Links to Add to the datasheet to get the button styles
 					height: 16px;
 				}
 			</style>
-			<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=refreshparent&title=Add New Photo&addMainTable=false&micrositeID=#request.microsite.id#" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
+			<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=refreshparent&title=Add New Photo&addMainTable=false" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
@@ -135,7 +135,7 @@ Links to Add to the datasheet to get the button styles
 	<cfoutput>	
 	</div>
 	<div id="tabs-2">
-		<div rel="#application.ADF.ajaxProxy#?bean=Forms_2_0&method=renderAddEditForm&formid=#categoryFormID#&datapageid=0&lbaction=refreshparent&width=700&height=650&title=Add New Photo Category&micrositeID=#request.microsite.id#" class="ADFLightbox add_link_category ui-state-default ui-corner-all">Add New Photo Category</div><br /><br />
+		<div rel="#application.ADF.ajaxProxy#?bean=Forms_2_0&method=renderAddEditForm&formid=#categoryFormID#&datapageid=0&lbaction=refreshparent&width=700&height=650&title=Add New Photo Category" class="ADFLightbox add_link_category ui-state-default ui-corner-all">Add New Photo Category</div><br /><br />
 	</cfoutput>		
 		<!--- Render the Photo Category Element Datasheet --->
 		<CFMODULE TEMPLATE="/commonspot/utilities/ct-render-named-element.cfm"
@@ -144,7 +144,7 @@ Links to Add to the datasheet to get the button styles
 	<cfoutput>	
 	</div>
 	<div id="tabs-3">
-		<div rel="#application.ADF.ajaxProxy#?bean=Forms_2_0&method=renderAddEditForm&formid=#sizeFormID#&datapageid=0&lbaction=refreshparent&width=400&height=250&title=Add New Photo Size&micrositeID=#request.microsite.id#" class="ADFLightbox add_link_size ui-state-default ui-corner-all">Add New Photo Size</div><br /><br />
+		<div rel="#application.ADF.ajaxProxy#?bean=Forms_2_0&method=renderAddEditForm&formid=#sizeFormID#&datapageid=0&lbaction=refreshparent&width=400&height=250&title=Add New Photo Size" class="ADFLightbox add_link_size ui-state-default ui-corner-all">Add New Photo Size</div><br /><br />
 	</cfoutput>
 		<!--- Render the Photo Size Element Datasheet --->
 		<CFMODULE TEMPLATE="/commonspot/utilities/ct-render-named-element.cfm"
