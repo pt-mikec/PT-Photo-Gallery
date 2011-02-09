@@ -45,9 +45,9 @@ History:
 	
 	
 	// Dependecies from ADF Lib
-	addConstructorDependency(appBeanName, "cedata_1_0", "cedata");
-	addConstructorDependency(appBeanName, "csdata_1_0", "csdata");
+	addConstructorDependency(appBeanName, "cedata_1_1", "cedata");
+	addConstructorDependency(appBeanName, "csdata_1_1", "csdata");
 	addConstructorDependency(appBeanName, "scripts_1_1", "scripts");
-	addConstructorDependency(appBeanName, "utils_1_0", "utils");
+	addConstructorDependency(appBeanName, "utils_1_1", "utils");
 	addConstructorDependency(appBeanName, "forms_1_1", "forms");
 </cfscript>

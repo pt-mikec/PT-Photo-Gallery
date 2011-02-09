@@ -36,9 +36,9 @@ History:
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 --->
 <cfscript>
-	application.ADF.scripts.loadJQuery();
-	application.ADF.scripts.loadJQueryUI();
-	application.ADF.scripts.loadADFLightbox();
+	application.ptPhotoGallery.scripts.loadJQuery();
+	application.ptPhotoGallery.scripts.loadJQueryUI();
+	application.ptPhotoGallery.scripts.loadADFLightbox();
 	
 	request.params.configStruct = application.ptPhotoGallery.getAppConfig();
 	request.params.formid = application.ptPhotoGallery.getPhotoFormID();

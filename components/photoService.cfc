@@ -685,8 +685,7 @@ History:
 	<cfset var photoUpdateStatus = processPhoto(arguments.datapageid, arguments.formid)>
 
 	<cfsavecontent variable="retHTML">
-		
-		<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>
+		<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=true)>
 		<cfif photoUpdateStatus.contentUpdated>
 			<cfoutput>
 				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
@@ -814,7 +813,7 @@ History:
 	<cfscript>
 		var retMsg = "";
 		// Get the profile data by the UID
-		var photoData = variables.photoDAO.getPhotoData(photoID=arguments.photoID);
+		var photoData = application.ptPhotoGallery.photoDAO.getPhotoData(photoID=arguments.photoID);
 		// Pass the userID to the handleEdit function to create the pages
 		if ( ArrayLen(photoData) ){
 			retMsg = handlePhotoEdit(datapageid=photoData[1].pageid,formid=photoData[1].formid,lbAction=arguments.lbAction);

@@ -56,14 +56,13 @@ History:
 	<cfsavecontent variable="formResultHTML">
 		<cfoutput>
 			<cfscript>
-				application.ptPhotoGallery.scripts.loadJquery();
+				request.params.height = 300;
+				
+				application.ptPhotoGallery.scripts.loadJquery(force=true);
 				application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
 			</cfscript>
 			<cfset request.params.ga_contentActions = "photo-create">
 			<cfoutput>
-				<cfscript>
-					application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
-				</cfscript>
 				<script type='text/javascript'>
 					function processPhoto(formData){
 						alert("CALLBACK!");
@@ -81,17 +80,17 @@ History:
 								//alert(data);
 								// Check that we returned data
 								if ( data != '' ) {
-									jQuery("div##photoMsgSaving").html(data);
+									jQuery('div##photoMsgSaving').html(data);
 									ResizeWindow();
 								}
 								else {
 									// write the return html to the div
-									jQuery("div##photoMsgSaving").html("Error processing the photo.");
+									jQuery('div##photoMsgSaving').html('Error processing the photo.');
 								}
 							},
 							error: function(data){
 								// write the return html to the div
-								jQuery("div##photoMsgSaving").html("Error processing the photo.");
+								jQuery('div##photoMsgSaving').html('Error processing the photo.');
 							}
 						});
 					}
@@ -104,6 +103,9 @@ History:
 			</cfoutput>
 		</cfoutput>
 	</cfsavecontent>
+	
+	<!--- Wrap the HTML with the LB header/footer --->
+	<cfset formResultHTML = application.ptPhotoGallery.forms.wrapHTMLWithLightbox(formResultHTML)>
 	
 	<!--- Render the UI form --->
 	<cfreturn application.ptPhotoGallery.forms.renderAddEditForm(
@@ -239,6 +241,7 @@ History:
 		<!--- Render for the delete form --->
 		<cfsavecontent variable="rtnHTML">
 			<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=1)>
+			<!--- 
 			<!--- Dialog Header --->
 			<CFSCRIPT>
 				// Dialog Info
@@ -251,7 +254,7 @@ History:
 				//CD_OnLoad="";
 			</CFSCRIPT>
 			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
-			<cfoutput><tr><td></cfoutput>
+			<cfoutput><tr><td></cfoutput> --->
 			<cfoutput>
 				<form action="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#arguments.formid#&datapageid=#arguments.datapageid#&processDeleteFlag=1" method="post">
 					<div align="center">
@@ -263,8 +266,8 @@ History:
 					</div>
 				</form>
 			</cfoutput>
-			<cfoutput></td></tr></cfoutput>
-			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
+			<!--- <cfoutput></td></tr></cfoutput>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm"> --->
 		</cfsavecontent>
 	</cfif>
 	

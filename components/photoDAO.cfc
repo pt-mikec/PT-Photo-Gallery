@@ -19,8 +19,7 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	PaperThin Inc.
 			M. Carroll
 Name:
@@ -30,9 +29,10 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.1
+	1.3.0
 History:
 	2009-08-04 - MFC - Created
+	2011-02-08 - MFC - Updated to v1.3
 --->
 <cfcomponent displayname="PhotoDAO" extends="ADF.apps.pt_photo_gallery.components.App" hint="Photo Gallery DAO component for the Photo Gallery Application.">
 
@@ -79,6 +79,7 @@ Arguments:
 	String - imgDir - Photo directory path to upload.
 History:
 	2009-07-07 - MFC - Created
+	2011-02-08 - MFC - Updated to make photo in image gallery public.
 --->
 <cffunction name="imgGalleryUpload" access="public" returntype="struct" hint="Uploads a photo to the CS Image Gallery">
 	<cfargument name="imgDir" type="string" required="true" hint="Photo directory path to upload.">
@@ -93,7 +94,7 @@ History:
 	
 	<cfscript>
 		dataStruct.LocalFileName = "#arguments.imgDir#";
-		dataStruct.public = "0";
+		dataStruct.public = true;
 		dataStruct.category = "Photo Gallery";
 		// create the upload CFC
   		csUpload = server.ADF.objectFactory.getBean("CSUpload_1_0");

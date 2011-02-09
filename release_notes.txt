@@ -33,7 +33,7 @@ v1.1
   		and added FORM ID variable from the App cfc.
   - Updated the photo_display.cfm to remove old CD dialog code.
   
- v1.3
+ v2.0
   - Added new custom script, /customcf/admin/update_photo_file_paths.cfm. This is an admin
   		script to globally update the stored photo url path in the CE record.
   - Added new render hander, Gallery Single Image Rotating.  This RH will randomly render a 
@@ -41,3 +41,6 @@ v1.1
   - Added Datasheet action columns specifically for CS6 lightboxes to handle the edit and 
   		delete form data.
   - Updated the load JQuery and JQuery versions to use the global versioning.
+  - Updated photoDAO.imgGalleryUpload function to make photo in image gallery public.
+  - Updated photoForms component to process all photo add/edit through form function.
+  - Updated AppBeanConfig for the ADF V1.5.
