@@ -334,8 +334,9 @@ History:
 				<cfset fileOp = application.ptPhotoGallery.csdata.CSFile(
 									action: "copy",
 									source: arguments.tempDirPath,
-									destination: currPhotoDir
+									destination: currPhotoDir&"/"&ListLast(arguments.tempDirPath,'/')
 								) />
+
 				<!--- <cffile action="copy" 
 					source = "#arguments.tempDirPath#"
 					destination = "#currPhotoDir#"> --->
