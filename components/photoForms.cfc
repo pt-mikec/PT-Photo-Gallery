@@ -65,8 +65,6 @@ History:
 			<cfoutput>
 				<script type='text/javascript'>
 					function processPhoto(formData){
-						alert("CALLBACK!");
-						console.log(formData);
 						
 						jQuery.ajax({
 							url: '#application.ADF.ajaxProxy#',

@@ -70,14 +70,12 @@ History:
 		
 		function validate_#fqFieldName#()
 		{
-			//alert(fieldLen);
 			if (jQuery("input[name=#fqFieldName#]").val() != '')
 			{
 				return true;
 			}
 			else
 			{
-				alert(#fqFieldName#.msg);
 				return false;
 			}
 		}

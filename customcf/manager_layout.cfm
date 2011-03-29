@@ -119,7 +119,7 @@ Links to Add to the datasheet to get the button styles
 					height: 16px;
 				}
 			</style>
-			<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=refreshparent&title=Add New Photo&addMainTable=false" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
+			<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=refreshparent&title=Add New Photo&addMainTable=false&subsiteURL=#request.subsite.URL#" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
 		</cfoutput>
 	<cfelse>
 		<cfoutput>

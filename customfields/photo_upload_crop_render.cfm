@@ -130,9 +130,6 @@ History:
 					inArgsArray[1] = photo UID
 				 */
 				
-				//alert("...I answered!");
-				//alert(inArgsArray);
-				
 				// load new img url into the img field
 				#fqFieldName#_loadImage(inArgsArray[1]);
 				

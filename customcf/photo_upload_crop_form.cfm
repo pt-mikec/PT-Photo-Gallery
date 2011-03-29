@@ -100,7 +100,6 @@ History:
 					document.getElementById('docForm').submit();
 				else
 				{
-					alert("Please enter a valid Document Type");
 					document.getElementById("uploadbutton").disabled = 0;
 					document.getElementById("uploadbutton").value = "Do Upload";
 					return false;

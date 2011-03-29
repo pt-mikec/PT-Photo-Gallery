@@ -40,11 +40,13 @@ History:
 </cffunction>
 
 <cffunction name="getAppConfig" access="public" returntype="struct">
-	<cfset var configStruct = server.ADF.environment[request.site.id][getAppBeanName()]>
-	<cfset configStruct.CE_FORM_ID = getPhotoFormID()>
-	<!--- Get the Upload URL and create the Upload Path --->
-	<cfset configStruct.UPLOAD_PATH = REPLACE(ExpandPath(configStruct.UPLOAD_URL),"\","/","all")>
-	<cfreturn configStruct>
+	<cfscript>
+		var configStruct = server.ADF.environment[request.site.id][getAppBeanName()];
+		configStruct.CE_FORM_ID = getPhotoFormID();
+		// Get the Upload URL and create the Upload Path
+		configStruct.UPLOAD_PATH = REPLACE(ExpandPath(configStruct.UPLOAD_URL),"\","/","all");
+		return configStruct;
+	</cfscript>
 </cffunction>
 
 <cffunction name="getPhotoFormID" access="public" returntype="numeric">
