@@ -130,7 +130,7 @@ History:
 		function(msg){
 			// Load response into the div
 			jQuery("div##photoDialog").html(msg);
-			ResizeWindow();
+			lbResizeWindow();
 		});
 	});
 </script>

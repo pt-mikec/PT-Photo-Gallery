@@ -131,7 +131,7 @@ History:
 			
 			jQuery('img###fqFieldName#_photo_disp').show(1000, function() {
 				// Refresh the window size
-				ResizeWindow();
+				lbResizeWindow();
 			});
 			
 			
@@ -210,7 +210,7 @@ History:
 						jQuery('img###fqFieldName#_photo_disp').hide();
 						
 						// Refresh the window size
-						ResizeWindow();
+						lbResizeWindow();
 					}
 					else {
 						// We Have a valid photo

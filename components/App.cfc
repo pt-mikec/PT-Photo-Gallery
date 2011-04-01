@@ -43,8 +43,11 @@ History:
 	<cfscript>
 		var configStruct = server.ADF.environment[request.site.id][getAppBeanName()];
 		configStruct.CE_FORM_ID = getPhotoFormID();
-		// Get the Upload URL and create the Upload Path
-		configStruct.UPLOAD_PATH = REPLACE(ExpandPath(configStruct.UPLOAD_URL),"\","/","all");
+		// Check if we have the UPLOAD_URL defined
+		if ( StructKeyExists(configStruct, "UPLOAD_URL") ){
+			// Get the Upload URL and create the Upload Path
+			configStruct.UPLOAD_PATH = REPLACE(ExpandPath(configStruct.UPLOAD_URL),"\","/","all");
+		}
 		return configStruct;
 	</cfscript>
 </cffunction>

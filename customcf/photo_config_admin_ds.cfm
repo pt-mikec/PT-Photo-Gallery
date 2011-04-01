@@ -52,7 +52,7 @@ History:
 <script type="text/javascript">
 	jQuery(document).ready(function(){
 		// Hover states on the static widgets
-		jQuery("div.ds-icons").hover(
+		jQuery("div.ds-icons, div.add-button").hover(
 			function() { 
 				$(this).css("cursor", "hand");
 				$(this).addClass('ui-state-hover');
@@ -69,7 +69,7 @@ History:
 		padding: 6px 10px 10px 12px;
 		text-decoration: none;
 		margin-left: 20px;
-		width: 210px;
+		width: 215px;
 		height: 16px;
 	}
 	div.ds-icons {

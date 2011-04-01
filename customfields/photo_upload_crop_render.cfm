@@ -138,7 +138,7 @@ History:
 				
 				// Resize the window for CS 5
 				if ( #ListFirst(ListLast(request.cp.productversion," "),".")# < 6 )
-					ResizeWindow();
+					lbResizeWindow();
 				else
 					commonspot.lightbox.recalcLightboxSizeByPos(0);
 			}

@@ -43,10 +43,6 @@ History:
 	variables.SEARCH_FIELDS = "title,caption,abstract";
 	variables.ORDER_FIELD = "title";
 	
-	// Layout Flags
-	variables.SHOW_SECTION1 = true;  // Boolean
-	variables.SHOW_SECTION2 = true;  // Boolean
-	
 	// STYLES
 	//variables.MAIN_WIDTH = 400;
 	//variables.SECTION1_WIDTH = 270;
@@ -60,11 +56,10 @@ History:
 	variables.JQUERY_UI_THEME = "start";
 	
 	// ADDITIONS
+	variables.SHOW_SEARCH = true;  // Boolean
 	variables.SHOW_ALL_LINK = true;  // Boolean
-	variables.ADD_NEW_FLAG = true;	// Boolean
-	//variables.ADD_NEW_URL = "";
-	variables.ADD_NEW_LB_WIDTH = 500;
-	variables.ADD_NEW_LB_HEIGHT = 400; 
+	variables.SHOW_ADD_LINK = true;  // Boolean
+	variables.SHOW_EDIT_DELETE_LINKS = false;  // Boolean
 </cfscript>
 
 <!---
@@ -84,18 +79,18 @@ History:
 	2010-04-09 - MFC - Updated to use the getAppConfig function.
 	2010-09-30 - MFC - Updated the add new link to use the Forms.
 --->
-<cffunction name="loadAddNewLink" access="private" returntype="string" hint="General Chooser - Add New Link HTML content.">
+<cffunction name="loadAddNewLink" access="public" returntype="string" hint="General Chooser - Add New Link HTML content.">
 	
 	<cfset var retAddLinkHTML = "">
 		
 	<!--- Check if we want to display show all link --->
-	<cfif variables.ADD_NEW_FLAG EQ true>
-		
+	<cfif variables.SHOW_ADD_LINK EQ true>
 		<!--- Render out the show all link to the field type --->
 		<cfsavecontent variable="retAddLinkHTML">
 			<cfoutput>
 				<div id="add-new-items">
-					<a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&title=Add New Photo&addMainTable=false" class="ADFLightbox">Add New Photo</a><br /><br />
+					<!--- <a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&title=Add New Photo&addMainTable=false" class="ADFLightbox">Add New Photo</a><br /><br /> --->
+					<a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&callback=#arguments.fieldName#_formCallback&title=Add New Record" class="ADFLightbox ui-state-default ui-corner-all #arguments.fieldName#-ui-buttons">Add New Item</a>
 				</div>
 			</cfoutput>
 		</cfsavecontent>
@@ -120,45 +115,56 @@ Arguments:
 History:
 	2009-10-16 - MFC - Created
 --->
-<cffunction name="loadSearchBox" access="private" returntype="string" hint="General Chooser - Search box HTML content.">
+<cffunction name="loadSearchBox" access="public" returntype="string" hint="General Chooser - Search box HTML content.">
 	<cfargument name="fieldName" type="String" required="true">
 	
 	<cfset var retSearchBoxHTML = "">
 	<cfset var catDataArray = "">
 	<cfset var cat_i = 1>
 	
-	<!--- Render out the search box to the field type --->
-	<cfsavecontent variable="retSearchBoxHTML">
-		<cfoutput>
-		<style>
-			div###arguments.fieldName#-gc-top-area div##search-chooser {
-				margin-bottom: 10px;
-				border: none;
-				width: 250px;
-				height: 25px;
-			}
-			div###arguments.fieldName#-gc-main-area input {
-				border-color: ##fff;
-			}
-		</style>
-		<div>
-			<!--- Render a select for the Event filter --->
-			<cfset catDataArray = application.ptPhotoGallery.cedata.getCEData("Photo Category")>
-			Category Filter: 
-			<select id="#fieldName#_categorySelect" name="#fieldName#_categorySelect">
-				<option value="" selected>All Categories
-				<cfloop index="cat_i" from="1" to="#ArrayLen(catDataArray)#">
-					<option value="#catDataArray[cat_i].Values.categoryID#">#catDataArray[cat_i].Values.title#
-				</cfloop>
-			</select>
-			<br /><br />
-		</div>
-		<div id="search-chooser">
-			<input type="text" class="searchFld-chooser" id="#arguments.fieldName#-searchFld" name="search-box" tabindex="1" onblur="this.value = this.value || this.defaultValue;" onfocus="this.value='';" value="Search" />
-			<input type="button" id="#arguments.fieldName#-searchBtn" value="Search" style="width:60px;"> 
-		</div>
-		</cfoutput>
-	</cfsavecontent>
+	<!--- Check the variable flags for rendering --->
+	<cfif variables.SHOW_SEARCH EQ true>
+		<!--- Render out the search box to the field type --->
+		<cfsavecontent variable="retSearchBoxHTML">
+			<cfoutput>
+			<style>
+				div###arguments.fieldName#-gc-top-area div##search-chooser {
+					margin-bottom: 10px;
+					border: none;
+					width: 250px;
+					height: 25px;
+				}
+				div###arguments.fieldName#-gc-main-area input {
+					border-color: ##fff;
+				}
+			</style>
+			<div>
+				<!--- Render a select for the Event filter --->
+				<cfset catDataArray = application.ptPhotoGallery.cedata.getCEData("Photo Category")>
+				Category Filter: 
+				<select id="#fieldName#_categorySelect" name="#fieldName#_categorySelect">
+					<option value="" selected>All Categories
+					<cfloop index="cat_i" from="1" to="#ArrayLen(catDataArray)#">
+						<option value="#catDataArray[cat_i].Values.categoryID#">#catDataArray[cat_i].Values.title#
+					</cfloop>
+				</select>
+				<br /><br />
+			</div>
+			<div id="search-chooser">
+				<input type="text" class="searchFld-chooser" id="#arguments.fieldName#-searchFld" name="search-box" tabindex="1" onblur="this.value = this.value || this.defaultValue;" onfocus="this.value='';" value="Search" />
+				<input type="button" id="#arguments.fieldName#-searchBtn" value="Search" style="width:60px;"> 
+			</div>
+			</cfoutput>
+			<cfif variables.SHOW_ALL_LINK EQ true>
+				<!--- Render out the show all link to the field type --->
+				<cfoutput>
+					<div id="show-all-items">
+						<a id="#arguments.fieldName#-showAllItems" href="javascript:;">Show All Items</a>
+					</div>	
+				</cfoutput>
+			</cfif>
+		</cfsavecontent>
+	</cfif>
 	<cfreturn retSearchBoxHTML>
 </cffunction>
 

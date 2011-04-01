@@ -37,7 +37,7 @@ History:
 	xparams = parameters[fieldQuery.inputID];
 	
 	if ( NOT StructKeyExists(xparams, "titleFldID") )
-		xparams.titleFldID = fqFieldName;	
+		xparams.titleFldID = "";	
 	if ( NOT StructKeyExists(xparams, "fldID") )
 		xparams.fldID = fqFieldName;
 	if ( NOT StructKeyExists(xparams, "fldClass") )
@@ -49,47 +49,86 @@ History:
 	renderSimpleFormField = false;
 	if ( (StructKeyExists(request, "simpleformexists")) AND (request.simpleformexists EQ 1) )
 		renderSimpleFormField = true;
+	
+	// Load JQuery 
+	application.ptPhotoGallery.scripts.loadJQuery();
+	
+	// Determine if we have a value to make the field editable
+	if ( LEN(currentValue) OR currentValue != '' )
+		allowFieldEdit = false;
+	else
+		allowFieldEdit = true;
 </cfscript>
 <cfoutput>
 	<script>
 		// javascript validation to make sure they have text to be converted
-		#fqFieldName# = new Object();
-		#fqFieldName#.id = '#fqFieldName#';
-		#fqFieldName#.tid = #rendertabindex#;
-		//#fqFieldName#.validator = "validateLength()";
-		//#fqFieldName#.msg = "Please upload a document.";
-		// push on to validation array
-		//vobjects_#attributes.formname#.push(#fqFieldName#);
+		#fqFieldName#=new Object();
+		#fqFieldName#.id='#fqFieldName#';
+		#fqFieldName#.tid=#rendertabindex#;
+		#fqFieldName#.msg="Please select a value for the #xparams.label# field.";
+		#fqFieldName#.validator = "validate_#fqFieldName#()";
+
+		//If the field is required
+		if ( '#xparams.req#' == 'Yes' ){
+			// push on to validation array
+			vobjects_#attributes.formname#.push(#fqFieldName#);
+		}
+
+		//Validation function
+		function validate_#fqFieldName#(){
+			if (jQuery("input[name=#fqFieldName#]").val() != ''){
+				return true;
+			}else{
+				return false;
+			}
+		}
 	</script>
-	<!--- hidden field to store the value --->
 	
-	<cfscript>
-		if ( structKeyExists(request, "element") )
-		{
-			labelText = '<span class="CS_Form_Label_Baseline"><label for="#fqFieldName#">#xParams.label#:</label></span>';
-			tdClass = 'CS_Form_Label_Baseline';
-		}
-		else
-		{
-			labelText = '<label for="#fqFieldName#">#xParams.label#:</label>';
-			tdClass = 'cs_dlgLabel';
-		}
-	</cfscript>
-	<tr>
-		<td class="#tdClass#" valign="top">
-			<font face="Verdana,Arial" color="##000000" size="2">
-				<cfif xparams.req eq "Yes"><strong></cfif>
-				#labelText#
-				<cfif xparams.req eq "Yes"></strong></cfif>
-			</font>
-		</td>
-		<td class="cs_dlgLabelSmall">
-			<!--- Render the input field --->
-			<input type="text" name="#fqFieldName#" value="#currentValue#" id="#xparams.fldID#" size="#xparams.fldSize#"<cfif LEN(TRIM(xparams.fldClass))> class="#xparams.fldClass#"</cfif> tabindex="#rendertabindex#" <cfif readOnly>readonly="true"</cfif>>
-			<!--- // include hidden field for simple form processing --->
-			<cfif renderSimpleFormField>
-				<input type="hidden" name="#fqFieldName#_FIELDNAME" id="#fqFieldName#_FIELDNAME" value="#ReplaceNoCase(xParams.fieldName, 'FIC_', '')#">
+	<cfif allowFieldEdit>
+		<script>	
+			// Load JQuery
+			jQuery(document).ready(function() {
+				// Bind an off focus event to the title field.
+				jQuery("input###xparams.titleFldID#").focusout(function() {
+					// Get the value for the title
+					cleanedTitleText = cleanText(jQuery("input###xparams.titleFldID#").val())
+					jQuery("input###xparams.fldID#").val(cleanedTitleText);
+				});
+				
+				// Bind off focus this directory field also, just to clean the text
+				jQuery("input###xparams.fldID#").focusout(function() {
+					// Get the value for the title
+					cleanedTitleText = cleanText(jQuery("input###xparams.fldID#").val())
+					jQuery("input###xparams.fldID#").val(cleanedTitleText);
+				});
+			});
+			
+			// Remove all special characters
+			function cleanText(inString){
+				return inString.replace(/[^a-zA-Z0-9]+/g,'').toLowerCase();
+			}
+		</script>
+	</cfif>
+	
+	<!---
+	This version is using the wrapFieldHTML functionality, what this does is it takes
+	the HTML that you want to put into the TD of the right section of the display, you
+	can optionally disable this by adding the includeLabel = false (fourth parameter)
+	when false it simply creates a TD and puts your content inside it. This wrapper handles
+	everything from description to simple form field handling.
+--->
+	<cfsavecontent variable="inputHTML">
+		<cfoutput>
+			<cfif allowFieldEdit>
+				<input type="text" name="#fqFieldName#" value="#currentValue#" id="#xparams.fldID#" size="#xparams.fldSize#"<cfif LEN(TRIM(xparams.fldClass))> class="#xparams.fldClass#"</cfif> tabindex="#rendertabindex#" <cfif readOnly>readonly="true"</cfif>>
+			<cfelse>
+				#currentValue#
 			</cfif>
-		</td>
-	</tr>
+		</cfoutput>
+	</cfsavecontent>
+	#application.ADF.forms.wrapFieldHTML(inputHTML,fieldQuery,attributes)#
+	<!--- // include hidden field for simple form processing --->
+	<cfif renderSimpleFormField>
+		<input type="hidden" name="#fqFieldName#_FIELDNAME" id="#fqFieldName#_FIELDNAME" value="#ReplaceNoCase(xParams.fieldName, 'FIC_', '')#">
+	</cfif>
 </cfoutput>

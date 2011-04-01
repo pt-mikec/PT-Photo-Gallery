@@ -56,7 +56,10 @@ History:
 	variables.JQUERY_UI_THEME = "ui-lightness";
 	
 	// ADDITIONS
+	variables.SHOW_SEARCH = false;  // Boolean
 	variables.SHOW_ALL_LINK = false;  // Boolean
+	variables.SHOW_ADD_LINK = false;  // Boolean
+	variables.SHOW_EDIT_DELETE_LINKS = false;  // Boolean
 </cfscript>
  
 </cfcomponent>

@@ -42,6 +42,7 @@ History:
 	<cfargument name="dataPageId" type="numeric" required="false" default="0">
 	<cfargument name="lbAction" type="string" required="false" default="norefresh">
 	<cfargument name="renderResult" type="boolean" required="false" default="0">
+	<cfargument name="callback" type="string" required="false" default="">
 	
 	<cfscript>
 		var photoFormID = application.ptPhotoGallery.getPhotoFormID();
@@ -56,10 +57,8 @@ History:
 	<cfsavecontent variable="formResultHTML">
 		<cfoutput>
 			<cfscript>
-				request.params.height = 300;
-				
-				application.ptPhotoGallery.scripts.loadJquery(force=true);
-				application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
+				application.ptPhotoGallery.scripts.loadJquery();
+				application.ptPhotoGallery.scripts.loadADFLightbox();
 			</cfscript>
 			<cfset request.params.ga_contentActions = "photo-create">
 			<cfoutput>
@@ -79,7 +78,15 @@ History:
 								// Check that we returned data
 								if ( data != '' ) {
 									jQuery('div##photoMsgSaving').html(data);
-									ResizeWindow();
+									lbResizeWindow();
+									<cfif Len(arguments.callback)>
+										// Get the PageWindow and the form value
+										var pageWindow = commonspot.lightbox.getPageWindow();
+										var value = pageWindow.ADFFormData.formValueStore;
+										//Call the callback with the form value
+										getCallback('#arguments.callback#', value);
+									</cfif>
+									
 								}
 								else {
 									// write the return html to the div
