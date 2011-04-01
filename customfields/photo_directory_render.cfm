@@ -45,11 +45,6 @@ History:
 	if ( not structKeyExists(xparams, "fldSize") )
 		xparams.fldSize = "40";
 	
-	// find if we need to render the simple form field
-	renderSimpleFormField = false;
-	if ( (StructKeyExists(request, "simpleformexists")) AND (request.simpleformexists EQ 1) )
-		renderSimpleFormField = true;
-	
 	// Load JQuery 
 	application.ptPhotoGallery.scripts.loadJQuery();
 	
@@ -127,8 +122,4 @@ History:
 		</cfoutput>
 	</cfsavecontent>
 	#application.ADF.forms.wrapFieldHTML(inputHTML,fieldQuery,attributes)#
-	<!--- // include hidden field for simple form processing --->
-	<cfif renderSimpleFormField>
-		<input type="hidden" name="#fqFieldName#_FIELDNAME" id="#fqFieldName#_FIELDNAME" value="#ReplaceNoCase(xParams.fieldName, 'FIC_', '')#">
-	</cfif>
 </cfoutput>
