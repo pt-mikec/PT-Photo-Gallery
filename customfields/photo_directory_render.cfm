@@ -117,7 +117,9 @@ History:
 			<cfif allowFieldEdit>
 				<input type="text" name="#fqFieldName#" value="#currentValue#" id="#xparams.fldID#" size="#xparams.fldSize#"<cfif LEN(TRIM(xparams.fldClass))> class="#xparams.fldClass#"</cfif> tabindex="#rendertabindex#" <cfif readOnly>readonly="true"</cfif>>
 			<cfelse>
-				#currentValue#
+				<font face="Verdana,Arial" color="##000000" size="2">
+					#currentValue#
+				</font>
 			</cfif>
 		</cfoutput>
 	</cfsavecontent>

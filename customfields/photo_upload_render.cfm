@@ -271,6 +271,9 @@ History:
 								
 								// Enable the Category and Image Gallery Checkbox fields
 								#fqFieldName#_enableFormFields();								
+								
+								// Resize Window
+								lbResizeWindow();
 							}
 						});
 					}
