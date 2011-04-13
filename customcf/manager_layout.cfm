@@ -33,6 +33,7 @@ Version:
 History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2011-04-13 - MFC - Updated the jquery commands to remove "$".
 --->
 
 <cfscript>
@@ -61,12 +62,12 @@ History:
 		// Hover states on the static widgets
 		jQuery("div.ds-icons,div.add_link,div.add_link_category,div.add_link_size").hover(
 			function() { 
-				$(this).css("cursor", "hand");
-				$(this).addClass('ui-state-hover'); 
+				jQuery(this).css("cursor", "hand");
+				jQuery(this).addClass('ui-state-hover'); 
 			},
 			function() { 
-				$(this).css("cursor", "pointer");
-				$(this).removeClass('ui-state-hover'); 
+				jQuery(this).css("cursor", "pointer");
+				jQuery(this).removeClass('ui-state-hover'); 
 			}
 		);
 		// Hover states on the static widgets
