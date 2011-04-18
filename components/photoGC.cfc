@@ -138,14 +138,22 @@ History:
 					border-color: ##fff;
 				}
 			</style>
-			<div>
+			<!--- Check if we want to render the category filter --->
+			<cfif NOT arguments.renderCatFilter>
+				<style>
+					div.catFilterBlock {
+						display: none;
+					}
+				</style>
+			</cfif>
+			<div class="catFilterBlock">
 				<!--- Render a select for the Event filter --->
 				<cfset catDataArray = application.ptPhotoGallery.cedata.getCEData("Photo Category")>
 				Category Filter: 
 				<select id="#fieldName#_categorySelect" name="#fieldName#_categorySelect">
 					<option value="" selected>All Categories
 					<cfloop index="cat_i" from="1" to="#ArrayLen(catDataArray)#">
-						<option value="#catDataArray[cat_i].Values.categoryID#">#catDataArray[cat_i].Values.title#
+						<option value="#catDataArray[cat_i].Values.categoryID#" <cfif arguments.catIDFilter EQ catDataArray[cat_i].Values.categoryID>selected="selected"</cfif>>#catDataArray[cat_i].Values.title#
 					</cfloop>
 				</select>
 				<br /><br />

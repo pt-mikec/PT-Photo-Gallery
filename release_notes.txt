@@ -53,3 +53,9 @@ v1.1
   		label the directory field as "Reference Name".  Changed the Photo Category title field
   		to 'custom text field'.  Changed the Photo Size title field to 'custom text field'.
   - Updated all the lightbox framework "ResizeWindow" to "lbResizeWindow".
+  - Updated to load the App Config from the ADF Extensions.
+  - Updated the Photo Chooser custom field type to set a default category in the chooser 
+  		property. Updated the PhotoGC for the load search option to hide the category filter 
+  		when a default category is set in the props.
+  - Updated handle_photo_upload to set the defaults for the request.params variables.
+  - Added Single Image render handler to the Photo Gallery custom element.

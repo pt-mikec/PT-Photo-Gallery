@@ -24,15 +24,15 @@ Author:
 	PaperThin, Inc.
 	M. Carroll 
 Custom Field Type:
-	general_chooser_props.cfm
+	photo_chooser_props.cfm
 Name:
-	general_chooser_props.cfm
+	photo_chooser_props.cfm
 Summary:
-	General Chooser field type.
-	Allows for selection of the custom element records.
-ADF Requirements:
-	lib/scripts/CEDATA_1_0
-	lib/scripts/SCRIPTS_1_0
+	Photo Chooser field type.
+ADF App
+	PT Photo Gallery
+Version:
+	2.0.0
 History:
 	2009-10-16 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
@@ -72,6 +72,8 @@ History:
 		// init Arg struct
 		initArgs = StructNew();
 		initArgs.fieldName = fqFieldName;
+		initArgs.catIDFilter = xParams.defaultCatID;
+		initArgs.renderCatFilter = xParams.renderCatFilter;
 		
 		// Build the argument structure to pass into the Run Command
 		selectionsArg = StructNew();
@@ -79,7 +81,8 @@ History:
 		selectionsArg.queryType = "selected";
 		selectionsArg.csPageID = request.page.id;
 		selectionsArg.fieldID = xParams.fieldID;
-		selectionsArg.catIDFilter = "";
+		selectionsArg.catIDFilter = xParams.defaultCatID;
+		selectionsArg.renderCatFilter = xParams.renderCatFilter;
 	</cfscript>
 	
 	<script type="text/javascript">
@@ -92,7 +95,7 @@ History:
 		var #xParams.fieldID#currentValue = "#currentValue#";
 		var #xParams.fieldID#searchValues = "";
 		var #xParams.fieldID#queryType = "all";
-		var #xParams.fieldID#catValue = "";
+		var #xParams.fieldID#catValue = "#xParams.defaultCatID#";
 		
 		jQuery(document).ready(function() {
 			

@@ -36,6 +36,7 @@ Version:
 History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2011-04-18 - MFC - Set the defaults for the request.params variables.
 --->
 
 <cfscript>
@@ -47,6 +48,16 @@ History:
 		request.params.formAction = "upload";
 	if ( NOT StructKeyExists(request.params, "uploadDoc") )
 		request.params.uploadDoc = "";
+	if ( NOT StructKeyExists(request.params, "docPath") )
+		request.params.docPath = "";
+	if ( NOT StructKeyExists(request.params, "docURL") )
+		request.params.docURL = "";
+	if ( NOT StructKeyExists(request.params, "docTypes") )
+		request.params.docTypes = "";
+	if ( NOT StructKeyExists(request.params, "category") )
+		request.params.category = "";	
+	if ( NOT StructKeyExists(request.params, "fieldName") )
+		request.params.fieldName = "";	
 		
 	// Set the default values
 	photoTempDirPath = "";
