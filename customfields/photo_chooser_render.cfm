@@ -54,6 +54,11 @@ History:
 	else
 		xParams.forceScripts = false;
 	
+	if( NOT StructKeyExists(xParams, "defaultCatID") OR (NOT LEN(xParams.defaultCatID)) )
+		xParams.defaultCatID = "";
+	if( NOT StructKeyExists(xParams, "renderCatFilter") OR (NOT LEN(xParams.renderCatFilter)) )
+		xParams.renderCatFilter = "1";
+	
 	// find if we need to render the simple form field
 	renderSimpleFormField = false;
 	if ( (StructKeyExists(request, "simpleformexists")) AND (request.simpleformexists EQ 1) )

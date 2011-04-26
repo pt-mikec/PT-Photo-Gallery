@@ -59,3 +59,4 @@ v1.1
   		when a default category is set in the props.
   - Updated handle_photo_upload to set the defaults for the request.params variables.
   - Added Single Image render handler to the Photo Gallery custom element.
+  - Updated the Photo Upload Link CFT for the Forms_1_1 callback functionality.

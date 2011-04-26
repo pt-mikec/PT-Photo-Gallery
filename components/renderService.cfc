@@ -257,6 +257,7 @@ Arguments:
 	ARGS
 History:
 	2010-04-01 - MFC - Created
+	2011-04-26 - MFC - Removed 'console.log' from the code.
 --->
 <cffunction name="loadCycleScript" access="public" returntype="void" hint="Loads the Photo Gallery Cycle RH scripts">
 	
@@ -289,7 +290,6 @@ History:
 			
 			// Hide all the titles
 			jQuery(".carouselOverlay").hide();
-			//console.log(currNum);
 			
 			// Show this p tag id
 			jQuery(pIDTag).show();
