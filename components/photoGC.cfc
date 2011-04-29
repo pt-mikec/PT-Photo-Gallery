@@ -78,6 +78,7 @@ History:
 	2009-05-29 - MFC - Created
 	2010-04-09 - MFC - Updated to use the getAppConfig function.
 	2010-09-30 - MFC - Updated the add new link to use the Forms.
+	2011-04-27 - MFC - Added category ID in the GC props to the ADD link.
 --->
 <cffunction name="loadAddNewLink" access="public" returntype="string" hint="General Chooser - Add New Link HTML content.">
 	
@@ -89,8 +90,7 @@ History:
 		<cfsavecontent variable="retAddLinkHTML">
 			<cfoutput>
 				<div id="add-new-items">
-					<!--- <a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&title=Add New Photo&addMainTable=false" class="ADFLightbox">Add New Photo</a><br /><br /> --->
-					<a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&callback=#arguments.fieldName#_formCallback&title=Add New Record" class="ADFLightbox ui-state-default ui-corner-all #arguments.fieldName#-ui-buttons">Add New Item</a>
+					<a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&callback=#arguments.fieldName#_formCallback&title=Add New Record&category=#arguments.CATIDFILTER#" class="ADFLightbox ui-state-default ui-corner-all #arguments.fieldName#-ui-buttons">Add New Item</a>
 				</div>
 			</cfoutput>
 		</cfsavecontent>

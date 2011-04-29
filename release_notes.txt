@@ -60,3 +60,5 @@ v1.1
   - Updated handle_photo_upload to set the defaults for the request.params variables.
   - Added Single Image render handler to the Photo Gallery custom element.
   - Updated the Photo Upload Link CFT for the Forms_1_1 callback functionality.
+  - Added default category selecting when adding from photo chooser with the default category
+  		set in the properties.
