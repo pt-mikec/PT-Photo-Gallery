@@ -130,6 +130,7 @@ History:
 	2010-04-01 - MFC - Added in resize processing for "_system_resize" size.
 	2010-04-09 - MFC - Removed the "_resizework" directory for generating the resizes.
 					 - Updated the variables to generate the "_system_resize" size when no resizes selected.
+	2011-06-20 - MFC - Updated the error handling for better debugging.
 --->
 <cffunction name="processPhotoResize" access="public" returntype="struct" hint="Process the photo requirement and resizing process.">
 	<cfargument name="categoryData" type="struct" required="true" hint="Structure containing the category data for required and resize dimensions.">
@@ -279,12 +280,13 @@ History:
 		<cfcatch>
 			<cfscript>
 				retDataStruct.error = true;
-				retDataStruct.errorMsg = cfcatch.message;
+				//retDataStruct.errorMsg = cfcatch.message;
+				retDataStruct.errorMsg = cfcatch.cause.message;
 			</cfscript>
 			<!--- <cfsavecontent variable="retDataStruct.errorMsg">
-				<cfdump var="#cfcatch#">
+				<cfdump var="#cfcatch#" label="cfcatch" expand="false">
 			</cfsavecontent> --->
-			<cfset retDataStruct.errorMsg = cfcatch>
+			<!--- <cfset retDataStruct.errorMsg = cfcatch> --->
 		</cfcatch>
 	</cftry>
 	<cfreturn retDataStruct>
@@ -701,6 +703,7 @@ History:
 			<cfoutput>
 				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<strong>Photo Upload Error!</strong><br />
+					<p>Error Message: #photoUpdateStatus.msg#</p>
 					<cfif arguments.lbaction EQ "refreshParent">
 						<a href="javascript:;" onclick="closeLBReloadParent();">Click here to close and refresh.</a>
 					<cfelse>

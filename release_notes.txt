@@ -62,3 +62,4 @@ v1.1
   - Updated the Photo Upload Link CFT for the Forms_1_1 callback functionality.
   - Added default category selecting when adding from photo chooser with the default category
   		set in the properties.
+  - Updated the error handling for the photo upload for better debugging.

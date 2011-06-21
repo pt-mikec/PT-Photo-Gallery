@@ -36,16 +36,27 @@ Version:
 	1.0.0
 History:
 	2010-08-05 - MFC - Created
+	2011-06-20 - MFC - Updated to remove the hard-coded variables.
 --->
 <!--- Get the data records.
 		TODO: Update the FormID and FieldID from your site
  --->
+<cftry>
+<cfscript>
+	// Set variables for the replace site name
+	currentSitePath = "/intranet/";
+	newSitePath = "/";
+	
+	// Get the photo form ID
+	photoFormID = application.ptPhotoGallery.getPhotoFormID();
+	photoUploadFieldID = application.ptPhotoGallery.ceData.findFileCEFieldID(ceName="Photo",fieldName="photo");
+</cfscript>
 <cfquery name="getData" datasource="#request.site.datasource#">
 	select pageid, fieldValue 
 	from data_fieldvalue 
-	where formid=1844 
-	and fieldid=1859 
-	and versionState=2
+	where formid = <cfqueryparam cfsqltype="cf_sql_numeric" value="#photoFormID#"> 
+	and fieldid = <cfqueryparam cfsqltype="cf_sql_numeric" value="#photoUploadFieldID#"> 
+	and versionState = 2
 	order by pageid
 </cfquery>
 <cfdump var="#getData#" label="getData" expand="false">
@@ -55,23 +66,32 @@ History:
 	
 	<!--- Update the fieldvalue field --->
 	<!--- TODO: Update your logic for the IF condition --->
-	<cfif ListFirst(getData.fieldvalue,"/") EQ "mysite">
+	<!--- <cfif ListFirst(getData.fieldvalue,"/") EQ "mysite"> --->
 		
 		<!--- TODO: Update the newPath variable --->
-		<cfset newPath = Replace(getData.fieldvalue, "/mysite/", "/")>
+		<cfset newPath = Replace(getData.fieldvalue, "#currentSitePath#", "#newSitePath#")>
 		<cfoutput><p><cfdump var="#newPath#"></p></cfoutput>
 	
 		<!--- Commented Out For Your Protection!! --->
 		<!--- TODO: Update and Uncomment the query below --->
 		<!--- <cfquery name="setData" datasource="#request.site.datasource#">
 		  	UPDATE data_fieldvalue 
-			SET fieldvalue = '#newPath#'
-			where formid=1844 
-			and fieldid=1859 
-			and versionState=2
-			and pageid = #getData.pageid#
-			and fieldvalue = '#getData.fieldvalue#'
-			order by pageid
+			SET fieldvalue = <cfqueryparam cfsqltype="cf_sql_varchar" value="#newPath#">
+			<!--- SELECT *
+			FROM data_fieldvalue --->
+			where formid = <cfqueryparam cfsqltype="cf_sql_numeric" value="#photoFormID#">  
+			and fieldid = <cfqueryparam cfsqltype="cf_sql_numeric" value="#photoUploadFieldID#"> 
+			and versionState = 2
+			and pageid = <cfqueryparam cfsqltype="cf_sql_numeric" value="#getData.pageid#">
+			and fieldvalue = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getData.fieldvalue#">
+			<!--- order by pageid --->
 		</cfquery> --->
-	 </cfif>
+		<!--- <cfdump var="#setData#"> --->
+	<!---  </cfif> --->
 </cfloop>
+
+<cfcatch>
+	<cfdump var="#cfcatch#">
+</cfcatch>
+
+</cftry>
