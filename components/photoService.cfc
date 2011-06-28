@@ -547,6 +547,7 @@ Arguments:
 	ARGS
 History:
 	2009-00-00 - MFC - Created
+	2011-06-28 - MFC - Added TODO task for future debugging.
 --->
 <cffunction name="processPhoto" access="public" returntype="struct" hint="">
 	<cfargument name="datapageid" type="numeric" required="true" hint="CE data page id">
@@ -586,7 +587,11 @@ History:
 						dataStruct.values.imgGalleryPageID = ListLast(imgGalleryStatus.uploadResponse,":");
 				}		
 				// Update the path to store for the photo
-				dataStruct.values.photo = resizePhoto.originalURLPath;						
+				dataStruct.values.photo = resizePhoto.originalURLPath;
+				
+				// TODO - Check if the URL contains the "temp" directory then we have an error!
+				
+										
 				// Update the Photo record with new data
 				pageIDResult = handlePhotoUpdate(dataStruct);
 			}

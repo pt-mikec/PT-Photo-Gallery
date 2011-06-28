@@ -37,6 +37,7 @@ Arguments:
 History:
 	2009-10-26 - MFC - Created
 	2010-09-30 - MFC - Updated the function to utilize the form for ADD and EDIT
+	2011-06-28 - MFC - Updated to setup old default value used in older versions of the app ( Less Than v2.0)
 --->
 <cffunction name="photoAddEdit" access="public" returntype="string">
 	<cfargument name="dataPageId" type="numeric" required="false" default="0">
@@ -51,6 +52,10 @@ History:
 		var formResultHTML = "";
 		// Find out if the CE contains an RTE field
 		var photoData = "";
+		
+		// Old default value used in older versions of the app ( Less Than v2.0)
+		//	Leave in if the photoID field has not been updated to the default value {createUUID()}.
+		request.params.photoUID = createUUID();
 	</cfscript>
 	
 	<!--- Result from the Form Submit --->
@@ -64,7 +69,6 @@ History:
 			<cfoutput>
 				<script type='text/javascript'>
 					function processPhoto(formData){
-						
 						jQuery.ajax({
 							url: '#application.ADF.ajaxProxy#',
 							data: {
@@ -110,8 +114,8 @@ History:
 	</cfsavecontent>
 	
 	<!--- Wrap the HTML with the LB header/footer --->
-	<cfset formResultHTML = application.ptPhotoGallery.forms.wrapHTMLWithLightbox(formResultHTML)>
-	
+	<!--- <cfset formResultHTML = application.ptPhotoGallery.forms.wrapHTMLWithLightbox(formResultHTML)>
+	 --->
 	<!--- Render the UI form --->
 	<cfreturn application.ptPhotoGallery.forms.renderAddEditForm(
 				formID=photoFormID, 
