@@ -258,8 +258,10 @@ Arguments:
 History:
 	2010-04-01 - MFC - Created
 	2011-04-26 - MFC - Removed 'console.log' from the code.
+	2011-09-21 - CPC/BCM - added optional argument for slideshow timeout
 --->
 <cffunction name="loadCycleScript" access="public" returntype="void" hint="Loads the Photo Gallery Cycle RH scripts">
+	<cfargument name="timeout" type="numeric" required="false" default="3000" hint="Timeout value for the slideshow, 0 means no auto transition">
 	
 	<cfscript>
 		application.ptPhotoGallery.scripts.loadJQuery();
@@ -271,7 +273,7 @@ History:
 		jQuery(document).ready(function(){
 			jQuery('##cycle').cycle({
 				fx:         'fade',
-				timeout:     3000,
+				timeout:     #arguments.timeout#,
 				pager:      '##cycle_nav',
 				//pagerEvent: 'mouseover',
 				fastOnEvent: true,
