@@ -64,3 +64,10 @@ v1.1
   		set in the properties.
   - Updated the error handling for the photo upload for better debugging.
   - Updated Category Display Render datasheet module to set sort value to the column render.
+  - Added Listing, Single Image, and Single Image Random render handlers to the photo gallery
+  		custom element.
+  - Updated the PhotoRenderSize field defintions for better understanding.
+  - Updated the Cycle, Cycle Thumb Nav, and Grid Display render handlers to use the correct
+  		metadata form fields for detail and thumbnail sizes.
+  - Added version fields into the "application.ptPhotoGallery.version" variable space.
+  - Updated all comment headers for v2.0.

@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -31,9 +31,10 @@ Element:
 ADF App:
 	PT Photo Gallery	
 Version:
-	1.3
+	2.0
 History:
 	2010-08-05 - MFC - Created
+	2011-10-22 - MFC - Updated to work with the detail size metadata form field.
 --->
 <cfscript>
 	// Get the data
@@ -44,7 +45,7 @@ History:
 </cfscript>
 <cfif ArrayLen(items) AND (ListLen(items[1].values.photoSelect))>
 	<!--- Check if the metadata form has data --->
-	<cfif (StructKeyExists(rhData.photoSizeSelect, "directory"))>
+	<cfif (StructKeyExists(rhData.detailSize, "directory"))>
 		
 		<!--- Get the Photo data from CEData --->
 		<cfset photoDataArray = application.ptPhotoGallery.cedata.getCEData("Photo", "photoid", items[1].values.photoSelect, "selected")>
@@ -56,9 +57,9 @@ History:
 				
 		<cfloop index="photo_i" from="1" to="#ArrayLen(photoDataArray)#">
 			<cfscript>
-				photoSrc = application.ptPhotoGallery.renderService.getPhotoURL(photoDataArray[photo_i].values.photo,'#rhData.photoSizeSelect.directory#');
+				photoSrc = application.ptPhotoGallery.renderService.getPhotoURL(photoDataArray[photo_i].values.photo,'#rhData.detailSize.directory#');
 			</cfscript>
-			<cfoutput>photoDataObject[photoDataObject.length] = '<img src="#photoSrc#" alt="#photoDataArray[photo_i].values.title#" width="#rhData.photoSizeSelect.width#" height="#rhData.photoSizeSelect.height#" title="#photoDataArray[photo_i].values.title#" />';</cfoutput>
+			<cfoutput>photoDataObject[photoDataObject.length] = '<img src="#photoSrc#" alt="#photoDataArray[photo_i].values.title#" width="#rhData.detailSize.width#" height="#rhData.detailSize.height#" title="#photoDataArray[photo_i].values.title#" />';</cfoutput>
 		</cfloop>
 		<cfoutput></script></cfoutput>
 		

@@ -31,7 +31,7 @@ Summary:
 ADF Requirements:
 	CEDATA_1_1
 Version:
-	2.0.0
+	2.0
 History:
 	2009-08-04 - MFC - Created
 	2011-06-21 - MFC - Added sort value to the column render.

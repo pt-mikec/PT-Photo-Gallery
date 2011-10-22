@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -19,10 +19,10 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
-Author: 	PaperThin Inc.
-			M. Carroll
+/* *************************************************************** */
+Author: 	
+	PaperThin Inc.
+	M. Carroll
 Name:
 	photoCategoryGC.cfc
 Summary:
@@ -30,9 +30,10 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.1
+	2.0
 History:
 	2009-08-04 - MFC - Created
+	2011-02-08 - MFC - Updated for v2.0
 --->
 <cfcomponent displayname="photoGC" extends="ADF.extensions.customfields.general_chooser.general_chooser">
 

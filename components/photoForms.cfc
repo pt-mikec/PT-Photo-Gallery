@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -18,6 +18,23 @@ in this directory, you agree to the terms and conditions of the applicable
 end user license agreement.
 --->
 
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin Inc.
+	M. Carroll
+Name:
+	photoDAO.cfc
+Summary:
+	Photo Gallery DAO Components
+ADF App:
+	pt_photo_gallery
+Version:
+	2.0
+History:
+	2009-08-04 - MFC - Created
+	2011-10-22 - MFC - Updated to v2.0
+--->
 <cfcomponent displayname="photoForms" extends="ADF.apps.pt_photo_gallery.components.App">
 
 <!---

@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -20,8 +20,9 @@ end user license agreement.
 
 <!---
 /* *************************************************************** */
-Author: 	PaperThin Inc.
-			M. Carroll
+Author: 	
+	PaperThin Inc.
+	M. Carroll
 Name:
 	App.cfc
 ADF App:
@@ -34,6 +35,11 @@ History:
 	2010-09-29 - MFC - Updated the getAppConfig function to build the UPLOAD_PATH variable.
 --->
 <cfcomponent name="AppBase" extends="ADF.core.AppBase">
+
+<cfscript>
+	variables.version = "2.0";
+	variables.svnBuild = "50";
+</cfscript>
 
 <cffunction name="getAppBeanName" access="public" returntype="string">
 	<cfreturn "ptPhotoGallery">
@@ -62,6 +68,13 @@ History:
 
 <cffunction name="getPhotoSizeFormID" access="public" returntype="numeric">
 	<cfreturn application.ptPhotoGallery.cedata.getFormIDByCEName("Photo Size")>
+</cffunction>
+
+<cffunction name="postInit" access="public" returntype="void">
+	<cfscript>
+		application.ptPhotoGallery.version = variables.version;
+		application.ptPhotoGallery.svnBuild = variables.svnBuild;
+	</cfscript>
 </cffunction>
 
 </cfcomponent>

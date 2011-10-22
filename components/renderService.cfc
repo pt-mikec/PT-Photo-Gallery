@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -31,7 +31,7 @@ Summary:
 ADF App:
 	PT_Photo_Gallery
 Version:
-	0.9.0
+	2.0
 History:
 	2009-08-04 - MFC - Created
 --->

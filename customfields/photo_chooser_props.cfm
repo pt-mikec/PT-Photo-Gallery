@@ -32,7 +32,7 @@ Summary:
 ADF App
 	PT Photo Gallery
 Version:
-	2.0.0
+	2.0
 History:
 	2009-05-29 - MFC - Created
 	2011-03-20 - MFC - Updated component to simplify the customizations process and performance.
