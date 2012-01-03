@@ -37,6 +37,7 @@ Version:
 History:
 	2009-11-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2012-01-03 - MFC - Added "name" attribute to the Clear button.
 --->
 <cfscript>
 	// The fields current value
@@ -305,7 +306,7 @@ History:
 		<td class="cs_dlgLabelSmall">
 			<img id="#fqFieldName#_photo_disp" src="#currentValue#" width="100" height="100" style="display:block;">
 			<input type="button" value="Upload..." name="upload_btn_#fqFieldName#" id="upload_btn_#fqFieldName#" onclick="doOnClick()">
-			<input type="button" value="Clear" id="#fqFieldName#_clearField">	
+			<input type="button" value="Clear" name="#fqFieldName#_clearField" id="#fqFieldName#_clearField">	
 		</td>
 	</tr>
 
