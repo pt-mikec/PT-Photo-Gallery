@@ -34,10 +34,12 @@ Version:
 History:
 	2009-12-15 - MFC - Created
 	2010-04-30 - MFC - Update the CFT for the ADF Lightbox
+	2012-01-03 - MFC - Updated the lightbox header and footer scripts to load.
 --->
 <cfscript>
 	// Load the lightbox
-	application.ptPhotoGallery.scripts.loadADFLightbox(force=1);
+	application.ptPhotoGallery.scripts.loadJQuery();
+	application.ptPhotoGallery.scripts.loadADFLightbox();
 		
 	// Check if the action is defined
 	if ( NOT StructKeyExists(request.params, "action") )
@@ -64,6 +66,9 @@ History:
 	if ( NOT StructKeyExists(request.params, "category"))	
 		request.params.category = "";
 </cfscript>
+
+<!--- Load the lightbox header --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxHeader()#</cfoutput>
 
 <!--- Check if the Upload Crop URL page is setup --->
 <cfif StructKeyExists(appConfig, "UPLOAD_CROP_URL") AND LEN(appConfig.UPLOAD_CROP_URL)>
@@ -490,4 +495,6 @@ History:
 		</div>
 	</cfoutput>
 </cfif>
-	
+
+<!--- Load the lightbox Footer --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxFooter()#</cfoutput>

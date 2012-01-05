@@ -34,31 +34,30 @@ Version:
 History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2012-01-03 - MFC - Updated the lightbox header and footer scripts to load.
 --->
 <cfscript>
 	application.ptPhotoGallery.scripts.loadJQuery();
 	application.ptPhotoGallery.scripts.loadADFlightbox();
 </cfscript>
 
+<!--- Load the lightbox header --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxHeader()#</cfoutput>
+
 <cfif StructKeyExists(request.params, "imgSrc")>
-<cfoutput>
-	<CFSCRIPT>
-		CD_requiredParams = "pageid";
-		CD_Title="Template Hierarchy";
-		CD_DialogName = "template-hierarchy";
-		CD_CheckLock=0;
-		CD_MainTableWidth = 414;
-	</CFSCRIPT>
-	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
-	<div style="width:100%;text-align:center">
-		<img src="#request.params.imgSrc#">
-	</div>
-	<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
-</cfoutput>
-<cfelse>
-<cfoutput>
-	<div style="width:100%;text-align:center">
-		No Photo to Display
-	</div>
-</cfoutput>
+	<!--- Load the lightbox header --->
+	<cfoutput>
+		<div style="width:100%;text-align:center">
+			<img src="#request.params.imgSrc#">
+		</div>
+	</cfoutput>
+	<cfelse>
+	<cfoutput>
+		<div style="width:100%;text-align:center">
+			No Photo to Display
+		</div>
+	</cfoutput>
 </cfif>
+
+<!--- Load the lightbox Footer --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxFooter()#</cfoutput>

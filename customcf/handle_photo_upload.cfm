@@ -37,10 +37,10 @@ History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
 	2011-04-18 - MFC - Set the defaults for the request.params variables.
+	2012-01-03 - MFC - Updated the lightbox header and footer scripts to load.
 --->
-
 <cfscript>
-	application.ptPhotoGallery.scripts.loadJQuery(force=1);
+	application.ptPhotoGallery.scripts.loadJQuery();
 	application.ptPhotoGallery.scripts.loadADFLightbox();
 	
 	// set the form action variable
@@ -64,17 +64,8 @@ History:
 	photoTempURLPath = "";
 </cfscript>
 
-<cfscript>
-	CD_DialogName = request.params.title;
-	CD_Title=CD_DialogName;
-	CD_IncludeTableTop=0;
-	CD_CheckLock=0;
-	CD_CheckLogin=1;
-	CD_CheckPageAlive=0;
-	APIPostToNewWindow = false;
-</cfscript>
-<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
-<!--- <cfoutput><tr><td></cfoutput> --->
+<!--- Load the lightbox header --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxHeader()#</cfoutput>
 
 <!--- Upload the file to the TEMP directory --->
 <cfif request.params.formAction NEQ "upload">
@@ -150,5 +141,5 @@ History:
 <div id="photoDialog"></div>
 </cfoutput>
 
-<!--- <cfoutput></tr></td></cfoutput> --->
-<CFINCLUDE template="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
+<!--- Load the lightbox Footer --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxFooter()#</cfoutput>
