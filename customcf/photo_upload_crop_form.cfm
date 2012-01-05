@@ -35,6 +35,7 @@ History:
 	2009-12-15 - MFC - Created
 	2010-04-30 - MFC - Update the CFT for the ADF Lightbox
 	2012-01-03 - MFC - Updated the lightbox header and footer scripts to load.
+	2012-01-05 - MFC - Updated the CSFile data return structure variable.
 --->
 <cfscript>
 	// Load the lightbox
@@ -205,9 +206,9 @@ History:
 								nameconflict="makeunique"
 							) >
 			<!--- <cfdump var="#fileOp#" label="fileOp" expand="false"> --->
-			<cfset photoTempDirPath = "#docPath#temp/#fileOp.cffile.serverFile#">
-			<cfset photoTempURLPath = "#docURL#temp/#fileOp.cffile.serverFile#">
-			<cfset fileExtension = fileOp.cffile.CLIENTFILEEXT>	
+			<cfset photoTempDirPath = "#docPath#temp/#fileOp.cpfile.serverFile#">
+			<cfset photoTempURLPath = "#docURL#temp/#fileOp.cpfile.serverFile#">
+			<cfset fileExtension = fileOp.cpfile.CLIENTFILEEXT>	
 				
 			<!--- Reprocess the temp image to contain the width and height --->
 			<cfscript>
@@ -355,6 +356,7 @@ History:
 			</cfoutput>
 	
 			<cfcatch>
+				<!--- <cfdump var="#cfcatch#" label="cfcatch" expand="false"> --->
 				<cfoutput>
 					<p align="center">
 						<strong>Error with the photo processing.</strong>
