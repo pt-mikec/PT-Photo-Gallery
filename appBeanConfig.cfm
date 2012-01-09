@@ -30,7 +30,7 @@ Description:
 ADF App:
 	pt_photo_gallery
 Version:
-	2.0.51
+	2.0
 History:
 	2009-06-09 - MFC - Created
 	2010-12-13 - MFC - Updated AppBeanConfig to load scripts_1_5
