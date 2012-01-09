@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -19,8 +19,7 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	
 	PaperThin, Inc.
 	Michael Carroll 
@@ -30,14 +29,15 @@ Name:
 	photo_upload_link_render.cfm
 Summary:
 	Custom select field to render an upload link to the photo element.
-ADF Requirements:
-	Scripts_1_0
+ADF App:
+	pt_photo_gallery
 Version:
-	1.3
+	2.0
 History:
 	2009-08-04 - MFC - Created
 	2010-04-30 - MFC - Update the CFT for the ADF Lightbox
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2011-04-26 - MFC - Updated '_loadImage' function for Forms_1_1 callback functionality.
 --->
 <cfscript>
 	// the fields current value
@@ -109,31 +109,20 @@ History:
 					jQuery("input###xparams.photoFieldID#").val("");
 				}
 			});
+			
+			// Resize the Lightbox
+			lbResizeWindow();
 		}
 		
 		// Set the value back from the photo form
-		function #fqFieldName#setPhotoField(inArgsArray)
+		// 	2011-04-26 - MFC - Updated function for Forms_1_1 callback functionality.
+		function #fqFieldName#setPhotoField(photoFormData)
 		{
-			/* 
-				inArgsArray[0] = URL to the image
-				inArgsArray[1] = photo UID
-			 */
-			
-			//alert("...I answered!");
-			//alert(inArgsArray);
-			
 			// load new img url into the img field
-			#fqFieldName#_loadImage(inArgsArray[1]);
+			#fqFieldName#_loadImage(photoFormData.photoID);
 			
 			// Store the photo ID value into the fqFieldName
-			jQuery("input###xparams.photoFieldID#").val(inArgsArray[1]);
-			
-			// Resize the window for CS 5
-			if ( #ListFirst(ListLast(request.cp.productversion," "),".")# < 6 )
-				ResizeWindow();
-			else {
-				commonspot.lightbox.recalcLightboxSizeByPos(0);
-			}
+			jQuery("input###xparams.photoFieldID#").val(photoFormData.photoID);
 		}
 		
 		function #fqFieldName#renderPhoto(url){
@@ -183,8 +172,8 @@ History:
 				window.resizeTo(700,700);
 			
 			// Open the lightbox for the add form
-			openLB("#appConfig.ADD_URL#?callback=#fqFieldName#setPhotoField&width=500&height=500&title=Add Photo&lbaction=noconfirm");
-		}
+			openLB("#application.ADF.lightboxProxy#?bean=photoForms&method=photoAddEdit&callback=#fqFieldName#setPhotoField&title=Add Photo&lbaction=norefresh");
+		}	
 		
 	</script>
 </cfoutput>

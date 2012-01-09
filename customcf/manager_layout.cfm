@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -20,8 +20,9 @@ end user license agreement.
 
 <!---
 /* *************************************************************** */
-Author: 	PaperThin Inc.
-			M. Carroll
+Author: 	
+	PaperThin Inc.
+	M. Carroll
 Name:
 	manager_layout.cfm
 Summary:
@@ -29,10 +30,11 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	1.3
+	2.0
 History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2011-04-13 - MFC - Updated the jquery commands to remove "$".
 --->
 
 <cfscript>
@@ -59,15 +61,21 @@ History:
 		jQuery("##tabs").tabs();
 	
 		// Hover states on the static widgets
-		jQuery("div.ds-icons").hover(
-			function() { $(this).addClass('ui-state-hover'); },
-			function() { $(this).removeClass('ui-state-hover'); }
+		jQuery("div.ds-icons,div.add_link,div.add_link_category,div.add_link_size").hover(
+			function() { 
+				jQuery(this).css("cursor", "hand");
+				jQuery(this).addClass('ui-state-hover'); 
+			},
+			function() { 
+				jQuery(this).css("cursor", "pointer");
+				jQuery(this).removeClass('ui-state-hover'); 
+			}
 		);
 		// Hover states on the static widgets
-		jQuery("div.add_link").hover(
+		/* jQuery("div.add_link").hover(
 			function() { $(this).addClass('ui-state-hover'); },
 			function() { $(this).removeClass('ui-state-hover'); }
-		);
+		); */
 	});
 </script>
 <!--- 
@@ -113,14 +121,7 @@ Links to Add to the datasheet to get the button styles
 					height: 16px;
 				}
 			</style>
-			<!--- Get the config data Struct --->
-			<cfset configStruct = application.ptPhotoGallery.getAppConfig()>
-			<cfif (StructKeyExists(configStruct, "ADD_URL")) AND (LEN(configStruct.ADD_URL))>
-				<!--- <a href="#configStruct.ADD_URL#?lbaction=refreshparent&keepThis=true&TB_iframe=true&width=650&height=400" class="thickbox add_link ui-state-default ui-corner-all">Add New Photo</a><br /><br /> --->
-				<div rel="#configStruct.ADD_URL#?lbaction=refreshparent&width=500&height=500&title=Add New Photo" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
-			<cfelse>
-				<cfthrow type="Application" detail="PTPhotoGallery config file missing ADD_URL tag." message="Error with the PTPhotoGallery config file.">
-			</cfif>
+			<div rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=refreshparent&title=Add New Photo&addMainTable=false&subsiteURL=#request.subsite.URL#" class="ADFLightbox add_link ui-state-default ui-corner-all">Add New Photo</div><br /><br />
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
@@ -136,7 +137,7 @@ Links to Add to the datasheet to get the button styles
 	<cfoutput>	
 	</div>
 	<div id="tabs-2">
-		<div rel="#application.ADF.ajaxProxy#?bean=Forms_1_0&method=renderAddEditForm&formid=#categoryFormID#&datapageid=0&lbaction=refreshparent&width=700&height=650&title=Add New Photo Category" class="ADFLightbox add_link_category ui-state-default ui-corner-all">Add New Photo Category</div><br /><br />
+		<div rel="#application.ADF.ajaxProxy#?bean=Forms_1_1&method=renderAddEditForm&formid=#categoryFormID#&datapageid=0&lbaction=refreshparent&width=700&height=650&title=Add New Photo Category" class="ADFLightbox add_link_category ui-state-default ui-corner-all">Add New Photo Category</div><br /><br />
 	</cfoutput>		
 		<!--- Render the Photo Category Element Datasheet --->
 		<CFMODULE TEMPLATE="/commonspot/utilities/ct-render-named-element.cfm"
@@ -145,7 +146,7 @@ Links to Add to the datasheet to get the button styles
 	<cfoutput>	
 	</div>
 	<div id="tabs-3">
-		<div rel="#application.ADF.ajaxProxy#?bean=Forms_1_0&method=renderAddEditForm&formid=#sizeFormID#&datapageid=0&lbaction=refreshparent&width=400&height=250&title=Add New Photo Size" class="ADFLightbox add_link_size ui-state-default ui-corner-all">Add New Photo Size</div><br /><br />
+		<div rel="#application.ADF.ajaxProxy#?bean=Forms_1_1&method=renderAddEditForm&formid=#sizeFormID#&datapageid=0&lbaction=refreshparent&width=400&height=250&title=Add New Photo Size" class="ADFLightbox add_link_size ui-state-default ui-corner-all">Add New Photo Size</div><br /><br />
 	</cfoutput>
 		<!--- Render the Photo Size Element Datasheet --->
 		<CFMODULE TEMPLATE="/commonspot/utilities/ct-render-named-element.cfm"

@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -18,75 +18,175 @@ in this directory, you agree to the terms and conditions of the applicable
 end user license agreement.
 --->
 
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin Inc.
+	M. Carroll
+Name:
+	photoDAO.cfc
+Summary:
+	Photo Gallery DAO Components
+ADF App:
+	pt_photo_gallery
+Version:
+	2.0
+History:
+	2009-08-04 - MFC - Created
+	2011-10-22 - MFC - Updated to v2.0
+--->
 <cfcomponent displayname="photoForms" extends="ADF.apps.pt_photo_gallery.components.App">
 
 <!---
-/* ***************************************************************
-/*
-Author: 	M. Carroll
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
 Name:
-	$photoEditForm
+	$photoAddEdit
 Summary:	
-	Returns the edit CE data form for the element that makes Ajax post to syncCEDataToPageMetadata on completion.
+	Returns the HTML for an Add/Edit Custom element record
 Returns:
-	String - rtnHTML - HTML edit form
+	String formHTML
 Arguments:
-	Numeric - formid - Custom element form ID
-	Numeric - datapageid - Custom element data page ID
-	String - lbAction - Lightbox action on close
-	String - customizedFinalHtml - User defined customized final html
+	Numeric - formID - the Custom Element Form ID
+	Numeric - dataPageID - the dataPageID for the record that you would like to edit
 History:
-	2009-07-01 - MFC - Created
-	2010-04-29 - MFC - Updated to force the load ADF Lightbox
+	2009-10-26 - MFC - Created
+	2010-09-30 - MFC - Updated the function to utilize the form for ADD and EDIT
+	2011-06-28 - MFC - Updated to setup old default value used in older versions of the app ( Less Than v2.0)
 --->
-<cffunction name="photoEditForm" access="public" returntype="string" returnformat="plain" hint="Returns the edit CE data form for the element that makes Ajax post to syncCEDataToPageMetadata on completion.">
-	<cfargument name="formID" type="numeric" required="true" hint="Custom element form ID">
-	<cfargument name="dataPageId" type="numeric" required="true" hint="Custom element data page ID">
-	<cfargument name="lbAction" type="string" required="false" default="norefresh" hint="Lightbox action on close">
-	<cfargument name="customizedFinalHtml" type="string" required="false" default="" hint="User defined customized final html">
+<cffunction name="photoAddEdit" access="public" returntype="string">
+	<cfargument name="dataPageId" type="numeric" required="false" default="0">
+	<cfargument name="lbAction" type="string" required="false" default="norefresh">
+	<cfargument name="renderResult" type="boolean" required="false" default="0">
+	<cfargument name="callback" type="string" required="false" default="">
 	
 	<cfscript>
-		var APIPostToNewWindow = true;
+		var photoFormID = application.ptPhotoGallery.getPhotoFormID();
+		var APIPostToNewWindow = false;
 		var rtnHTML = "";
-		var formResultHTML = arguments.customizedFinalHtml;
+		var formResultHTML = "";
+		// Find out if the CE contains an RTE field
+		var photoData = "";
+		
+		// Old default value used in older versions of the app ( Less Than v2.0)
+		//	Leave in if the photoID field has not been updated to the default value {createUUID()}.
+		request.params.photoUID = createUUID();
 	</cfscript>
-	<!--- Check if we have a form result HTML passed in --->
-	<cfif LEN(formResultHTML) LTE 0>
-		<!--- Set the form result HTML --->
-		<cfsavecontent variable="formResultHTML">
-			<cfoutput>
-			<cfscript>
-				application.ptPhotoGallery.scripts.loadADFLightbox(force=true);
-			</cfscript>
-			<script type='text/javascript'>
-				jQuery.get('#application.ADF.ajaxProxy#',
-					{ 	
-						bean: 'photoService',
-						method: 'handlePhotoEdit',
-						datapageid: '#arguments.dataPageId#',
-						formid: '#arguments.formID#',
-						lbAction: '#arguments.lbAction#'
-					},
-					function(data){
-						// write the return html to the div
-						jQuery('div##retBlock').html(data);
-					}
-				);
-			</script>
-			<div id='retBlock' style='text-align:center;'>
-				Saving... <img src='/ADF/apps/pt_photo_gallery/images/ajax-loader-arrows.gif'>
-			</div>
-		</cfoutput>
-		</cfsavecontent>
-	</cfif>
-	<cfsavecontent variable="rtnHTML">
+	
+	<!--- Result from the Form Submit --->
+	<cfsavecontent variable="formResultHTML">
 		<cfoutput>
-			<!--- Call the UDF function --->
-			#application.ptPhotoGallery.scripts.loadADFLightbox(force=true)#
-			#Server.CommonSpot.UDF.UI.RenderSimpleForm(arguments.dataPageID, arguments.formID, APIPostToNewWindow, formResultHTML)#
+			<cfscript>
+				application.ptPhotoGallery.scripts.loadJquery();
+				application.ptPhotoGallery.scripts.loadADFLightbox();
+			</cfscript>
+			<cfset request.params.ga_contentActions = "photo-create">
+			<cfoutput>
+				<script type='text/javascript'>
+					function processPhoto(formData){
+						jQuery.ajax({
+							url: '#application.ADF.ajaxProxy#',
+							data: {
+								bean: 'photoService',
+								method: 'processForm',
+								photoID: formData.photoID,
+								lbAction: '#arguments.lbAction#'
+							},
+							success: function(data) {
+								//alert(data);
+								// Check that we returned data
+								if ( data != '' ) {
+									jQuery('div##photoMsgSaving').html(data);
+									lbResizeWindow();
+									<cfif Len(arguments.callback)>
+										// Get the PageWindow and the form value
+										var pageWindow = commonspot.lightbox.getPageWindow();
+										var value = pageWindow.ADFFormData.formValueStore;
+										//Call the callback with the form value
+										getCallback('#arguments.callback#', value);
+									</cfif>
+									
+								}
+								else {
+									// write the return html to the div
+									jQuery('div##photoMsgSaving').html('Error processing the photo.');
+								}
+							},
+							error: function(data){
+								// write the return html to the div
+								jQuery('div##photoMsgSaving').html('Error processing the photo.');
+							}
+						});
+					}
+				</script>
+				
+				<!--- Render the text --->
+				<div id="photoMsgSaving" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
+					<strong>Saving Photo...<img src="/ADF/apps/pt_photo_gallery/images/ajax-loader-arrows.gif"></strong><br /><br />
+				</div>
+			</cfoutput>
 		</cfoutput>
 	</cfsavecontent>
-	<cfreturn rtnHTML>
+	
+	<!--- Wrap the HTML with the LB header/footer --->
+	<!--- <cfset formResultHTML = application.ptPhotoGallery.forms.wrapHTMLWithLightbox(formResultHTML)>
+	 --->
+	<!--- Render the UI form --->
+	<cfreturn application.ptPhotoGallery.forms.renderAddEditForm(
+				formID=photoFormID, 
+				dataPageId=arguments.dataPageId,
+				customizedFinalHtml=formResultHTML,
+				lbAction=arguments.lbAction,
+				callback="processPhoto")>
+	
+	<!--- <cfif NOT renderResult>
+		<!--- <cfif formContainRTE>
+			<!--- Set the form result HTML --->
+			<cfsavecontent variable="formResultHTML">
+				<cfoutput>
+				<!--- Close the lightbox on click --->
+				<script type='text/javascript'>
+					window.opener.location.href = window.opener.location.href + "&renderResult=true";
+					// Close the window
+					if (jQuery.browser.msie){
+						window.open('','_self','');
+	           			window.close();
+				    }else{
+				    	window.close();
+				    } 
+				</script>
+				</cfoutput>
+			</cfsavecontent>
+		</cfif> --->
+		<!--- HTML for the form --->
+		<cfsavecontent variable="rtnHTML">    
+		  <cfscript>
+				CD_DialogName = request.params.title;
+				CD_Title=CD_DialogName;
+				CD_IncludeTableTop=1;
+				CD_CheckLock=0;
+				CD_CheckLogin=1;
+				CD_CheckPageAlive=0;
+				APIPostToNewWindow = false;
+			</cfscript>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+			<cfoutput>
+			<cfscript>
+				application.ptPhotoGallery.scripts.loadADFLightbox(force=1);
+			</cfscript>
+			<!--- Call the UDF function --->
+			<tr><td>#Server.CommonSpot.UDF.UI.RenderSimpleForm(arguments.dataPageID, photoFormID, APIPostToNewWindow, formResultHTML)#</td></tr>
+			</cfoutput>
+			<CFINCLUDE template="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
+		</cfsavecontent>
+		
+	<cfelse>
+		<cfset rtnHTML = formResultHTML>
+	</cfif>
+	<cfreturn rtnHTML> --->
+
 </cffunction>
 
 <!---
@@ -135,6 +235,19 @@ History:
 		</cfscript>
 		<cfsavecontent variable="rtnHTML">
 			<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=1)>
+			<!--- Dialog Header --->
+			<CFSCRIPT>
+				// Dialog Info
+				CD_DialogName = request.params.title;
+				CD_Title=CD_DialogName;
+				CD_IncludeTableTop=1;
+				CD_CheckLock=0;
+				CD_CheckLogin=1;
+				CD_CheckPageAlive=0;
+				//CD_OnLoad="";
+			</CFSCRIPT>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+			<cfoutput><tr><td></cfoutput>
 			<cfoutput>
 				<div align="center">
 					<cfif result>
@@ -147,22 +260,40 @@ History:
 					</cfif>
 				</div>
 			</cfoutput>
+			<cfoutput></td></tr></cfoutput>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm">
 		</cfsavecontent>
 	<cfelse>
 		<!--- Render for the delete form --->
 		<cfsavecontent variable="rtnHTML">
 			<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=1)>
+			<!--- 
+			<!--- Dialog Header --->
+			<CFSCRIPT>
+				// Dialog Info
+				CD_DialogName = request.params.title;
+				CD_Title=CD_DialogName;
+				CD_IncludeTableTop=1;
+				CD_CheckLock=0;
+				CD_CheckLogin=1;
+				CD_CheckPageAlive=0;
+				//CD_OnLoad="";
+			</CFSCRIPT>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-head.cfm">
+			<cfoutput><tr><td></cfoutput> --->
 			<cfoutput>
 				<form action="#application.ADF.ajaxProxy#?bean=photoForms&method=photoDeleteForm&formid=#arguments.formid#&datapageid=#arguments.datapageid#&processDeleteFlag=1" method="post">
 					<div align="center">
 						<p>Are you sure you want to delete this photo?</p>
 						<p>
 							<input type="submit" value="Delete">
-							<input type="button" value="Cancel">
+							<input type="button" value="Cancel" onclick="closeLB();">
 						</p>
 					</div>
 				</form>
 			</cfoutput>
+			<!--- <cfoutput></td></tr></cfoutput>
+			<CFINCLUDE TEMPLATE="/commonspot/dlgcontrols/dlgcommon-foot.cfm"> --->
 		</cfsavecontent>
 	</cfif>
 	

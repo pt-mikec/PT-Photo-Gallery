@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -30,10 +30,11 @@ Element:
 ADF App:
 	pt_photo_gallery
 Version:
-	1.1.0
+	2.0
 History:
 	2009-10-20 - RJA - Created
 	2010-04-01 - MFC - Implemented the dynamic size.
+	2011-10-22 - MFC - Updated to use the metadata form fields.
 --->
 <cfscript>
 	request.element.isStatic = 0;
@@ -48,17 +49,19 @@ History:
 
 <cfif arrayLen(items)>
 	<!--- Check if the metadata form has data --->
-	<cfif (StructKeyExists(rhData.photoSizeSelect, "directory"))>
+	<cfif (StructKeyExists(rhData.detailSize, "directory"))>
 		
 		<!--- Get the Photo data from CEData --->
 		<cfset photoDataArray = application.ptPhotoGallery.cedata.getCEData("Photo", "photoid", items[1].values.photoSelect, "selected")>
 		
 		<cfoutput>
+			<!--- Load the Styles --->
+			<link rel="stylesheet" href="/ADF/apps/pt_photo_gallery/style/ptPhotoGallery.css" type="text/css" >
 	   		<style>
-		    	div##photo_cycle_container {height:#rhData.photoSizeSelect.height+32#px; margin:-25px 5px 30px;}
-		    	div##photo_cycle_container .pics img {height: #rhData.photoSizeSelect.height#px; width: #rhData.photoSizeSelect.width#px; padding: 15px; border: 1px solid ##ccc; background-color: ##eee; top:0; left:0 }
-		    	div##photo_cycle_container .pics {height: #rhData.photoSizeSelect.height+32#px; width: #rhData.photoSizeSelect.width+32#px; padding:0; margin:0; overflow: hidden }
-		    	div##photo_cycle_container .cycle_title {background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_overlay.png); width:#rhData.photoSizeSelect.width#px; font:12px Arial, Helvetica, sans-serif; color:##000; z-index:10; position:relative; top:-78px; left:16px; height:50px;}
+		    	div##photo_cycle_container {height:#rhData.detailSize.height+32#px; margin:-25px 5px 30px;}
+		    	div##photo_cycle_container .pics img {height: #rhData.detailSize.height#px; width: #rhData.detailSize.width#px; padding: 15px; border: 1px solid ##ccc; background-color: ##eee; top:0; left:0 }
+		    	div##photo_cycle_container .pics {height: #rhData.detailSize.height+32#px; width: #rhData.detailSize.width+32#px; padding:0; margin:0; overflow: hidden }
+		    	div##photo_cycle_container .cycle_title {background:url(/ADF/apps/pt_photo_gallery/images/bg_cycle_overlay.png); width:#rhData.detailSize.width#px; font:12px Arial, Helvetica, sans-serif; color:##000; z-index:10; position:relative; top:-78px; left:16px; height:50px;}
 		   	</style>
 	        
 	        <div id="photo_cycle_container">
@@ -68,7 +71,7 @@ History:
 		        
 		        <div style="overflow:hidden; position:relative; z-index:9;" id="cycle" class="pics">
 		            <cfloop index="photo_i" from="1" to="#ArrayLen(photoDataArray)#">
-		            	<img id="demo:#photo_i#" src="#photoDataArray[photo_i].values.photo#" width="#rhData.photoSizeSelect.width#" height="#rhData.photoSizeSelect.height#" alt="#photoDataArray[photo_i].values.title#" title="#photoDataArray[photo_i].values.title#" />
+		            	<img id="demo:#photo_i#" src="#photoDataArray[photo_i].values.photo#" width="#rhData.detailSize.width#" height="#rhData.detailSize.height#" alt="#photoDataArray[photo_i].values.title#" title="#photoDataArray[photo_i].values.title#" />
 		            </cfloop> 
 		        </div>
 		        

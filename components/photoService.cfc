@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -29,7 +29,7 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	1.1.0
+	2.0
 History:
 	2009-08-04 - MFC - Created
 	2010-04-09 - MFC - processPhotoResize
@@ -130,6 +130,7 @@ History:
 	2010-04-01 - MFC - Added in resize processing for "_system_resize" size.
 	2010-04-09 - MFC - Removed the "_resizework" directory for generating the resizes.
 					 - Updated the variables to generate the "_system_resize" size when no resizes selected.
+	2011-06-20 - MFC - Updated the error handling for better debugging.
 --->
 <cffunction name="processPhotoResize" access="public" returntype="struct" hint="Process the photo requirement and resizing process.">
 	<cfargument name="categoryData" type="struct" required="true" hint="Structure containing the category data for required and resize dimensions.">
@@ -279,12 +280,13 @@ History:
 		<cfcatch>
 			<cfscript>
 				retDataStruct.error = true;
-				retDataStruct.errorMsg = cfcatch.message;
+				//retDataStruct.errorMsg = cfcatch.message;
+				retDataStruct.errorMsg = cfcatch.cause.message;
 			</cfscript>
 			<!--- <cfsavecontent variable="retDataStruct.errorMsg">
-				<cfdump var="#cfcatch#">
+				<cfdump var="#cfcatch#" label="cfcatch" expand="false">
 			</cfsavecontent> --->
-			<cfset retDataStruct.errorMsg = cfcatch>
+			<!--- <cfset retDataStruct.errorMsg = cfcatch> --->
 		</cfcatch>
 	</cftry>
 	<cfreturn retDataStruct>
@@ -545,6 +547,7 @@ Arguments:
 	ARGS
 History:
 	2009-00-00 - MFC - Created
+	2011-06-28 - MFC - Added TODO task for future debugging.
 --->
 <cffunction name="processPhoto" access="public" returntype="struct" hint="">
 	<cfargument name="datapageid" type="numeric" required="true" hint="CE data page id">
@@ -584,7 +587,11 @@ History:
 						dataStruct.values.imgGalleryPageID = ListLast(imgGalleryStatus.uploadResponse,":");
 				}		
 				// Update the path to store for the photo
-				dataStruct.values.photo = resizePhoto.originalURLPath;						
+				dataStruct.values.photo = resizePhoto.originalURLPath;
+				
+				// TODO - Check if the URL contains the "temp" directory then we have an error!
+				
+										
 				// Update the Photo record with new data
 				pageIDResult = handlePhotoUpdate(dataStruct);
 			}
@@ -685,8 +692,7 @@ History:
 	<cfset var photoUpdateStatus = processPhoto(arguments.datapageid, arguments.formid)>
 
 	<cfsavecontent variable="retHTML">
-		
-		<cfset application.ptPhotoGallery.scripts.loadADFLightbox()>
+		<cfset application.ptPhotoGallery.scripts.loadADFLightbox(force=true)>
 		<cfif photoUpdateStatus.contentUpdated>
 			<cfoutput>
 				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
@@ -702,6 +708,7 @@ History:
 			<cfoutput>
 				<div width="100%" align="center" style="font-family:Verdana,Arial; font-size:10pt;">
 					<strong>Photo Upload Error!</strong><br />
+					<p>Error Message: #photoUpdateStatus.msg#</p>
 					<cfif arguments.lbaction EQ "refreshParent">
 						<a href="javascript:;" onclick="closeLBReloadParent();">Click here to close and refresh.</a>
 					<cfelse>
@@ -791,4 +798,35 @@ History:
 	</cfscript>
 </cffunction>
 
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$processForm
+Summary:
+	Handles the photo creating processing to upload the photo
+Returns:
+	string
+Arguments:
+	string
+History:
+	2010-09-30 - MFC - Created
+--->
+<cffunction name="processForm" access="public" returntype="string" output="true" hint="">
+	<cfargument name="photoID" type="string" required="true" hint="">
+	<cfargument name="lbAction" type="string" required="true" hint="">
+	
+	<cfscript>
+		var retMsg = "";
+		// Get the profile data by the UID
+		var photoData = application.ptPhotoGallery.photoDAO.getPhotoData(photoID=arguments.photoID);
+		// Pass the userID to the handleEdit function to create the pages
+		if ( ArrayLen(photoData) ){
+			retMsg = handlePhotoEdit(datapageid=photoData[1].pageid,formid=photoData[1].formid,lbAction=arguments.lbAction);
+		}
+	</cfscript>
+	<cfreturn retMsg>
+</cffunction>
 </cfcomponent>

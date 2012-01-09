@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -34,8 +34,10 @@ Summary:
 ADF Requirements:
 	csData_1_0
 	scripts_1_0
+ADF App:
+	pt_photo_gallery
 Version:
-	1.3
+	2.0
 History:
 	2010-04-01 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
@@ -70,14 +72,12 @@ History:
 		
 		function validate_#fqFieldName#()
 		{
-			//alert(fieldLen);
 			if (jQuery("input[name=#fqFieldName#]").val() != '')
 			{
 				return true;
 			}
 			else
 			{
-				alert(#fqFieldName#.msg);
 				return false;
 			}
 		}

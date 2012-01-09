@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -32,14 +32,15 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	1.3
+	2.0
 History:
 	2009-08-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2011-04-18 - MFC - Set the defaults for the request.params variables.
+	2012-01-03 - MFC - Updated the lightbox header and footer scripts to load.
 --->
-
 <cfscript>
-	application.ptPhotoGallery.scripts.loadJQuery(force=1);
+	application.ptPhotoGallery.scripts.loadJQuery();
 	application.ptPhotoGallery.scripts.loadADFLightbox();
 	
 	// set the form action variable
@@ -47,11 +48,24 @@ History:
 		request.params.formAction = "upload";
 	if ( NOT StructKeyExists(request.params, "uploadDoc") )
 		request.params.uploadDoc = "";
+	if ( NOT StructKeyExists(request.params, "docPath") )
+		request.params.docPath = "";
+	if ( NOT StructKeyExists(request.params, "docURL") )
+		request.params.docURL = "";
+	if ( NOT StructKeyExists(request.params, "docTypes") )
+		request.params.docTypes = "";
+	if ( NOT StructKeyExists(request.params, "category") )
+		request.params.category = "";	
+	if ( NOT StructKeyExists(request.params, "fieldName") )
+		request.params.fieldName = "";	
 		
 	// Set the default values
 	photoTempDirPath = "";
 	photoTempURLPath = "";
 </cfscript>
+
+<!--- Load the lightbox header --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxHeader()#</cfoutput>
 
 <!--- Upload the file to the TEMP directory --->
 <cfif request.params.formAction NEQ "upload">
@@ -118,6 +132,7 @@ History:
 		function(msg){
 			// Load response into the div
 			jQuery("div##photoDialog").html(msg);
+			lbResizeWindow();
 		});
 	});
 </script>
@@ -125,3 +140,6 @@ History:
 <!--- DIV text for the photo dialog --->
 <div id="photoDialog"></div>
 </cfoutput>
+
+<!--- Load the lightbox Footer --->
+<cfoutput>#application.ptPhotoGallery.ui.lightboxFooter()#</cfoutput>

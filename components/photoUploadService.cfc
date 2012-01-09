@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -19,8 +19,7 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	
 	PaperThin Inc.
 	M. Carroll
@@ -31,7 +30,7 @@ Summary:
 ADF App:
 	PT_Photo_Gallery
 Version:
-	0.9.1
+	2.0
 History:
 	2009-08-04 - MFC - Created
 --->
@@ -116,6 +115,7 @@ History:
 	2009-06-09 - MFC - Created
 	2009-11-04 - MFC - Updated script for ADF Lightbox
 	2010-06-14 - MFC - Removed old CD dialog code.
+	2012-01-03 - MFC - Removed any lightbox header and footer code.
 --->
 <cffunction name="renderPhotoUploadDialog" access="public" returntype="String" hint="Renders the HTML dialog box to upload a photo.">
 	<cfargument name="inArgs" type="struct" required="true" hint="Argument structure passed from the Ajax Service.">
@@ -128,12 +128,7 @@ History:
 		<cfscript>
 			application.ptPhotoGallery.scripts.loadADFLightbox();
 		</cfscript>
-		<!--- <cfinclude template="/commonspot/dlgcontrols/dlgcommon-head.cfm"> --->
-		<cfoutput>
-		<table id="MainTable" width="450px;">
-		<tr>
-			<td>
-		</cfoutput>	
+		
 		<!--- Set the flag for if the photo is uploaded --->
 		<cfset photoUploaded = false>
 		<cfif ( StructKeyExists(arguments.inArgs, "photoTempURLPath") ) AND ( LEN(arguments.inArgs.photoTempURLPath) )>
@@ -241,18 +236,12 @@ History:
 					</tr>
 					<tr>
 						<td class="cs_dlgLabelSmall"></td>
-						<td class="cs_dlgLabelSmall"><input type="button" value="Do Upload" onclick="this.disabled='disabled';this.value='processing...';checkDocType(this.form);" id="uploadbutton"/><input type="button" value="Cancel" onclick="window.parent.closeLB();"></td>
+						<td class="cs_dlgLabelSmall"><input type="button" value="Do Upload" onclick="this.disabled='disabled';this.value='processing...';checkDocType(this.form);" id="uploadbutton"/><input type="button" value="Cancel" onclick="closeLB();"></td>
 					</tr>
 				</table>
 			</form>
 			</cfoutput>
 		</cfif>
-		<cfoutput>
-			</td>
-			</tr>
-			</table>
-		</cfoutput>
-		<!--- <cfinclude template="/commonspot/dlgcontrols/dlgcommon-foot.cfm"> --->
 	</cfsavecontent>
 	<cfreturn retHTML>
 </cffunction>

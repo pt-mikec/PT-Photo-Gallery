@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -19,8 +19,7 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
+/* *************************************************************** */
 Author: 	PaperThin Inc.
 			M. Carroll
 Name:
@@ -30,9 +29,10 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.1
+	2.0
 History:
 	2009-08-04 - MFC - Created
+	2011-02-08 - MFC - Updated to v2.0
 --->
 <cfcomponent displayname="PhotoDAO" extends="ADF.apps.pt_photo_gallery.components.App" hint="Photo Gallery DAO component for the Photo Gallery Application.">
 
@@ -79,6 +79,7 @@ Arguments:
 	String - imgDir - Photo directory path to upload.
 History:
 	2009-07-07 - MFC - Created
+	2011-02-08 - MFC - Updated to make photo in image gallery public.
 --->
 <cffunction name="imgGalleryUpload" access="public" returntype="struct" hint="Uploads a photo to the CS Image Gallery">
 	<cfargument name="imgDir" type="string" required="true" hint="Photo directory path to upload.">
@@ -93,7 +94,7 @@ History:
 	
 	<cfscript>
 		dataStruct.LocalFileName = "#arguments.imgDir#";
-		dataStruct.public = "0";
+		dataStruct.public = true;
 		dataStruct.category = "Photo Gallery";
 		// create the upload CFC
   		csUpload = server.ADF.objectFactory.getBean("CSUpload_1_0");
@@ -156,6 +157,32 @@ History:
 	
 	<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo Category")>
 	
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	M. Carroll
+Name:
+	$getPhotoData
+Summary:
+	Returns the photo data from CE Data.
+Returns:
+	ARGS
+Arguments:
+	ARGS
+History:
+	2010-09-28 - MFC - Created
+--->
+<cffunction name="getPhotoData" access="public" returntype="array" output="false" hint="Returns the data set for the Project CE based on the arguments">
+	<cfargument name="photoID" type="string" required="false" default="" hint="">
+	
+	<cfif LEN(arguments.photoID)>
+		<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo", "photoID", arguments.photoID)>
+	<cfelse>
+		<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo")>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

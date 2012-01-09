@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -19,10 +19,10 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
-Author: 	PaperThin Inc.
-			M. Carroll
+/* *************************************************************** */
+Author: 	
+	PaperThin Inc.
+	M. Carroll
 Name:
 	photoCategoryGC.cfc
 Summary:
@@ -30,9 +30,10 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.1
+	2.0
 History:
 	2009-08-04 - MFC - Created
+	2011-02-08 - MFC - Updated for v2.0
 --->
 <cfcomponent displayname="photoGC" extends="ADF.extensions.customfields.general_chooser.general_chooser">
 
@@ -42,10 +43,6 @@ History:
 	variables.CE_FIELD = "photoID";
 	variables.SEARCH_FIELDS = "title,caption,abstract";
 	variables.ORDER_FIELD = "title";
-	
-	// Layout Flags
-	variables.SHOW_SECTION1 = true;  // Boolean
-	variables.SHOW_SECTION2 = true;  // Boolean
 	
 	// STYLES
 	//variables.MAIN_WIDTH = 400;
@@ -60,13 +57,11 @@ History:
 	variables.JQUERY_UI_THEME = "start";
 	
 	// ADDITIONS
+	variables.SHOW_SEARCH = true;  // Boolean
 	variables.SHOW_ALL_LINK = true;  // Boolean
-	variables.ADD_NEW_FLAG = true;	// Boolean
-	//variables.ADD_NEW_URL = "";
-	variables.ADD_NEW_LB_WIDTH = 500;
-	variables.ADD_NEW_LB_HEIGHT = 400; 
+	variables.SHOW_ADD_LINK = true;  // Boolean
+	variables.SHOW_EDIT_DELETE_LINKS = false;  // Boolean
 </cfscript>
-
 
 <!---
 /* ***************************************************************
@@ -83,34 +78,23 @@ Arguments:
 History:
 	2009-05-29 - MFC - Created
 	2010-04-09 - MFC - Updated to use the getAppConfig function.
+	2010-09-30 - MFC - Updated the add new link to use the Forms.
+	2011-04-27 - MFC - Added category ID in the GC props to the ADD link.
 --->
-<cffunction name="loadAddNewLink" access="private" returntype="string" hint="General Chooser - Add New Link HTML content.">
+<cffunction name="loadAddNewLink" access="public" returntype="string" hint="General Chooser - Add New Link HTML content.">
 	
 	<cfset var retAddLinkHTML = "">
-	<cfset var appConfig = application.ptPhotoGallery.getAppConfig()>
-	
-	<!--- Check if we want to display show all link --->
-	<cfif variables.ADD_NEW_FLAG EQ true>
 		
-		<!--- Check that the server.ADF.envir vars are set and use them here --->
-		<cfif (application.ptPhotoGallery.photoService.verifyAppEnvirConfig()) 
-				AND (StructKeyExists(appConfig, "ADD_URL")) 
-				AND (LEN(appConfig.ADD_URL))
-				AND (StructKeyExists(appConfig, "CE_FORM_ID")) 
-				AND (LEN(appConfig.CE_FORM_ID))>
-			<!--- Set the form ID for the custom element --->
-			<cfset ceFormID = appConfig.CE_FORM_ID>
-			<!--- Render out the show all link to the field type --->
-			<cfsavecontent variable="retAddLinkHTML">
-				<cfoutput>
-					<div id="add-new-items">
-						<a href="javascript:;" rel="#appConfig.ADD_URL#?formid=#ceFormID#&width=#variables.ADD_NEW_LB_WIDTH#&height=#variables.ADD_NEW_LB_HEIGHT#&lbaction=norefresh&title=Add New Photo" title="Add New Photo" class="ADFLightbox">Add New Photo</a>
-					</div>
-				</cfoutput>
-			</cfsavecontent>
-		<cfelse>
-			<cfthrow type="Application" detail="PT Photo Gallery config file missing ADDURL and/or CE_FORM_ID tag." message="Error with the PT_Photo_Gallery config file.">
-		</cfif>
+	<!--- Check if we want to display show all link --->
+	<cfif variables.SHOW_ADD_LINK EQ true>
+		<!--- Render out the show all link to the field type --->
+		<cfsavecontent variable="retAddLinkHTML">
+			<cfoutput>
+				<div id="add-new-items">
+					<a href="javascript:;" rel="#application.ADF.ajaxProxy#?bean=photoForms&method=photoAddEdit&lbaction=norefresh&callback=#arguments.fieldName#_formCallback&title=Add New Record&category=#arguments.CATIDFILTER#" class="ADFLightbox ui-state-default ui-corner-all #arguments.fieldName#-ui-buttons">Add New Item</a>
+				</div>
+			</cfoutput>
+		</cfsavecontent>
 	</cfif>
 	<cfreturn retAddLinkHTML>
 </cffunction>
@@ -132,45 +116,64 @@ Arguments:
 History:
 	2009-10-16 - MFC - Created
 --->
-<cffunction name="loadSearchBox" access="private" returntype="string" hint="General Chooser - Search box HTML content.">
+<cffunction name="loadSearchBox" access="public" returntype="string" hint="General Chooser - Search box HTML content.">
 	<cfargument name="fieldName" type="String" required="true">
 	
 	<cfset var retSearchBoxHTML = "">
 	<cfset var catDataArray = "">
 	<cfset var cat_i = 1>
 	
-	<!--- Render out the search box to the field type --->
-	<cfsavecontent variable="retSearchBoxHTML">
-		<cfoutput>
-		<style>
-			div###arguments.fieldName#-gc-top-area div##search-chooser {
-				margin-bottom: 10px;
-				border: none;
-				width: 250px;
-				height: 25px;
-			}
-			div###arguments.fieldName#-gc-main-area input {
-				border-color: ##fff;
-			}
-		</style>
-		<div>
-			<!--- Render a select for the Event filter --->
-			<cfset catDataArray = application.ptPhotoGallery.cedata.getCEData("Photo Category")>
-			Category Filter: 
-			<select id="#fieldName#_categorySelect" name="#fieldName#_categorySelect">
-				<option value="" selected>All Categories
-				<cfloop index="cat_i" from="1" to="#ArrayLen(catDataArray)#">
-					<option value="#catDataArray[cat_i].Values.categoryID#">#catDataArray[cat_i].Values.title#
-				</cfloop>
-			</select>
-			<br /><br />
-		</div>
-		<div id="search-chooser">
-			<input type="text" class="searchFld-chooser" id="#arguments.fieldName#-searchFld" name="search-box" tabindex="1" onblur="this.value = this.value || this.defaultValue;" onfocus="this.value='';" value="Search" />
-			<input type="button" id="#arguments.fieldName#-searchBtn" value="Search" style="width:60px;"> 
-		</div>
-		</cfoutput>
-	</cfsavecontent>
+	<!--- Check the variable flags for rendering --->
+	<cfif variables.SHOW_SEARCH EQ true>
+		<!--- Render out the search box to the field type --->
+		<cfsavecontent variable="retSearchBoxHTML">
+			<cfoutput>
+			<style>
+				div###arguments.fieldName#-gc-top-area div##search-chooser {
+					margin-bottom: 10px;
+					border: none;
+					width: 250px;
+					height: 25px;
+				}
+				div###arguments.fieldName#-gc-main-area input {
+					border-color: ##fff;
+				}
+			</style>
+			<!--- Check if we want to render the category filter --->
+			<cfif NOT arguments.renderCatFilter>
+				<style>
+					div.catFilterBlock {
+						display: none;
+					}
+				</style>
+			</cfif>
+			<div class="catFilterBlock">
+				<!--- Render a select for the Event filter --->
+				<cfset catDataArray = application.ptPhotoGallery.cedata.getCEData("Photo Category")>
+				Category Filter: 
+				<select id="#fieldName#_categorySelect" name="#fieldName#_categorySelect">
+					<option value="" selected>All Categories
+					<cfloop index="cat_i" from="1" to="#ArrayLen(catDataArray)#">
+						<option value="#catDataArray[cat_i].Values.categoryID#" <cfif arguments.catIDFilter EQ catDataArray[cat_i].Values.categoryID>selected="selected"</cfif>>#catDataArray[cat_i].Values.title#
+					</cfloop>
+				</select>
+				<br /><br />
+			</div>
+			<div id="search-chooser">
+				<input type="text" class="searchFld-chooser" id="#arguments.fieldName#-searchFld" name="search-box" tabindex="1" onblur="this.value = this.value || this.defaultValue;" onfocus="this.value='';" value="Search" />
+				<input type="button" id="#arguments.fieldName#-searchBtn" value="Search" style="width:60px;"> 
+			</div>
+			</cfoutput>
+			<cfif variables.SHOW_ALL_LINK EQ true>
+				<!--- Render out the show all link to the field type --->
+				<cfoutput>
+					<div id="show-all-items">
+						<a id="#arguments.fieldName#-showAllItems" href="javascript:;">Show All Items</a>
+					</div>	
+				</cfoutput>
+			</cfif>
+		</cfsavecontent>
+	</cfif>
 	<cfreturn retSearchBoxHTML>
 </cffunction>
 
@@ -203,6 +206,7 @@ History:
 		var i = 1;
 		var ceDataArray = getChooserData(arguments.item, arguments.queryType, arguments.searchValues, arguments.csPageID);
 		var renderRow = false;
+	
 		// Loop over the data 	
 		for ( i=1; i LTE ArrayLen(ceDataArray); i=i+1) {
 			renderRow = false;

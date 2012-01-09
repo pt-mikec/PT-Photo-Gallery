@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -30,10 +30,11 @@ Element:
 ADF App:
 	pt_photo_gallery
 Version:
-	1.1.0
+	2.0
 History:
 	2009-10-20 - RJA - Created
 	2010-04-01 - MFC - Implemented the dynamic size.
+	2011-10-22 - MFC - Updated to use the metadata form fields.
 --->
 <cfscript>
 	// Make the page dynamics
@@ -70,6 +71,8 @@ History:
 		<cfif ArrayLen(photoDataArray)>
 			<!--- Render the pagination --->
 			<cfoutput>
+				<!--- Load the Styles --->
+				<link rel="stylesheet" href="/ADF/apps/pt_photo_gallery/style/ptPhotoGallery.css" type="text/css" >
 				<div id="photo_grid_view">
 					<!--- Check if the total records need pagination --->
 					<cfif ArrayLen(photoDataArray) GT itemRenderPerPage>

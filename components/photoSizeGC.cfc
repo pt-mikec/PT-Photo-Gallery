@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -19,10 +19,10 @@ end user license agreement.
 --->
 
 <!---
-/* ***************************************************************
-/*
-Author: 	PaperThin Inc.
-			M. Carroll
+/* *************************************************************** */
+Author: 	
+	PaperThin Inc.
+	M. Carroll
 Name:
 	photoSizeGC.cfc
 Summary:
@@ -30,7 +30,7 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	0.9.0
+	2.0
 History:
 	2009-10-16 - MFC - Created
 --->
@@ -56,7 +56,10 @@ History:
 	variables.JQUERY_UI_THEME = "ui-lightness";
 	
 	// ADDITIONS
+	variables.SHOW_SEARCH = false;  // Boolean
 	variables.SHOW_ALL_LINK = false;  // Boolean
+	variables.SHOW_ADD_LINK = false;  // Boolean
+	variables.SHOW_EDIT_DELETE_LINKS = false;  // Boolean
 </cfscript>
  
 </cfcomponent>

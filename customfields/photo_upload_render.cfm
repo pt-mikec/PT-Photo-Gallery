@@ -10,7 +10,7 @@ the specific language governing rights and limitations under the License.
 The Original Code is comprised of the PT Photo Gallery directory
 
 The Initial Developer of the Original Code is
-PaperThin, Inc. Copyright(C) 2010.
+PaperThin, Inc. Copyright(C) 2011.
 All Rights Reserved.
 
 By downloading, modifying, distributing, using and/or accessing any files 
@@ -33,10 +33,11 @@ ADF Requirements:
 	CEDATA_1_0
 	Scripts_1_0
 Version:
-	1.3
+	2.0
 History:
 	2009-11-04 - MFC - Created
 	2010-08-19 - MFC - Updated the load JQuery and JQuery versions to use the global versioning.
+	2012-01-03 - MFC - Added "name" attribute to the Clear button.
 --->
 <cfscript>
 	// The fields current value
@@ -126,10 +127,19 @@ History:
 	          width: 100,
 	          height: 100
 	        });
-	        jQuery('img###fqFieldName#_photo_disp').show(1000);
+	        //jQuery('img###fqFieldName#_photo_disp').show(1000);
+			
+			
+			jQuery('img###fqFieldName#_photo_disp').show(1000, function() {
+				// Refresh the window size
+				lbResizeWindow();
+			});
+			
 			
 			// Disable the Category and Image Gallery Checkbox fields
 			#fqFieldName#_disableFormFields();
+			
+			
 		}
 		
 		function doOnClick() {
@@ -199,6 +209,9 @@ History:
 						
 						// Clear the display upload for the selection
 						jQuery('img###fqFieldName#_photo_disp').hide();
+						
+						// Refresh the window size
+						lbResizeWindow();
 					}
 					else {
 						// We Have a valid photo
@@ -259,6 +272,9 @@ History:
 								
 								// Enable the Category and Image Gallery Checkbox fields
 								#fqFieldName#_enableFormFields();								
+								
+								// Resize Window
+								lbResizeWindow();
 							}
 						});
 					}
@@ -290,7 +306,7 @@ History:
 		<td class="cs_dlgLabelSmall">
 			<img id="#fqFieldName#_photo_disp" src="#currentValue#" width="100" height="100" style="display:block;">
 			<input type="button" value="Upload..." name="upload_btn_#fqFieldName#" id="upload_btn_#fqFieldName#" onclick="doOnClick()">
-			<input type="button" value="Clear" id="#fqFieldName#_clearField">	
+			<input type="button" value="Clear" name="#fqFieldName#_clearField" id="#fqFieldName#_clearField">	
 		</td>
 	</tr>
 
