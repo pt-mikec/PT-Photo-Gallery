@@ -37,8 +37,8 @@ History:
 <cfcomponent name="AppBase" extends="ADF.core.AppBase">
 
 <cfscript>
-	variables.version = "2.0";
-	variables.svnBuild = "55";
+	variables.version = "2.1";
+	variables.svnBuild = "61";
 </cfscript>
 
 <cffunction name="getAppBeanName" access="public" returntype="string">

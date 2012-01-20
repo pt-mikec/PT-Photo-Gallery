@@ -30,26 +30,21 @@ Description:
 ADF App:
 	pt_photo_gallery
 Version:
-	2.0
+	2.1
 History:
 	2009-06-09 - MFC - Created
 	2010-12-13 - MFC - Updated AppBeanConfig to load scripts_1_5
 	2011-01-25 - MFC - Updated to load scripts_1_1 and forms_1_1
+	2011-01-20 - MFC - V2.1 - Removed 'getComPathForCustomAppDir' function call.
 --->
 <cfscript>
 	// App specific variables
 	appBeanName = "ptPhotoGallery";
-	// Get the com path for the current custom application
-	appComPath = getComPathForCustomAppDir(GetCurrentTemplatePath());
 	
 	// Load the APP Base
 	addSingleton("#appComPath#App", appBeanName);
 
-	// Load the STARTER APP service component
-	/* 
-		addSingleton("#appComPath#MYCOMPONENT", "MYCOMPONENT");
-		addConstructorDependency(appBeanName, "MYCOMPONENT");
-	 */
+	// Load the Photo Gallery Components
 	addSingleton("#appComPath#photoService", "photoService");
 	addConstructorDependency(appBeanName, "photoService");
 	addSingleton("#appComPath#renderService", "renderService");
