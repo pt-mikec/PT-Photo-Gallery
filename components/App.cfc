@@ -38,7 +38,7 @@ History:
 
 <cfscript>
 	variables.version = "2.0";
-	variables.svnBuild = "54";
+	variables.svnBuild = "55";
 </cfscript>
 
 <cffunction name="getAppBeanName" access="public" returntype="string">
