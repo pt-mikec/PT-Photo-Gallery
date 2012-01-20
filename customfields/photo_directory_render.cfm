@@ -27,8 +27,13 @@ Name:
 	photo_directory_render.cfm
 Summary:
 	Custom field for the photo directory field related to the title field.
+ADF App:
+	pt_photo_gallery
+Version:
+	2.1
 History:
 	2011-02-08 - MFC - Created
+	2012-01-20 - MFC - Added code Simple Forms.
 --->
 <cfscript>
 	// the fields current value
@@ -44,6 +49,11 @@ History:
 		xparams.fldClass = "";
 	if ( not structKeyExists(xparams, "fldSize") )
 		xparams.fldSize = "40";
+	
+	// find if we need to render the simple form field
+	renderSimpleFormField = false;
+	if ( (StructKeyExists(request, "simpleformexists")) AND (request.simpleformexists EQ 1) )
+		renderSimpleFormField = true;
 	
 	// Load JQuery 
 	application.ptPhotoGallery.scripts.loadJQuery();
@@ -122,4 +132,8 @@ History:
 		</cfoutput>
 	</cfsavecontent>
 	#application.ADF.forms.wrapFieldHTML(inputHTML,fieldQuery,attributes)#
+	<!--- // include hidden field for simple form processing --->
+	<cfif renderSimpleFormField>
+		<input type="hidden" name="#fqFieldName#_FIELDNAME" id="#fqFieldName#_FIELDNAME" value="#ReplaceNoCase(xParams.fieldName, 'FIC_', '')#">
+	</cfif>
 </cfoutput>

@@ -27,6 +27,10 @@ Name:
 	photo_directory_props.cfm
 Summary:
 	Custom field for the photo directory field related to the title field.
+ADF App:
+	pt_photo_gallery
+Version:
+	2.1
 History:
 	2011-02-08 - MFC - Created
 --->
