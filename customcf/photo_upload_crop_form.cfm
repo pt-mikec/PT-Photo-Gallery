@@ -30,12 +30,14 @@ Summary:
 ADF App:
 	pt_photo_gallery
 Version:
-	2.0
+	2.1
 History:
 	2009-12-15 - MFC - Created
 	2010-04-30 - MFC - Update the CFT for the ADF Lightbox
 	2012-01-03 - MFC - Updated the lightbox header and footer scripts to load.
 	2012-01-05 - MFC - Updated the CSFile data return structure variable.
+	2012-01-24 - MFC - Updated the photo crop form dialog.
+						Added lightbox resize call.
 --->
 <cfscript>
 	// Load the lightbox
@@ -133,10 +135,10 @@ History:
 					<tr>
 						<td colspan="2">
 							<p>
-								Select the #catData.Title# photo to upload into the photo gallery.
+								Select the photo to crop.
 							</p>
 							<p>
-								The photo is required to have the minumum dimensions of #catData.initialSizeArray[1].Values.width# X #catData.initialSizeArray[1].Values.height#
+								The photo is required to have the <em>minumum</em> dimensions of #catData.initialSizeArray[1].Values.width# X #catData.initialSizeArray[1].Values.height#
 							</p>
 							
 						</td>
@@ -147,7 +149,7 @@ History:
 					</tr>
 					<tr>
 						<td class="cs_dlgLabelSmall"></td>
-						<td class="cs_dlgLabelSmall"><input type="button" value="Do Upload" onclick="this.disabled='disabled';this.value='Processing...';checkDocType(this.form);" id="uploadbutton"/><input type="button" value="Cancel" onclick="closeLB();"></td>
+						<td class="cs_dlgLabelSmall"><input type="button" value="Crop Photo" onclick="this.disabled='disabled';this.value='Processing...';checkDocType(this.form);" id="uploadbutton"/><input type="button" value="Cancel" onclick="closeLB();"></td>
 					</tr>
 				</table>
 			</form>
@@ -293,6 +295,8 @@ History:
 						setSelect: [0,0, #maxWidth#, #maxHeight#],
 						aspectRatio: #aspectRatio#
 					});
+					// Resize the window when loaded
+					lbResizeWindow();
 				});
 		
 				// Our simple event handler, called from onChange and onSelect
