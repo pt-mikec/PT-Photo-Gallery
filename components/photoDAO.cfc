@@ -33,6 +33,10 @@ Version:
 History:
 	2009-08-04 - MFC - Created
 	2011-02-08 - MFC - Updated to v2.0
+	2012-01-25 - GAC - Added a getPhotoSizes method
+					 - Added a getPhotoSizeDataByRefName method
+					 - Added a getPhotoCategoryIDByTitle method
+					 - Added a getPhotoCategoryIDByRefName method
 --->
 <cfcomponent displayname="PhotoDAO" extends="ADF.apps.pt_photo_gallery.components.App" hint="Photo Gallery DAO component for the Photo Gallery Application.">
 
@@ -183,6 +187,122 @@ History:
 	<cfelse>
 		<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo")>
 	</cfif>
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	G. Cronkright
+Name:
+	$getPhotoSizes
+Summary:
+	Returns the CEData call to get all the Photo Size data.
+Returns:
+	Array
+Arguments:
+	None
+History:
+	2012-01-24 - GAC - Created
+--->
+<cffunction name="getPhotoSizes" access="public" returntype="array" hint="">
+	<cfreturn application.ptPhotoGallery.cedata.getCEData("Photo Size")>
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	G. Cronkright
+Name:
+	$getPhotoSizeDataByRefName
+Summary:
+	Returns the data structure of the Photo Size based on a size reference name.
+Returns:
+	Struct
+Arguments:
+	String - sizeRefName
+History:
+	2012-01-24 - GAC - Created
+--->
+<cffunction name="getPhotoSizeDataByRefName" access="public" returntype="struct" output="false" hint="Returns the data structure of the Photo Size based on a size reference name.">
+	<cfargument name="sizeRefName" type="string" required="true" default="" hint="">
+	<cfscript>
+		var sizeData = StructNew();
+		var sizeArray = ArrayNew(1);
+		
+		if ( LEN(TRIM(arguments.sizeRefName)) )
+			sizeArray = application.ptPhotoGallery.cedata.getCEData("Photo Size", "directory", arguments.sizeRefName);
+		
+		if ( ArrayLen(sizeArray) AND StructKeyExists(sizeArray[1],"values") )
+			sizeData = sizeArray[1].values;
+			
+		return sizeData;
+	</cfscript>
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	G. Cronkright
+Name:
+	$getPhotoCategoryIDByTitle
+Summary:
+	Returns the data category ID of the Photo Category By the Title
+Returns:
+	String
+Arguments:
+	String - catTitle
+History:
+	2012-01-24 - GAC - Created
+--->
+<cffunction name="getPhotoCategoryIDByTitle" access="public" returntype="string" output="false" hint="Returns the data category ID of the Photo Category By the Name">
+	<cfargument name="catTitle" type="string" required="true" default="" hint="">
+	<cfscript>
+		var catID = "";
+		var catArray = ArrayNew(1);
+		
+		if ( LEN(TRIM(arguments.catTitle)) )
+			catArray = application.ptPhotoGallery.cedata.getCEData("Photo_Category","title",TRIM(arguments.catTitle));
+
+		if ( ArrayLen(catArray) AND StructKeyExists(catArray[1],"values") AND StructKeyExists(catArray[1].values,"categoryID") )
+			catID = catArray[1].values.categoryID;
+			
+		return catID;
+	</cfscript>
+</cffunction>
+
+<!---
+/* *************************************************************** */
+Author: 	
+	PaperThin, Inc.
+	G. Cronkright
+Name:
+	$getPhotoCategoryIDByRefName
+Summary:
+	Returns the data category ID of the Photo Category By the Reference Name
+Returns:
+	String
+Arguments:
+	String - refName
+History:
+	2012-01-24 - GAC - Created
+--->
+<cffunction name="getPhotoCategoryIDByRefName" access="public" returntype="string" output="false" hint="Returns the data category ID of the Photo Category By the Name">
+	<cfargument name="refName" type="string" required="true" default="" hint="">
+	<cfscript>
+		var catID = "";
+		var catArray = ArrayNew(1);
+		
+		if ( LEN(TRIM(arguments.refName)) )
+			catArray = application.ptPhotoGallery.cedata.getCEData("Photo_Category","directory",TRIM(arguments.refName));
+
+		if ( ArrayLen(catArray) AND StructKeyExists(catArray[1],"values") AND StructKeyExists(catArray[1].values,"categoryID") )
+			catID = catArray[1].values.categoryID;
+			
+		return catID;
+	</cfscript>
 </cffunction>
 
 </cfcomponent>
